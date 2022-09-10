@@ -1,0 +1,5 @@
+*cache*
+.vscode/*
+!.vscode/launch.json
+*.ini
+!*.example.ini

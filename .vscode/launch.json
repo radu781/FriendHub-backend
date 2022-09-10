@@ -1,0 +1,12 @@
+{
+	"configurations": [
+		{
+			"name": "Python: Run project",
+			"type": "python",
+			"request": "launch",
+			"program": "social/__init__.py",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		}
+	]
+}
