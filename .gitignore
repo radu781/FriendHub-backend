@@ -1,5 +1,8 @@
-*cache*
 .vscode/*
 !.vscode/launch.json
+
 *.ini
 !*.example.ini
+
+*cache*
+deploy.log

@@ -3,6 +3,7 @@ import sys
 import logging
 
 logging.basicConfig(stream=sys.stderr)
-sys.path.insert(0, "/var/www/social/")
+sys.path.append("/var/www/social/")
+sys.path.append("/var/www/social/social/")
 
 from social import app as application
