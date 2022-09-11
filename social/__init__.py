@@ -2,11 +2,6 @@ from datetime import datetime
 from flask import Flask, render_template, request
 import config
 
-if config.DEPLOYING:
-    import os
-
-    os.chdir("/var/www/social")
-
 from controllers.deploy import deploy_blueprint
 
 app = Flask(__name__)
@@ -23,4 +18,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.run(port=80, debug=config.DEBUG_ON)
+    app.run(port=80, debug=False)

@@ -1,4 +1,10 @@
 from configparser import ConfigParser
+import sys
+
+if sys.platform == "linux" or sys.platform == "linux2":
+    import os
+
+    os.chdir("/var/www/social")
 
 ini_file = ConfigParser()
 ini_file.read("social/config/data.ini")
