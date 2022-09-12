@@ -1,7 +1,8 @@
 from datetime import datetime
-from flask import Flask, render_template, request
-import config
 
+from flask import Flask, render_template, request
+
+import config
 from controllers.deploy import deploy_blueprint
 from controllers.login_controller import login_blueprint
 from controllers.register_controller import register_blueprint

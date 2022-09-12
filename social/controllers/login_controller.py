@@ -1,9 +1,8 @@
-from flask import Blueprint, request, make_response, jsonify
-from flask_api import status
+from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
-from utils.argument_parser import ArgsNotFoundException
-
-from utils.argument_parser import ArgumentParser, Argument, ArgType
+from flask_api import status
+from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
+                                   ArgumentParser)
 
 login_blueprint = Blueprint("login_blueprint", __name__)
 

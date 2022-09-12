@@ -1,7 +1,8 @@
+from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import Any
+
 from flask.wrappers import Request
-from dataclasses import dataclass, field
 
 
 class Method(Enum):

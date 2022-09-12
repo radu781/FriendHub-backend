@@ -1,8 +1,9 @@
-from datetime import datetime
-from flask import Blueprint, make_response, request, jsonify
-from flask.wrappers import Response
-import config
 import subprocess
+from datetime import datetime
+
+import config
+from flask import Blueprint, jsonify, make_response, request
+from flask.wrappers import Response
 from flask_api import status
 
 deploy_blueprint = Blueprint("deploy_blueprint", __name__)

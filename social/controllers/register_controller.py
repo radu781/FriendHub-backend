@@ -1,9 +1,13 @@
-from flask import Blueprint, request, make_response, jsonify
-from flask_api import status
-from flask.wrappers import Response
-from utils.argument_parser import ArgsNotFoundException
+from datetime import datetime
+from uuid import uuid4
 
-from utils.argument_parser import ArgumentParser, Argument, ArgType
+from database.user_dao import UserDAO
+from flask import Blueprint, jsonify, make_response, request
+from flask.wrappers import Response
+from flask_api import status
+from models.user_model import User
+from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
+                                   ArgumentParser, Method)
 
 register_blueprint = Blueprint("register_blueprint", __name__)
 
@@ -17,6 +21,7 @@ def login() -> Response:
             Argument("password", ArgType.Mandatory, None),
             Argument("password-confirm", ArgType.Mandatory, None),
         },
+        Method.Post,
     )
     try:
         values = parser.get_values()
@@ -31,4 +36,12 @@ def login() -> Response:
         return make_response(
             jsonify({"reason": "passwords mismatch"}), status.HTTP_401_UNAUTHORIZED
         )
+    UserDAO.register_user(
+        User(
+            id_=uuid4(),
+            email=values["username"],
+            password=values["password"],
+            join_time=datetime.now(),
+        )
+    )
     return make_response("")
