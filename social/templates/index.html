@@ -1,1 +1,4 @@
-{% extends "base.html" %} {% block title %} Main page {% endblock %}
+{% extends "base.html" %} {% block title %} Main page {% endblock %} {% block body %}
+<p>Server time: {{ time }}</p>
+<p>Your ip: {{ ip }}</p>
+{% endblock %}

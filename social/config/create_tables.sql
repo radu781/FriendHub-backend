@@ -1,127 +1,118 @@
-DROP TABLE IF EXISTS `comments`;
-CREATE TABLE `comments` (
-    `id` char(36) NOT NULL,
-    `parent_id` char(36) NOT NULL COMMENT 'can be a post or another comment',
-    `body` text NOT NULL,
-    `likes` int unsigned NOT NULL,
-    `dislikes` int unsigned NOT NULL,
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    KEY `comments_parent_id_foreign` (`parent_id`),
-    CONSTRAINT `comments_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `posts` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `im_group_members`;
-CREATE TABLE `im_group_members` (
-    `id` char(36) NOT NULL,
-    `group_id` char(36) NOT NULL,
-    `user_or_page_id` char(36) NOT NULL,
-    `permissions` int unsigned NOT NULL,
-    `join_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    KEY `im_group_members_group_id_foreign` (`group_id`),
-    KEY `im_group_members_user_or_page_id_foreign1` (`user_or_page_id`),
-    CONSTRAINT `im_group_members_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `im_groups` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `im_groups`;
-CREATE TABLE `im_groups` (
-    `id` char(36) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `profile_picture` varchar(255) NOT NULL,
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message` (
-    `id` char(36) NOT NULL,
-    `from` char(36) NOT NULL,
-    `to` char(36) NOT NULL,
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `body` text NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `message_from_foreign` (`from`),
-    KEY `message_to_foreign1` (`to`),
-    CONSTRAINT `message_from_foreign` FOREIGN KEY (`from`) REFERENCES `users` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `p_group_members`;
-CREATE TABLE `p_group_members` (
-    `id` char(36) NOT NULL,
-    `group_id` char(36) NOT NULL,
-    `user_or_page_id` char(36) NOT NULL,
-    `permissions` int unsigned NOT NULL,
-    `join_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    KEY `p_group_members_group_id_foreign` (`group_id`),
-    KEY `p_group_members_user_or_page_id_foreign1` (`user_or_page_id`),
-    CONSTRAINT `p_group_members_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `pages_groups` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `pages`;
-CREATE TABLE `pages` (
-    `id` char(36) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `join_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `profile_picture` varchar(255) NOT NULL,
-    `banner_picture` varchar(255) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `pages_groups`;
-CREATE TABLE `pages_groups` (
-    `id` char(36) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `profile_picture` varchar(255) NOT NULL,
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE `posts` (
-    `id` char(36) NOT NULL,
-    `owner_id` char(36) NOT NULL,
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `likes` int NOT NULL,
-    `dislikes` int NOT NULL,
-    `text` text,
-    `image` varchar(255) DEFAULT NULL,
-    `video` varchar(255) DEFAULT NULL,
-    `audio` varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `posts_owner_id_foreign2` (`owner_id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `relationships`;
-CREATE TABLE `relationships` (
-    `id` char(36) NOT NULL,
-    `user_id1` char(36) NOT NULL,
-    `user_id2` char(36) NOT NULL,
-    `status` char(255) NOT NULL COMMENT '1->2: PENDING/ACCEPTED/BLOCKED/HIDDEN',
-    `change_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    KEY `relationships_user_id1_foreign` (`user_id1`),
-    KEY `relationships_user_id2_foreign` (`user_id2`),
-    CONSTRAINT `relationships_user_id1_foreign` FOREIGN KEY (`user_id1`) REFERENCES `users` (`id`),
-    CONSTRAINT `relationships_user_id2_foreign` FOREIGN KEY (`user_id2`) REFERENCES `users` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `replies`;
-CREATE TABLE `replies` (
-    `id` char(36) NOT NULL,
-    `parent_id` char(36) NOT NULL,
-    `body` text NOT NULL,
-    `likes` int unsigned NOT NULL,
-    `dislikes` int unsigned NOT NULL,
-    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `replies_parent_id_foreign` (`parent_id`),
-    CONSTRAINT `replies_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-    `id` char(36) NOT NULL,
-    `first_name` varchar(255) NOT NULL,
-    `middle_name` varchar(255) DEFAULT NULL,
-    `last_name` varchar(255) NOT NULL,
-    `join_time` datetime NOT NULL,
-    `country` varchar(255) DEFAULT NULL,
-    `city` varchar(255) DEFAULT NULL,
-    `education` varchar(255) DEFAULT NULL,
-    `extra` text,
-    `profile_picture` varchar(255) DEFAULT NULL,
-    `banner_picture` varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE `users`(
+    `id` CHAR(36) NOT NULL,
+    `first_name` VARCHAR(255) NOT NULL,
+    `middle_name` VARCHAR(255) NULL,
+    `last_name` VARCHAR(255) NOT NULL,
+    `join_time` DATETIME NOT NULL,
+    `country` VARCHAR(255) NULL,
+    `city` VARCHAR(255) NULL,
+    `education` VARCHAR(255) NULL,
+    `extra` TEXT NULL,
+    `profile_picture` VARCHAR(255) NULL,
+    `banner_picture` VARCHAR(255) NULL
+);
+ALTER TABLE `users`
+ADD PRIMARY KEY `users_id_primary`(`id`);
+CREATE TABLE `relationships`(
+    `id` CHAR(36) NOT NULL,
+    `user_id1` CHAR(36) NOT NULL,
+    `user_id2` CHAR(36) NOT NULL,
+    `status` CHAR(255) NOT NULL COMMENT '1->2: PENDING/ACCEPTED/BLOCKED/HIDDEN',
+    `change_time` DATETIME NOT NULL
+);
+ALTER TABLE `relationships`
+ADD PRIMARY KEY `relationships_id_primary`(`id`);
+CREATE TABLE `pages`(
+    `id` CHAR(36) NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `join_time` DATETIME NOT NULL,
+    `profile_picture` VARCHAR(255) NOT NULL,
+    `banner_picture` VARCHAR(255) NOT NULL
+);
+ALTER TABLE `pages`
+ADD PRIMARY KEY `pages_id_primary`(`id`);
+CREATE TABLE `posts`(
+    `id` CHAR(36) NOT NULL,
+    `owner_id` CHAR(36) NOT NULL,
+    `create_time` DATETIME NOT NULL,
+    `likes` INT NOT NULL,
+    `dislikes` INT NOT NULL,
+    `text` TEXT NULL,
+    `image` VARCHAR(255) NULL,
+    `video` VARCHAR(255) NULL,
+    `audio` VARCHAR(255) NULL
+);
+ALTER TABLE `posts`
+ADD PRIMARY KEY `posts_id_primary`(`id`);
+CREATE TABLE `comments`(
+    `id` CHAR(36) NOT NULL,
+    `parent_id` CHAR(36) NOT NULL COMMENT 'can be a post or another comment',
+    `body` TEXT NOT NULL,
+    `likes` INT UNSIGNED NOT NULL,
+    `dislikes` INT UNSIGNED NOT NULL
+);
+ALTER TABLE `comments`
+ADD PRIMARY KEY `comments_id_primary`(`id`);
+CREATE TABLE `pages_groups`(
+    `id` CHAR(36) NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `profile_picture` VARCHAR(255) NOT NULL
+);
+ALTER TABLE `pages_groups`
+ADD PRIMARY KEY `pages_groups_id_primary`(`id`);
+CREATE TABLE `p_group_members`(
+    `id` CHAR(36) NOT NULL,
+    `group_id` CHAR(36) NOT NULL,
+    `user_or_page_id` CHAR(36) NOT NULL,
+    `permissions` INT UNSIGNED NOT NULL,
+    `join_time` DATETIME NOT NULL
+);
+ALTER TABLE `p_group_members`
+ADD PRIMARY KEY `p_group_members_id_primary`(`id`);
+CREATE TABLE `im_groups`(
+    `id` CHAR(36) NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
+    `profile_picture` VARCHAR(255) NOT NULL
+);
+ALTER TABLE `im_groups`
+ADD PRIMARY KEY `im_groups_id_primary`(`id`);
+CREATE TABLE `im_group_members`(
+    `id` CHAR(36) NOT NULL,
+    `group_id` CHAR(36) NOT NULL,
+    `user_or_page_id` CHAR(36) NOT NULL,
+    `permissions` INT UNSIGNED NOT NULL,
+    `join_time` DATETIME NOT NULL
+);
+ALTER TABLE `im_group_members`
+ADD PRIMARY KEY `im_group_members_id_primary`(`id`);
+CREATE TABLE `message`(
+    `id` CHAR(36) NOT NULL,
+    `from` CHAR(36) NOT NULL,
+    `to` CHAR(36) NOT NULL,
+    `time` DATETIME NOT NULL
+);
+ALTER TABLE `message`
+ADD PRIMARY KEY `message_id_primary`(`id`);
+CREATE TABLE `replies`(
+    `id` CHAR(36) NOT NULL,
+    `parent_id` CHAR(36) NOT NULL,
+    `body` TEXT NOT NULL,
+    `likes` INT UNSIGNED NOT NULL,
+    `dislikes` INT UNSIGNED NOT NULL
+);
+ALTER TABLE `replies`
+ADD PRIMARY KEY `replies_id_primary`(`id`);
+ALTER TABLE `relationships`
+ADD CONSTRAINT `relationships_user_id1_foreign` FOREIGN KEY(`user_id1`) REFERENCES `users`(`id`);
+ALTER TABLE `relationships`
+ADD CONSTRAINT `relationships_user_id2_foreign` FOREIGN KEY(`user_id2`) REFERENCES `users`(`id`);
+ALTER TABLE `p_group_members`
+ADD CONSTRAINT `p_group_members_group_id_foreign` FOREIGN KEY(`group_id`) REFERENCES `pages_groups`(`id`);
+ALTER TABLE `comments`
+ADD CONSTRAINT `comments_parent_id_foreign` FOREIGN KEY(`parent_id`) REFERENCES `posts`(`id`);
+ALTER TABLE `posts`
+ADD CONSTRAINT `posts_owner_id_foreign` FOREIGN KEY(`owner_id`) REFERENCES `users`(`id`);
+ALTER TABLE `im_group_members`
+ADD CONSTRAINT `im_group_members_group_id_foreign` FOREIGN KEY(`group_id`) REFERENCES `im_groups`(`id`);
+ALTER TABLE `replies`
+ADD CONSTRAINT `replies_parent_id_foreign` FOREIGN KEY(`parent_id`) REFERENCES `comments`(`id`);

@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %} Register {% endblock %} {% block body %}
+<form action="/api-login" method="post">
+    <label for="username">Email address</label>
+    <input type="text" name="username" id="username" />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
+    <label for="password-confirm">Confirm password</label>
+    <input type="password" name="password-confirm" id="password-confirm" />
+</form>
+{% endblock %}
