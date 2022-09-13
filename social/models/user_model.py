@@ -21,4 +21,5 @@ class User:
     password: str = field(default="")
 
     def __post_init__(self) -> None:
-        self.password = hashlib.sha256(bytes(self.password, "utf-8")).digest().hex()
+        if self.password != None:
+            self.password = hashlib.sha256(bytes(self.password, "utf-8")).digest().hex()

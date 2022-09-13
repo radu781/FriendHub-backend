@@ -8,7 +8,7 @@ import mysql.connector.cursor_cext as _cursor
 
 
 @dataclass
-class DBManager:
+class __DBManager:
     connector: connection.CMySQLConnection = field(
         init=False, default=connection.CMySQLConnection()
     )
@@ -27,60 +27,26 @@ class DBManager:
         self.cursor = self.connector.cursor()  # type: ignore
 
     def execute(
-        self, statement: str, values: dict[str, int | str | None]
+        self, statement: str, values: tuple[int | str | None, ...]
     ) -> list[tuple]:
-        pretty_statement = self.__assign(statement, values)
         try:
-            self.cursor.execute(pretty_statement)
-            if not pretty_statement.split(" ")[0].upper() == "SELECT":
+            self.cursor.execute(statement, values)
+            if not statement.split(" ")[0].upper() == "SELECT":
                 self.connector.commit()
             return self.cursor.fetchall()
         except Exception as e:
-            print(e, "statement:", pretty_statement, sep="\n")
+            print(e, "statement:", statement, sep="\n")
             return []
 
     def execute_multiple(
-        self, statement: str, values: list[dict[str, int | str | None]]
+        self, statement: str, values: list[tuple[int | str | None, ...]]
     ) -> list[list[tuple[int | str]]]:
         out: list[list[tuple[int | str]]] = []
 
-        pretty_statements = self.__assign_multiple(statement, values)
-        for item in pretty_statements:
-            out.append(self.execute(item, {}))
+        for value in values:
+            out.append(self.execute(statement, value))
 
         return out
 
-    def __assign(
-        self,
-        statement: str,
-        values: dict[str, int | str | None],
-    ) -> str:
-        out = statement.replace("\n", " ").replace("\t", " ").replace("  ", " ")
 
-        for value in values.keys():
-            if isinstance(values[value], int):
-                prepared_value = str(values[value])
-            elif isinstance(values[value], str):
-                percentage = out.index(f":{value}") - 1
-                if percentage >= 0 and out[percentage] == "%":
-                    prepared_value = f"'%{values[value]}%'"
-                    out = out.replace(f"%:{value}%", f":{value}")
-                else:
-                    prepared_value = f"'{values[value]}'"
-            else:
-                prepared_value = "NULL"
-            out = out.replace(f":{value}", prepared_value)
-
-        return out
-
-    def __assign_multiple(
-        self,
-        statement: str,
-        values: list[dict[str, int | str | None]],
-    ) -> list[str]:
-        out: list[str] = []
-
-        for line in values:
-            out.append(self.__assign(statement, line))
-
-        return out
+DBManager = __DBManager()

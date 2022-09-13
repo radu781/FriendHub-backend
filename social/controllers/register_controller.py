@@ -6,8 +6,13 @@ from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
 from models.user_model import User
-from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
-                                   ArgumentParser, Method)
+from utils.argument_parser import (
+    ArgsNotFoundException,
+    ArgType,
+    Argument,
+    ArgumentParser,
+    Method,
+)
 
 register_blueprint = Blueprint("register_blueprint", __name__)
 
@@ -32,10 +37,16 @@ def login() -> Response:
             ),
             status.HTTP_401_UNAUTHORIZED,
         )
+
+    if UserDAO.user_exists(values["username"]):
+        return make_response(
+            jsonify({"reason": "user already exists"}), status.HTTP_401_UNAUTHORIZED
+        )
     if values["password"] != values["password-confirm"]:
         return make_response(
             jsonify({"reason": "passwords mismatch"}), status.HTTP_401_UNAUTHORIZED
         )
+
     UserDAO.register_user(
         User(
             id_=uuid4(),
