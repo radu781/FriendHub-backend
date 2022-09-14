@@ -4,7 +4,7 @@ from configparser import ConfigParser
 if sys.platform == "linux" or sys.platform == "linux2":
     import os
 
-    os.chdir("/var/www/friendhub")
+    os.chdir("/var/www/FriendHub")
 
 ini_file = ConfigParser()
 ini_file.read("friendhub/config/data.ini")

@@ -4,11 +4,10 @@
 			"name": "Python: Run project",
 			"type": "python",
 			"request": "launch",
-			"program": "friendhub/__init__.py",
+			"program": "friendhub/src/__init__.py",
 			"console": "integratedTerminal",
 			"justMyCode": true,
 			"cwd": "${workspaceFolder}",
-			"env": { "PYTHONPATH": "friendhub" }
-		}
+			"env": { "PYTHONPATH": "friendhub/src" }
 	]
 }

@@ -9,7 +9,7 @@ from controllers.register_controller import register_blueprint
 from views.login_view import login_view_blueprint
 from views.register_view import register_view_blueprint
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates", static_folder="../static")
 app.config["SECRET_KEY"] = config.SESSION_KEY
 app.config["SESSION_TYPE"] = "SameSite"
 app.config["SESSION_COOKIE_PATH"] = "/"

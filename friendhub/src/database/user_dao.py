@@ -21,7 +21,7 @@ class UserDAO:
     @staticmethod
     def user_exists(email: str) -> bool:
         value = DBManager.execute("SELECT COUNT(*) FROM users WHERE email=%s", (email,))
-        return value[0][0] == 1
+        return value[0][0] != 0
 
     @staticmethod
     def correct_password(email: str, password: str) -> bool:
