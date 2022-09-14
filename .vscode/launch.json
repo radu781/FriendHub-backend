@@ -1,7 +1,7 @@
 {
 	"configurations": [
 		{
-			"name": "Python: Run project",
+			"name": "Run project",
 			"type": "python",
 			"request": "launch",
 			"program": "friendhub/src/__init__.py",
@@ -9,5 +9,15 @@
 			"justMyCode": true,
 			"cwd": "${workspaceFolder}",
 			"env": { "PYTHONPATH": "friendhub/src" }
+		},
+		{
+			"name": "Make translations",
+			"type": "python",
+			"request": "launch",
+			"program": "translate/main.py",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"justMyCode": true
+		},
 	]
 }

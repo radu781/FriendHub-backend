@@ -13,12 +13,23 @@ app = Flask(__name__, template_folder="../templates", static_folder="../static")
 app.config["SECRET_KEY"] = config.SESSION_KEY
 app.config["SESSION_TYPE"] = "SameSite"
 app.config["SESSION_COOKIE_PATH"] = "/"
+app.config["BABEL_DEFAULT_LOCALE"] = "en"
+app.config["BABEL_TRANSLATION_DIRECTORIES"] = "../translations"
 
 app.register_blueprint(deploy_blueprint)
 app.register_blueprint(login_blueprint)
 app.register_blueprint(register_blueprint)
 app.register_blueprint(login_view_blueprint)
 app.register_blueprint(register_view_blueprint)
+
+from flask_babel import Babel
+
+babel = Babel(app)
+
+
+@babel.localeselector
+def get_locale():
+    return "ja"
 
 
 @app.route("/")

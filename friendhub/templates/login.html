@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %} Login{% endblock %} {% block body %}
 <form action="/api-login" method="post">
-    <label for="username">Email address</label>
+    <label for="username">{{ _("Email address") }}</label>
     <input type="text" name="username" id="username" required />
-    <label for="password">Password</label>
+    <label for="password">{{ _("Password") }}</label>
     <input type="password" name="password" id="password" required />
     <button type="submit" style="visibility: hidden"></button>
 </form>
