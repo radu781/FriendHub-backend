@@ -18,8 +18,10 @@ def translate_and_replace(language: str, file_path: str):
         file_lines = file.readlines()
 
     return_file: list[str] = []
-    for line in file_lines:
+    for index, line in enumerate(file_lines):
         if line.find("msgstr") == -1:
+            return_file.append(line)
+        if line.find("msgstr") == 0 and len(line) == 10 and index < 10:
             return_file.append(line)
         if line.find("msgid") != -1 and len(line) > 9:
             msgid = line[len("msgid") + 2 : -2]
