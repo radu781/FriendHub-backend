@@ -17,7 +17,7 @@ from utils.argument_parser import (
 login_blueprint = Blueprint("login_blueprint", __name__)
 
 
-@login_blueprint.route("/api-login", methods=["POST"])
+@login_blueprint.route("/api/login", methods=["POST"])
 def login() -> Response:
     parser = ArgumentParser(
         request,

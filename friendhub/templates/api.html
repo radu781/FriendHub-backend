@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %} API reference {% endblock %} {% block body %}
+<div>
+    <p>API reference page</p>
+</div>
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Endpoint</th>
+        <th>Arguments</th>
+    </tr>
+    <tr>
+        <td>Post</td>
+        <td>/register</td>
+        <td>
+            <ul>
+                <li>username</li>
+                <li>password</li>
+                <li>password-confirm</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Post</td>
+        <td>/login</td>
+        <td>
+            <ul>
+                <li>username</li>
+                <li>password</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+{% endblock %}
