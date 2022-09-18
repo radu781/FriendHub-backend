@@ -11,7 +11,7 @@ class User:
     profile_picture: str = field(default="")
     middle_name: str = field(default="")
     last_name: str = field(default="")
-    join_time: datetime = field(default=datetime.fromtimestamp(0))
+    join_time: datetime = field(default=datetime.now())
     country: str = field(default="")
     city: str = field(default="")
     education: str = field(default="")

@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from dataclasses import dataclass, field
+from datetime import datetime
 
 import config
 import mysql.connector as con
@@ -27,7 +28,7 @@ class __DBManager:
         self.cursor = self.connector.cursor()  # type: ignore
 
     def execute(
-        self, statement: str, values: tuple[int | str | None, ...]
+        self, statement: str, values: tuple[int | str | datetime | None, ...]
     ) -> list[tuple]:
         try:
             self.cursor.execute(statement, values)
@@ -39,7 +40,7 @@ class __DBManager:
             return []
 
     def execute_multiple(
-        self, statement: str, values: list[tuple[int | str | None, ...]]
+        self, statement: str, values: list[tuple[int | str | datetime | None, ...]]
     ) -> list[list[tuple[int | str]]]:
         out: list[list[tuple[int | str]]] = []
 
