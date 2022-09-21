@@ -18,7 +18,7 @@ app.config["SESSION_TYPE"] = "SameSite"
 app.config["SESSION_COOKIE_PATH"] = "/"
 app.config["BABEL_DEFAULT_LOCALE"] = "en"
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "../translations"
-app.config["UPLOAD_FOLDER"] = "../uploads"
+app.config["UPLOAD_FOLDER"] = "../static/uploads"
 
 
 app.register_blueprint(login_view_blueprint)

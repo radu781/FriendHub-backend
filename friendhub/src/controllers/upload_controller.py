@@ -11,8 +11,11 @@ from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
 from werkzeug.utils import secure_filename
 
 upload_blueprint = Blueprint("upload_blueprint", __name__)
-UPLOAD_PATH = "friendhub/uploads"
-
+UPLOAD_PATH = "friendhub/static/uploads"
+try:
+    os.mkdir(UPLOAD_PATH)
+except FileExistsError:
+    pass
 
 @upload_blueprint.route("/api/upload", methods=["POST"])
 def upload() -> Response:

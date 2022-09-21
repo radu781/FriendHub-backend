@@ -1,3 +1,7 @@
+p {
+    margin: 0;
+}
+
 .upload-form {
     background-color: rgb(139, 189, 206);
     border-radius: 10px;
@@ -97,9 +101,14 @@ label>img {
     width: 90%;
 }
 
+.post-main>p {
+    margin-top: 10px;
+}
+
 .post-info {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .post-user-profile>img {
@@ -114,13 +123,17 @@ label>img {
     margin-right: 5px;
 }
 
-@media screen and (max-width:1300px) {
+.user-image-upload {
+    width: 100%;
+}
+
+@media screen and (max-width: 1300px) {
     .post-vote-side {
         width: 5%;
     }
 }
 
-@media screen and (max-width:500px) {
+@media screen and (max-width: 500px) {
     .post-vote-side {
         width: 7%;
     }
