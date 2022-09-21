@@ -7,4 +7,4 @@ sys.path.append("/var/www/friendhub/")
 sys.path.append("/var/www/friendhub/friendhub/")
 sys.path.append("/var/www/friendhub/friendhub/src")
 
-from src import app as application  # type: ignore
+from src.main import app as application  # type: ignore

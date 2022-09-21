@@ -1,7 +1,7 @@
 import subprocess
 from datetime import datetime
 
-import config
+import globals
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
@@ -15,7 +15,7 @@ def deploy() -> Response:
         return make_response(
             jsonify({"reason": "'key' argument required"}), status.HTTP_401_UNAUTHORIZED
         )
-    if request.args["key"] != config.DEPLOY_KEY:
+    if request.args["key"] != globals.DEPLOY_KEY:
         return make_response(
             jsonify({"reason": "wrong deploy key"}), status.HTTP_401_UNAUTHORIZED
         )

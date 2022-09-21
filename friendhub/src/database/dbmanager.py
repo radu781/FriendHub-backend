@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from dataclasses import dataclass, field
 from datetime import datetime
 
-import config
+import globals
 import mysql.connector as con
 import mysql.connector.connection_cext as connection
 import mysql.connector.cursor_cext as _cursor
@@ -19,11 +19,11 @@ class __DBManager:
         ini_file = ConfigParser()
         ini_file.read("config/data.ini")
         self.connector: connection.CMySQLConnection = con.connect(  # type: ignore
-            database=config.DB_SCHEMA,
-            user=config.DB_USERNAME,
-            password=config.DB_PASSWORD,
-            host=config.DB_HOST,
-            port=config.DB_PORT,
+            database=globals.DB_SCHEMA,
+            user=globals.DB_USERNAME,
+            password=globals.DB_PASSWORD,
+            host=globals.DB_HOST,
+            port=globals.DB_PORT,
         )
         self.cursor = self.connector.cursor()  # type: ignore
 
