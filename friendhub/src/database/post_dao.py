@@ -1,3 +1,4 @@
+from uuid import UUID
 from models.post_model import Post
 
 from database.dbmanager import DBManager
@@ -20,3 +21,8 @@ class PostDAO:
                 post.audio,
             ),
         )
+
+    @staticmethod
+    def get_visible_posts(uuid: UUID) -> list[Post]:
+        value = DBManager.execute("SELECT * FROM posts", ())
+        return [Post.from_db(row) for row in value]

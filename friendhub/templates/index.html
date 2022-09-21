@@ -1,8 +1,9 @@
 {% extends "base.html" %} {% block title %} Main page {% endblock %} {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" />
-<script src="{{ url_for('static', filename='scripts/index.js') }}" defer></script>{% endblock %} {% block body %}
+<script src="{{ url_for('static', filename='scripts/index.js') }}" defer></script>
+{% endblock %} {% block body %}
 <div class="upload-form">
-    <p class="upload-form-title">{{ _("Create post") }}</p>
+    <p class="upload-form-title">{{ _("Create a post") }}</p>
     <form action="/api/upload" method="post" enctype="multipart/form-data">
         <textarea name="text" id="text" placeholder="{{ _('Share your thoughts') }}" required></textarea>
         <div class="line-align">
@@ -35,5 +36,37 @@
         </div>
         <button type="submit" id="submit-post-button">{{ _('Post') }}</button>
     </form>
+</div>
+<div class="posts">
+    {% for post in posts %}
+    <div class="post-frame">
+        <div class="post-vote-side">
+            <p>
+                <img src="{{ url_for('static', filename='assets/icons/like_icon.svg') }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" />
+            </p>
+            <p>{{ post.likes }}</p>
+            <p>{{ post.dislikes }}</p>
+            <p>
+                <img src="{{ url_for('static', filename='assets/icons/dislike_icon.svg') }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" />
+            </p>
+        </div>
+        <div class="post-main">
+            <div class="post-info">
+                <div class="post-user-profile pointer-cursor" alt="{{ user.first_name }}'s profile">
+                    {% if user.profile_picture %}
+                    <img src="" alt="" /> {% else %}
+                    <img src="{{ url_for('static', filename='assets/images/default_profile_picture.png') }}" /> {% endif %}
+                    <p>{{ user.first_name }} {{ user.middle_name or "" }} {{ user.last_name }}</p>
+                </div>
+                <p>at {{ post.create_time }}</p>
+            </div>
+            <p>{{ post.text }}</p>
+            <div class="post-extra">
+                <img src="{{ url_for('static', filename='assets/icons/comment_icon.svg') }}" class="pointer-cursor circular-highlight" alt="comment" title="{{ _('Comment on this post') }}" />
+                <img src="{{ url_for('static', filename='assets/icons/share_icon.svg') }}" class="pointer-cursor circular-highlight" alt="share" title="{{ _('Share this post') }}" />
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
