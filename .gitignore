@@ -2,6 +2,7 @@
 !.vscode/launch.json
 
 *.ini
+!*pytest.ini
 !*.example.ini
 
 *cache*

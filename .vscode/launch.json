@@ -19,5 +19,15 @@
 			"cwd": "${workspaceFolder}",
 			"justMyCode": true
 		},
+		{
+			"name": "Run tests",
+			"type": "python",
+			"request": "launch",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"module": "pytest",
+			"args": ["friendhub/tests/"],
+			"env": { "PYTHONPATH": "friendhub/src" }
+		}
 	]
 }

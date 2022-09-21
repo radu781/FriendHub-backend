@@ -32,7 +32,7 @@ class __DBManager:
     ) -> list[tuple]:
         try:
             self.cursor.execute(statement, values)
-            if not statement.split(" ")[0].upper() == "SELECT":
+            if not statement.split(" ")[0].upper() in ["SELECT", "DESC"]:
                 self.connector.commit()
             return self.cursor.fetchall()
         except Exception as e:
