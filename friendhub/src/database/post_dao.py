@@ -24,5 +24,5 @@ class PostDAO:
 
     @staticmethod
     def get_visible_posts(uuid: UUID) -> list[Post]:
-        value = DBManager.execute("SELECT * FROM posts", ())
+        value = DBManager.execute("SELECT * FROM posts ORDER BY create_time DESC", ())
         return [Post.from_db(row) for row in value]

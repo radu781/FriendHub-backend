@@ -1,7 +1,6 @@
 const postButton = document.querySelector("#submit-post-button")
 const textArea = document.querySelector("#text")
 textArea.addEventListener("input", (event) => {
-    console.log(textArea.value)
     if (textArea.value !== "") {
         postButton.disabled = false
         postButton.style.color = "white"
