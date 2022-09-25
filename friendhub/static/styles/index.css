@@ -2,6 +2,11 @@
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+}
+
 .upload-form {
     margin-top: 20px;
     background-color: rgb(139, 189, 206);
@@ -34,7 +39,7 @@
 }
 
 #submit-post-button {
-    height: 2rem;
+    padding: 5px 10px;
     width: 100%;
     background-color: #839de4;
     color: #6d6d6d;

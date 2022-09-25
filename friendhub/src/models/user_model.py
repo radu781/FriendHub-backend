@@ -42,3 +42,21 @@ class User:
             password=row[11],
             email=row[12],
         )
+
+    @staticmethod
+    def from_dict(d: dict) -> User:
+        return User(
+            id_=d["id_"],
+            first_name=d["first_name"],
+            middle_name=d["middle_name"],
+            last_name=d["last_name"],
+            join_time=d["join_time"],
+            country=d["country"],
+            city=d["city"],
+            education=d["education"],
+            extra=d["extra"],
+            profile_picture=d["profile_picture"],
+            banner_picture=d["banner_picture"],
+            password=d["password"],
+            email=d["email"],
+        )

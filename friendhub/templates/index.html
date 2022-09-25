@@ -55,12 +55,13 @@
                 </div>
                 <div class="post-main">
                     <div class="post-info">
-                        <div class="post-user-profile pointer-cursor" alt="{{ user.first_name }}'s profile">
-                            {% if user.profile_picture %} {% set profile_picture_path = "uploads/"+user.id_+"/"+user.profile_picture %}
-                            <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% else %}
-                            <img src="{{ url_for('static', filename='assets/images/default_profile_picture.png') }}" /> {% endif %}
-                            <p>{{ user.first_name }} {{ user.middle_name or "" }} {{ user.last_name }}</p>
-                        </div>
+                        <a href="/profile/{{ user.id_ }}">
+                            <div class="post-user-profile pointer-cursor" alt="{{ user.first_name }}'s profile">
+                                {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
+                                <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% endif %}
+                                <p>{{ user.first_name }} {{ user.middle_name or "" }} {{ user.last_name }}</p>
+                            </div>
+                        </a>
                         <p>at {{ post.create_time }}</p>
                     </div>
                     <p>{{ post.text }}</p>

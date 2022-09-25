@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 from uuid import uuid4
 
 from database.user_dao import UserDAO
@@ -18,7 +19,7 @@ register_blueprint = Blueprint("register_blueprint", __name__)
 
 
 @register_blueprint.route("/api/register", methods=["POST"])
-def login() -> Response:
+def register() -> Response:
     parser = ArgumentParser(
         request,
         {
@@ -53,6 +54,7 @@ def login() -> Response:
             email=values["username"],
             password=values["password"],
             join_time=datetime.now(),
+            profile_picture=f"assets/images/default_profile_picture_{random.randint(1, 10)}.png"
         )
     )
     return make_response("")
