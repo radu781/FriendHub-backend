@@ -17,13 +17,22 @@ class UserDAO:
     @staticmethod
     def register_user(user: User) -> None:
         DBManager.execute(
-            "INSERT INTO users(id, email, password, join_time, profile_picture) VALUES(%s, %s, %s, %s, %s)",
+            "INSERT INTO users(id, first_name, middle_name, last_name, join_time, country, city, education, extra, profile_picture, banner_picture, password, email, permissions) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (
                 str(user.id_),
-                user.email,
-                user.password,
+                user.first_name,
+                user.middle_name,
+                user.last_name,
                 str(datetime.now()),
-                user.profile_picture
+                user.country,
+                user.city,
+                user.education,
+                user.extra,
+                user.profile_picture,
+                user.banner_picture,
+                user.password,
+                user.email,
+                user.permissions,
             ),
         )
 

@@ -20,6 +20,7 @@ class User:
     banner_picture: str = field(default="")
     email: str = field(default="")
     password: str = field(default="")
+    permissions: int = field(default=0)
 
     def __post_init__(self) -> None:
         if self.password != None:
@@ -41,6 +42,7 @@ class User:
             banner_picture=row[10],
             password=row[11],
             email=row[12],
+            permissions=row[13],
         )
 
     @staticmethod
@@ -59,4 +61,9 @@ class User:
             banner_picture=d["banner_picture"],
             password=d["password"],
             email=d["email"],
+            permissions=d["permissions"],
         )
+
+    @property
+    def is_admin(self) -> bool:
+        return self.permissions & 1 == 1

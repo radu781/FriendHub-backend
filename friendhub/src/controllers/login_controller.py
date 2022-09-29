@@ -22,7 +22,7 @@ def login() -> Response:
     parser = ArgumentParser(
         request,
         {
-            Argument("username", ArgType.Mandatory, None),
+            Argument("email", ArgType.Mandatory, None),
             Argument("password", ArgType.Mandatory, None),
         },
         Method.Post,
@@ -39,7 +39,7 @@ def login() -> Response:
 
     current_user = User(
         id_=uuid4(),
-        email=values["username"],
+        email=values["email"],
         password=values["password"],
         join_time=datetime.now(),
     )

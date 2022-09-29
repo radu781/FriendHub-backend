@@ -9,7 +9,7 @@ from . import *
 
 def test_correct_details():
     res = requests.post(
-        LOGIN_ENDPOINT, {"username": USER_EMAIL, "password": USER_PASSWORD}
+        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}
     )
     assert res.status_code == status.HTTP_200_OK
 
@@ -17,7 +17,7 @@ def test_correct_details():
 @pytest.mark.unit
 def test_incorrect_password():
     res = requests.post(
-        LOGIN_ENDPOINT, {"username": USER_EMAIL, "password": USER_PASSWORD + "123"}
+        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD + "123"}
     )
     assert (
         json.loads(res.content)["reason"] == "incorrect password"
@@ -29,7 +29,7 @@ def test_incorrect_password():
 def test_user_does_not_exist():
     res = requests.post(
         LOGIN_ENDPOINT,
-        {"username": "I do not exist", "password": ""},
+        {"email": "I do not exist", "password": ""},
     )
     assert (
         json.loads(res.content)["reason"] == "user does not exist"
@@ -43,6 +43,9 @@ def test_missing_parameters():
     content = json.loads(res.content)
     assert (
         content["reason"] == "missing parameters"
-        and content["parameters"] == "password, username"
+        and (
+            content["parameters"] == "password, email"
+            or content["parameters"] == "email, password"
+        )
         and res.status_code == status.HTTP_401_UNAUTHORIZED
     )

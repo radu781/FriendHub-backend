@@ -23,9 +23,16 @@ def register() -> Response:
     parser = ArgumentParser(
         request,
         {
-            Argument("username", ArgType.Mandatory, None),
+            Argument("email", ArgType.Mandatory, None),
             Argument("password", ArgType.Mandatory, None),
             Argument("password-confirm", ArgType.Mandatory, None),
+            Argument("first-name", ArgType.Mandatory, None),
+            Argument("middle-name", ArgType.Optional, ""),
+            Argument("last-name", ArgType.Optional, ""),
+            Argument("country", ArgType.Optional, ""),
+            Argument("city", ArgType.Optional, ""),
+            Argument("education", ArgType.Optional, ""),
+            Argument("extra", ArgType.Optional, ""),
         },
         Method.Post,
     )
@@ -39,7 +46,7 @@ def register() -> Response:
             status.HTTP_401_UNAUTHORIZED,
         )
 
-    if UserDAO.user_exists(values["username"]):
+    if UserDAO.user_exists(values["email"]):
         return make_response(
             jsonify({"reason": "user already exists"}), status.HTTP_401_UNAUTHORIZED
         )
@@ -51,10 +58,18 @@ def register() -> Response:
     UserDAO.register_user(
         User(
             id_=uuid4(),
-            email=values["username"],
-            password=values["password"],
+            first_name=values["first-name"],
+            middle_name=values["middle-name"],
+            last_name=values["last-name"],
             join_time=datetime.now(),
-            profile_picture=f"assets/images/default_profile_picture_{random.randint(1, 10)}.png"
+            country=values["country"],
+            city=values["city"],
+            education=values["education"],
+            extra=values["extra"],
+            profile_picture=f"assets/images/default_profile_picture/default_profile_picture_{random.randint(1, 10)}.png",
+            banner_picture="",
+            password=values["password"],
+            email=values["email"],
         )
     )
     return make_response("")
