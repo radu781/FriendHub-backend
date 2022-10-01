@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_babel import Babel
 
 from controllers.deploy import deploy_blueprint

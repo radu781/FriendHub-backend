@@ -8,3 +8,4 @@
 *cache*
 deploy.log
 friendhub/static/uploads/
+*.po

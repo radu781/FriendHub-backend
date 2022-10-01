@@ -53,7 +53,7 @@ def test_passwords_mismatch():
     res = requests.post(
         REGISTER_ENDPOINT,
         {
-            "email": USER_EMAIL,
+            "email": USER_EMAIL + "+" + str(randint(3000, 3999)),
             "password": USER_PASSWORD,
             "password-confirm": USER_PASSWORD + "123",
             "first-name": USER_FIRST_NAME,
