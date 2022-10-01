@@ -6,6 +6,7 @@
     <div class="middle">
         <form action="/api/register" method="post">
             <div class="account-details">
+                <p>{{ _("Account information") }}</p>
                 <label for="email" class="mandatory-field">{{ _("Email address") }}</label>
                 <input type="text" name="email" id="email" required />
                 <label for="password" class="mandatory-field">{{ _("Password") }}</label>
@@ -14,6 +15,7 @@
                 <input type="password" name="password-confirm" id="password-confirm" required />
             </div>
             <div class="more-details">
+                <p>{{ _("More information") }}</p>
                 <label for="first-name" class="mandatory-field">{{ _("First name") }}</label>
                 <input type="text" name="first-name" id="first-name" required />
                 <label for="middle-name">{{ _("Middle name") }}</label>

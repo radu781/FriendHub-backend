@@ -1,12 +1,3 @@
-* {
-    margin: 0;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-}
-
 .upload-form {
     margin-top: 20px;
     background-color: rgb(139, 189, 206);
@@ -137,7 +128,12 @@ label>img {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-right: 5px;
+    color: black;
+    transition: 250ms;
+}
+
+.post-user-profile>p {
+    margin: 0px 10px;
 }
 
 .main {

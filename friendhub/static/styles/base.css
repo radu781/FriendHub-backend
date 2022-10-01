@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+}
+
+.header-nav>ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    list-style: none;
+}
+
+.header-nav {
+    padding: 10px 0px;
+}
+
+input[type="text"],
+input[type="password"] {
+    border-radius: 5px;
+    border: 1px solid #445a9b;
+}
+
+a,
+a * {
+    text-decoration: none;
+    color: black;
+    transition: color 250ms;
+}
+
+a:hover,
+a *:hover {
+    cursor: pointer;
+    color: #445a9b;
+    transition: color 250ms;
+}

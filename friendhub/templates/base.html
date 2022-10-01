@@ -6,13 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="keywords" content="Social media" />
     <meta name="author" content="Radu-Alexandru Popa" />
-    <meta name="description" content="Simple social media web application">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> {% block extra_head %} {% endblock %}
+    <meta name="description" content="Simple social media web application" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" /> {% block extra_head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
-    <header></header>
+    <header>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="/">{{ _("Logo") }}</a></li>
+                <li>
+                    <form action="/search" method="POST">
+                        <label for="query">{{ _("Search") }}</label>
+                        <input type="text" name="query" id="query" />
+                        <button type="submit" style="visibility: hidden"></button>
+                    </form>
+                </li>
+                <li><a href="/login">{{ _("Login") }}</a></li>
+                <li><a href="/register">{{ _("Register") }}</a></li>
+                <li><a href="/profile/">{{ _("My profile") }}</a></li>
+            </ul>
+        </nav>
+    </header>
     {% block body %} {% endblock %}
     <footer></footer>
 </body>
