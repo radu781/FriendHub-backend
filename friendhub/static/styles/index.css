@@ -51,20 +51,6 @@ textarea {
     word-wrap: break-word;
 }
 
-.pointer-cursor {
-    cursor: pointer;
-}
-
-.circular-highlight:hover {
-    background-color: burlywood;
-    border-radius: 50%;
-    transition: all 250ms;
-}
-
-.circular-highlight {
-    transition: all 250ms;
-}
-
 label>img {
     width: 24px;
 }
@@ -136,24 +122,6 @@ label>img {
     margin: 0px 10px;
 }
 
-.main {
-    display: flex;
-    flex-direction: row;
-    background-color: #6779aa;
-}
-
-.left {
-    width: 25%;
-}
-
-.middle {
-    width: 50%;
-}
-
-.right {
-    width: 25%;
-}
-
 .user-image-upload {
     width: 100%;
 }
@@ -168,44 +136,8 @@ label>img {
     }
 }
 
-@media screen and (max-width:1200px) {
-    .left {
-        width: 0%;
-    }
-    .middle {
-        width: 75%;
-    }
-}
-
-@media screen and (max-width:700px) {
-    .left {
-        width: 0%;
-    }
-    .middle {
-        width: 100%;
-    }
-    .right {
-        width: 0%;
-    }
-}
-
 @media screen and (max-width: 500px) {
     .post-vote-side {
         width: 7%;
-    }
-}
-
-@media (pointer: none),
-(pointer: coarse) {
-    .left {
-        position: absolute;
-        top: -100%;
-    }
-    .right {
-        position: absolute;
-        top: -100%;
-    }
-    .middle {
-        width: 100%;
     }
 }

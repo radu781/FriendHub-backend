@@ -1,45 +1,221 @@
-{% extends "base.html" %} {% block title %} API reference {% endblock %} {% block body %}
-<div>
-    <p>API reference page</p>
+{% extends "base.html" %} {% block title %} API reference | FriendHub {% endblock %}{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/api.css') }}" /> {% endblock %} {% block body %}
+<div class="main">
+    <div class="left"></div>
+    <div class="middle">
+        <h1>REST API reference page</h1>
+        <p>List of documented, public endpoints used by FriendHub, freely available for use</p>
+        <div class="responses">
+            <p>
+                All invalid API calls will return reasoning behind why the call was invalid, as well as a proper status code
+            </p>
+            <code>
+				<span class="punctuation">{</span>
+				<span class="number"> "parameters"</span>
+				<span class="punctuation">:</span>
+				<span class="string"> "password"</span>
+				<span class="punctuation">,</span>
+				<span class="number"> "reason"</span>
+				<span class="punctuation">:</span>
+				<span class="string"> "missing parameters" </span>
+				<span class="punctuation">}</span>
+                <span>401 UNAUTHORIZED</span>
+			</code>
+            <code>
+				<span class="punctuation">{</span>
+				<span class="number">"id"</span>
+				<span class="punctuation">:</span>
+				<span class="string"> "ff4df6fb-2ee4-45f8-8e79-bc5d1eedd57"</span>
+				<span class="punctuation">, </span>
+				<span class="number"> "reason"</span>
+				<span class="punctuation">:</span>
+				<span class="string">"given id is not a UUID"</span>
+				<span class="punctuation">}</span>
+                <span>400 BAD REQUEST</span>
+			</code>
+            <code>
+				<span class="punctuation">{</span>
+				<span class="number">"reason"</span>
+				<span class="punctuation">:</span>
+				<span class="string"> "passwords mismatch"</span>
+				<span class="punctuation">}</span>
+                <span>401 UNAUTHORIZED</span>
+			</code>
+            <p>Valid API calls will return a 200 OK status code and sometimes a response too</p>
+        </div>
+        <div class="request">
+            <div class="type-and-name">
+                <span class="post">post</span>
+                <p>Login</p>
+            </div>
+            <div class="endpoint">
+                <p>https://friendhub.social<span class="bold">/api/login</span>?username=&password=</p>
+                <img src="{{ url_for('static', filename='assets/icons/copy_icon.svg') }}" alt="copy" class="pointer-cursor circular-highlight" />
+            </div>
+            <div class="params">
+                <p>Query Params</p>
+                <table>
+                    <tr>
+                        <td>email</td>
+                        <td>account email to log into</td>
+                        <td>mandatory</td>
+                    </tr>
+                    <tr>
+                        <td>password</td>
+                        <td>account password</td>
+                        <td>mandatory</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="request">
+            <div class="type-and-name">
+                <span class="post">post</span>
+                <p>Register</p>
+            </div>
+            <div class="endpoint">
+                <p>
+                    https://friendhub.social<span class="bold">/api/register</span
+					>?username=&password=&password-confirm=
+				</p>
+				<img
+					src="{{ url_for('static', filename='assets/icons/copy_icon.svg') }}"
+					alt="copy"
+					class="pointer-cursor circular-highlight"
+				/>
+			</div>
+			<div class="params">
+				<p>Query Params</p>
+				<table>
+					<tr>
+						<td>email</td>
+						<td>account email to log into</td>
+                        <td>mandatory</td>
+					</tr>
+					<tr>
+						<td>password</td>
+						<td>account password</td>
+                        <td>mandatory</td>
+					</tr>
+					<tr>
+						<td>password-confirm</td>
+						<td>confirm account password</td>
+                        <td>mandatory</td>
+					</tr>
+					<tr>
+						<td>first-name</td>
+						<td>also used as nickname</td>
+                        <td>mandatory</td>
+					</tr>
+					<tr>
+						<td>middle-name</td>
+						<td></td>
+                        <td>optional</td>
+					</tr>
+						<td>last-name</td>
+						<td></td>
+                        <td>optional</td>
+					</tr>
+						<td>country</td>
+						<td>birth/current country</td>
+                        <td>optional</td>
+					</tr>
+						<td>city</td>
+						<td>birth/current city</td>
+                        <td>optional</td>
+					</tr>
+						<td>education</td>
+						<td>education and degrees</td>
+                        <td>optional</td>
+					</tr>
+						<td>extra</td>
+						<td>additional information</td>
+                        <td>optional</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="request">
+			<div class="type-and-name">
+				<span class="post">post</span>
+                    <p>Upload</p>
+            </div>
+            <div class="endpoint">
+                <p>https://friendhub.social<span class="bold">/api/upload</span>?text=</p>
+                <img src="{{ url_for('static', filename='assets/icons/copy_icon.svg') }}" alt="copy" class="pointer-cursor circular-highlight" />
+            </div>
+            <div class="params">
+                <p>Query Params</p>
+                <table>
+                    <tr>
+                        <td>text</td>
+                        <td>text body to be included in post</td>
+                        <td>mandatory</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="params">
+                <p>Body form-data</p>
+                <table>
+                    <tr>
+                        <td>image-upload</td>
+                        <td>supported image file image</td>
+                        <td>optional</td>
+                    </tr>
+                    <tr>
+                        <td>video-upload</td>
+                        <td>supported video file video</td>
+                        <td>optional</td>
+                    </tr>
+                    <tr>
+                        <td>audio-upload</td>
+                        <td>supported audio file format</td>
+                        <td>optional</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="request">
+            <div class="type-and-name">
+                <span class="get">get</span>
+                <p>Profile</p>
+            </div>
+            <div class="endpoint">
+                <p>
+                    https://friendhub.social<span class="bold">/api/profile/</span
+					><span class="italics">&lt;id&gt;</span>
+                </p>
+                <img src="{{ url_for('static', filename='assets/icons/copy_icon.svg') }}" alt="copy" class="pointer-cursor circular-highlight" />
+            </div>
+        </div>
+        <div class="request">
+            <div class="type-and-name">
+                <span class="delete">delete</span>
+                <p>Delete profile</p>
+            </div>
+            <div class="endpoint">
+                <p>
+                    https://friendhub.social<span class="bold">/api/profile</span>/<span class="italics">&lt;id&gt;</span
+					>?key=
+				</p>
+				<img
+					src="{{ url_for('static', filename='assets/icons/copy_icon.svg') }}"
+					alt="copy"
+					class="pointer-cursor circular-highlight"
+				/>
+			</div>
+			<div class="params">
+				<p>Query Params</p>
+				<table>
+					<tr>
+						<td>key</td>
+						<td>account deletion token</td>
+                        <td>mandatory</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="right"></div>
 </div>
-<table>
-    <tr>
-        <th>Type</th>
-        <th>Endpoint</th>
-        <th>Arguments</th>
-    </tr>
-    <tr>
-        <td>Post</td>
-        <td>/api/register</td>
-        <td>
-            <ul>
-                <li>username</li>
-                <li>password</li>
-                <li>password-confirm</li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Post</td>
-        <td>/api/login</td>
-        <td>
-            <ul>
-                <li>username</li>
-                <li>password</li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Post</td>
-        <td>/api/upload</td>
-        <td>
-            <ul>
-                <li>text</li>
-                <li>image-upload</li>
-                <li>video-upload</li>
-                <li>audio-upload</li>
-            </ul>
-        </td>
-    </tr>
-</table>
 {% endblock %}

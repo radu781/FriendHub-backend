@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %} Login {% endblock %} {% block body %}
+{% extends "base.html" %} {% block title %} {{ _("Login") }} | FriendHub {% endblock %} {% block body %}
 <form action="/api/login" method="post">
     <label for="email">{{ _("Email address") }}</label>
     <input type="text" name="email" id="email" required />

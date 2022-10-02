@@ -8,6 +8,7 @@
     <meta name="author" content="Radu-Alexandru Popa" />
     <meta name="description" content="Simple social media web application" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" /> {% block extra_head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -16,7 +17,11 @@
     <header>
         <nav class="header-nav">
             <ul>
-                <li><a href="/">{{ _("Logo") }}</a></li>
+                <li>
+                    <a href="/">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="{{ _('Logo') }}" id="logo" />
+                    </a>
+                </li>
                 <li>
                     <form action="/search" method="POST">
                         <label for="query">{{ _("Search") }}</label>

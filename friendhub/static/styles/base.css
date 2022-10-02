@@ -5,12 +5,16 @@
 .header-nav>ul {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    padding: 0;
+    align-items: center;
     list-style: none;
 }
 
 .header-nav {
     padding: 10px 0px;
+    background-color: #9e97ea;
+    border-bottom: 1px solid #445a9b;
 }
 
 input[type="text"],
@@ -31,4 +35,88 @@ a *:hover {
     cursor: pointer;
     color: #445a9b;
     transition: color 250ms;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+span.italics {
+    font-style: italic;
+}
+
+#logo {
+    width: 64px;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.circular-highlight:hover {
+    background-color: burlywood;
+    border-radius: 50%;
+    transition: all 250ms;
+}
+
+.circular-highlight {
+    transition: all 250ms;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+    background-color: #6779aa;
+}
+
+.left {
+    width: 25%;
+}
+
+.middle {
+    width: 50%;
+    padding: 10px;
+}
+
+.right {
+    width: 25%;
+}
+
+@media screen and (max-width: 1200px) {
+    .left {
+        width: 0%;
+        display: none;
+    }
+    .middle {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .left {
+        width: 0%;
+        display: none;
+    }
+    .middle {
+        width: 100%;
+    }
+    .right {
+        width: 0%;
+        display: none;
+    }
+}
+
+@media (pointer: none),
+(pointer: coarse) {
+    .left {
+        position: absolute;
+        top: -100%;
+    }
+    .right {
+        position: absolute;
+        top: -100%;
+    }
+    .middle {
+        width: 100%;
+    }
 }

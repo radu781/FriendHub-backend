@@ -87,6 +87,19 @@ def test_structure_relationships():
 
 
 @pytest.mark.unit
+def test_structure_tokens():
+    EXPECTED = [
+        "id",
+        "owner",
+        "valid_until",
+        "value",
+        "purpose",
+    ]
+    for expect, line in zip(EXPECTED, DBManager.execute("DESC tokens", ())):
+        assert expect == line[0], "Table format changed"
+
+
+@pytest.mark.unit
 def test_structure_replies():
     EXPECTED = [
         "id",
