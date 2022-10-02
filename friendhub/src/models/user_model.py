@@ -65,5 +65,9 @@ class User:
         )
 
     @property
+    def ok(self) -> bool:
+        return not not self.email and not not self.first_name
+
+    @property
     def is_admin(self) -> bool:
         return self.permissions & 1 == 1

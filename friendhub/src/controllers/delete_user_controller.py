@@ -1,0 +1,43 @@
+from uuid import UUID
+
+from database.user_dao import UserDAO
+from flask import Blueprint, jsonify, make_response, request
+from flask.wrappers import Response
+from flask_api import status
+from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
+                                   ArgumentParser, Method)
+
+delete_user_blueprint = Blueprint("delete_user_blueprint", __name__)
+
+
+@delete_user_blueprint.route("/api/profile/<string:id>", methods=["DELETE"])
+def delete_user(id: str) -> Response:
+    try:
+        target_user = UserDAO.get_user_by_id(UUID(id))
+    except ValueError:
+        return make_response(
+            jsonify({"reason": "given id is not a UUID", "id": id}),
+            status.HTTP_400_BAD_REQUEST,
+        )
+    if not target_user.ok:
+        return make_response(
+            jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND
+        )
+    parser = ArgumentParser(
+        request,
+        {
+            Argument("key", ArgType.Mandatory, None),
+        },
+        Method.Post,
+    )
+    try:
+        values = parser.get_values()
+    except ArgsNotFoundException as ex:
+        return make_response(
+            jsonify(
+                {"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}
+            ),
+            status.HTTP_401_UNAUTHORIZED,
+        )
+
+    return make_response("")

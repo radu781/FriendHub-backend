@@ -7,6 +7,7 @@ from flask_api import status
 from . import *
 
 
+@pytest.mark.unit
 def test_correct_details():
     res = requests.post(
         LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}

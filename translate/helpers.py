@@ -81,6 +81,11 @@ def treat_language(language: str) -> None:
     )
     file_path = f"friendhub/translations/{language}/LC_MESSAGES/messages.po"
 
+    try:
+        os.mkdir(f"friendhub/translations/{language}")
+        os.mkdir(f"friendhub/translations/{language}/LC_MESSAGES")
+    except FileExistsError:
+        pass
     translate_and_replace(language, file_path)
 
 

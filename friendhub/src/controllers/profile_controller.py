@@ -10,9 +10,15 @@ profile_blueprint = Blueprint("profile_blueprint", __name__)
 
 @profile_blueprint.route("/api/profile/<string:id>", methods=["GET"])
 def profile(id: str) -> Response:
-    current_user = UserDAO.get_user_by_id(uuid.UUID(id))
-    if not current_user.email:
+    try:
+        target_user = UserDAO.get_user_by_id(uuid.UUID(id))
+    except ValueError:
+        return make_response(
+            jsonify({"reason": "given id is not a UUID", "id": id}),
+            status.HTTP_400_BAD_REQUEST,
+        )
+    if not target_user.ok:
         return make_response(
             jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND
         )
-    return make_response(jsonify({"user": vars(current_user)}))
+    return make_response(jsonify({"user": vars(target_user)}))

@@ -6,6 +6,7 @@ from controllers.login_controller import login_blueprint
 from controllers.register_controller import register_blueprint
 from controllers.upload_controller import upload_blueprint
 from controllers.profile_controller import profile_blueprint
+from controllers.delete_user_controller import delete_user_blueprint
 from globals import DEBUG_ON, SESSION_KEY
 from views.api_view import api_blueprint
 from views.index_view import index_view_blueprint
@@ -33,6 +34,7 @@ app.register_blueprint(register_blueprint)
 app.register_blueprint(upload_blueprint)
 app.register_blueprint(profile_blueprint)
 app.register_blueprint(profile_view_blueprint)
+app.register_blueprint(delete_user_blueprint)
 
 babel = Babel(app)
 

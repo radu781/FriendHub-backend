@@ -14,6 +14,13 @@ def main() -> None:
         "ja",
         "ko",
         "ro",
+        "az",
+        "zh",
+        "hi",
+        "ar",
+        "bn",
+        "pt",
+        "id"
     }
     setup()
     spawn_threads_and_work(languages)

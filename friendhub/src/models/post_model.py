@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -9,12 +10,12 @@ class Post:
     id_: uuid.UUID = field(default=uuid.uuid4())
     owner_id: uuid.UUID = field(default=uuid.uuid4())
     create_time: datetime = field(default=datetime.now())
-    likes: int = field(default=0)
-    dislikes: int = field(default=0)
-    text: str = field(default="")
-    image: str = field(default="")
-    video: str = field(default="")
-    audio: str = field(default="")
+    likes: int
+    dislikes: int
+    text: str
+    image: str
+    video: str
+    audio: str
 
     @staticmethod
     def from_db(row: tuple) -> Post:
@@ -27,5 +28,5 @@ class Post:
             text=row[5],
             image=row[6],
             video=row[7],
-            audio=row[8]
+            audio=row[8],
         )
