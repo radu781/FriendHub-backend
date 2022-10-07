@@ -94,6 +94,7 @@ def test_structure_tokens():
         "valid_until",
         "value",
         "purpose",
+        "date_created"
     ]
     for expect, line in zip(EXPECTED, DBManager.execute("DESC tokens", ())):
         assert expect == line[0], "Table format changed"

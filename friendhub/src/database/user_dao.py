@@ -8,10 +8,10 @@ from database.dbmanager import DBManager
 
 class UserDAO:
     @staticmethod
-    def get_user_by_id(id: uuid.UUID) -> User:
+    def get_user_by_id(id: uuid.UUID) -> User | None:
         value = DBManager.execute("SELECT * FROM users WHERE id=%s", (str(id),))
         if value == []:
-            return User()
+            return None
         return User.from_db(value[0])
 
     @staticmethod

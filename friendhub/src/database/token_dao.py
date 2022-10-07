@@ -6,17 +6,20 @@ class TokenDAO:
     @staticmethod
     def add(token: Token) -> None:
         DBManager.execute(
-            "INSERT INTO tokens(id, owner, valid_until, value, purpose) VALUES(%s, %s, %s, %s, %s)",
+            "INSERT INTO tokens(id, owner, valid_until, value, purpose, date_created) VALUES(%s, %s, %s, %s, %s)",
             (
                 str(token.id_),
                 str(token.owner_id),
                 token.valid_until,
                 token.value,
                 token.purpose._value_,
+                token.date_created,
             ),
         )
 
     @staticmethod
-    def get_token_by_value(value: str) -> Token:
+    def get_token_by_value(value: str) -> Token | None:
         result = DBManager.execute("SELECT * FROM tokens where value=%s", (value,))
+        if not result:
+            return None
         return Token.from_db(result[0])

@@ -1,7 +1,8 @@
-from uuid import UUID
 from models.post_model import Post
 
 from database.dbmanager import DBManager
+from models.post_wrapper import PostWrapper
+from database.user_dao import UserDAO
 
 
 class PostDAO:
@@ -23,6 +24,13 @@ class PostDAO:
         )
 
     @staticmethod
-    def get_visible_posts(uuid: UUID) -> list[Post]:
+    def get_visible_posts() -> list[PostWrapper]:
         value = DBManager.execute("SELECT * FROM posts ORDER BY create_time DESC", ())
-        return [Post.from_db(row) for row in value]
+        out: list[PostWrapper] = []
+        for row in value:
+            current_post = Post.from_db(row)
+            current_user = UserDAO.get_user_by_id(current_post.owner_id)
+            if not current_user:
+                continue
+            out.append(PostWrapper(current_post, current_user))
+        return out

@@ -1,9 +1,9 @@
 import json
-import uuid
 from flask import Blueprint, make_response, render_template, request
 from flask.wrappers import Response
 from controllers.profile_controller import profile
 from models.user_model import User
+from flask_api import status
 
 profile_view_blueprint = Blueprint("profile_view_blueprint", __name__)
 
@@ -11,7 +11,7 @@ profile_view_blueprint = Blueprint("profile_view_blueprint", __name__)
 @profile_view_blueprint.route("/profile/<string:id>", methods=["GET"])
 def profile_view(id: str) -> Response:
     res = profile(id)
-    if not "user" in json.loads(res.data):
+    if res.status_code == status.HTTP_404_NOT_FOUND:
         return make_response(render_template("profile.html", user=None))
 
     target_user = User.from_dict(json.loads(res.data)["user"])

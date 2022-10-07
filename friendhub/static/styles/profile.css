@@ -1,3 +1,7 @@
+div.middle {
+    padding-top: 0;
+}
+
 .user-profile {
     display: flex;
     flex-direction: column;

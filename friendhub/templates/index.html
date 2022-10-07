@@ -13,27 +13,27 @@
                     <span>{{ _("Attach media") }}</span>
                     <div class="media-icons">
                         <label for="image-upload"><img
-							src="{{ url_for('static', filename='assets/icons/photo_icon.svg') }}"
-							class="pointer-cursor circular-highlight"
-							alt="photo"
-							title="{{ _('Upload an image') }}"
-					/></label>
+								src="{{ url_for('static', filename='assets/icons/photo_icon.svg') }}"
+								class="pointer-cursor circular-highlight"
+								alt="photo"
+								title="{{ _('Upload an image') }}"
+						/></label>
                         <input type="file" name="image-upload" id="image-upload" accept="image/*" style="display: none" />
 
                         <label for="video-upload"><img
-							src="{{ url_for('static', filename='assets/icons/video_icon.svg') }}"
-							class="pointer-cursor circular-highlight"
-							alt="video"
-							title="{{ _('Upload a video') }}"
-					/></label>
+								src="{{ url_for('static', filename='assets/icons/video_icon.svg') }}"
+								class="pointer-cursor circular-highlight"
+								alt="video"
+								title="{{ _('Upload a video') }}"
+						/></label>
                         <input type="file" name="video-upload" id="video-upload" accept="video/*" style="display: none" />
 
                         <label for="audio-upload"><img
-							src="{{ url_for('static', filename='assets/icons/music_note_icon.svg') }}"
-							class="pointer-cursor circular-highlight"
-							alt="audio"
-							title="{{ _('Upload an audio file') }}"
-					/></label>
+								src="{{ url_for('static', filename='assets/icons/music_note_icon.svg') }}"
+								class="pointer-cursor circular-highlight"
+								alt="audio"
+								title="{{ _('Upload an audio file') }}"
+						/></label>
                         <input type="file" name="audio-upload" id="audio-upload" accept="audio/*" style="display: none" />
                     </div>
                 </div>
@@ -41,44 +41,45 @@
             </form>
         </div>
         <div class="posts">
-            {% for post in posts %}
+            {% if posts %} {% for post in posts %}
             <div class="post-frame">
                 <div class="post-vote-side">
                     <p>
                         <img src="{{ url_for('static', filename='assets/icons/like_icon.svg') }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" />
                     </p>
-                    <p>{{ post.likes }}</p>
-                    <p>{{ post.dislikes }}</p>
+                    <p>{{ post.post.likes }}</p>
+                    <p>{{ post.post.dislikes }}</p>
                     <p>
                         <img src="{{ url_for('static', filename='assets/icons/dislike_icon.svg') }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" />
                     </p>
                 </div>
                 <div class="post-main">
                     <div class="post-info">
-                        <a href="/profile/{{ user.id_ }}">
-                            <div class="post-user-profile pointer-cursor" alt="{{ user.first_name }}'s profile">
-                                {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
+                        <a href="/profile/{{ post.user.id_}}">
+                            <div class="post-user-profile pointer-cursor" alt="{{ post.user.first_name }}'s profile">
+                                {% if post.user.profile_picture %} {% set profile_picture_path = post.user.profile_picture %}
                                 <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% endif %}
-                                <p>{{ user.first_name }} {{ user.middle_name or "" }} {{ user.last_name }}</p>
+                                <p>{{ post.user.first_name }} {{ post.user.middle_name or "" }} {{ post.user.last_name }}</p>
                             </div>
                         </a>
-                        <p>at {{ post.create_time }}</p>
+                        <p>{{ _("at") }} {{ post.post.create_time }}</p>
                     </div>
-                    <p>{{ post.text }}</p>
-                    {% if post.image %} {% set image_path = "uploads/"+ user.id_+"/"+post.image %}
-                    <img src="{{ url_for('static', filename=image_path) }}" class="pointer-cursor user-image-upload" alt="upload" /> {% endif %} {% if post.video %} {% set video_path = "uploads/"+ user.id_+"/"+post.video %}
+                    <p>{{ post.post.text }}</p>
+                    {% if post.image %} {% set image_path = "uploads/"~ post.owner_id~"/"+post.image %}
+                    <img src="{{ url_for('static', filename=image_path) }}" class="pointer-cursor user-image-upload" alt="upload" /> {% endif %} {% if post.post.video %} {% set video_path = "uploads/"~ post.post.owner_id~"/"+post.post.video %}
                     <video controls class="pointer-cursor user-video-upload">
-					<source src="{{ url_for('static', filename=video_path) }}" type="video/mp4" />
-				</video> {% endif %} {% if post.audio %} {% set audio_path = "uploads/"+ user.id_+"/"+post.audio %}
-                    <audio controls><source src="{{ url_for('static', filename=audio_path) }}" type="audio/mp3" /></audio> {% endif %}
-
+						<source src="{{ url_for('static', filename=video_path) }}" type="video/mp4" />
+					</video> {% endif %} {% if post.post.audio %} {% set audio_path = "uploads/"~ post.post.owner_id~"/"+post.post.audio %}
+                    <audio controls>
+						<source src="{{ url_for('static', filename=audio_path) }}" type="audio/mp3" />
+					</audio> {% endif %}
                     <div class="post-extra">
                         <img src="{{ url_for('static', filename='assets/icons/comment_icon.svg') }}" class="pointer-cursor circular-highlight" alt="comment" title="{{ _('Comment on this post') }}" />
                         <img src="{{ url_for('static', filename='assets/icons/share_icon.svg') }}" class="pointer-cursor circular-highlight" alt="share" title="{{ _('Share this post') }}" />
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            {% endfor %} {% endif %}
         </div>
     </div>
     <div class="right"></div>

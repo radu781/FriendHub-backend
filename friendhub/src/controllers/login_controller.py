@@ -1,9 +1,10 @@
-from datetime import datetime
-from uuid import uuid4
-
-from flask import Blueprint, jsonify, make_response, request
+from datetime import datetime, timedelta
+from uuid import UUID, uuid4
+from models.token_model import Token
+from flask import Blueprint, jsonify, make_response, request, session
 from flask.wrappers import Response
 from flask_api import status
+from database.token_dao import TokenDAO
 from models.user_model import User
 from database.user_dao import UserDAO
 from utils.argument_parser import Method
@@ -54,4 +55,11 @@ def login() -> Response:
             jsonify({"reason": "incorrect password"}), status.HTTP_401_UNAUTHORIZED
         )
 
-    return make_response("")
+    current_token = Token(
+        owner_id=current_user.id_,
+        valid_until=datetime.now() + timedelta(14),
+        purpose=Token.Purpose.USER_LOGIN,
+    )
+    TokenDAO.add(current_token)
+    session[Token.Purpose.USER_LOGIN] = current_token.value
+    return make_response(jsonify({"token": vars(current_token)}))

@@ -6,8 +6,13 @@ from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Request, Response
 from flask_api import status
 from models.post_model import Post
-from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
-                                   ArgumentParser, Method)
+from utils.argument_parser import (
+    ArgsNotFoundException,
+    ArgType,
+    Argument,
+    ArgumentParser,
+    Method,
+)
 from werkzeug.utils import secure_filename
 
 upload_blueprint = Blueprint("upload_blueprint", __name__)
@@ -16,6 +21,7 @@ try:
     os.mkdir(UPLOAD_PATH)
 except FileExistsError:
     pass
+
 
 @upload_blueprint.route("/api/upload", methods=["POST"])
 def upload() -> Response:
@@ -51,9 +57,19 @@ def upload() -> Response:
 
 
 def __treat_file_upload(request: Request) -> Post:
+    # TODO: if user not logged in: do not show "Create a post"
+    # TODO: else, create post with owner = current user
     OWNER_ID = "ff4df6fb-2ee4-45f8-8e79-bc5d1eedd57c"
     if not request.files:
-        return Post(owner_id=uuid.UUID(OWNER_ID))
+        return Post(
+            owner_id=uuid.UUID(OWNER_ID),
+            likes=0,
+            dislikes=0,
+            text="",
+            image="",
+            video="",
+            audio="",
+        )
 
     names: list[str] = ["image-upload", "video-upload", "audio-upload"]
     args_found: dict[str, str] = {}
@@ -67,7 +83,15 @@ def __treat_file_upload(request: Request) -> Post:
                 pass
             file.save(f"{UPLOAD_PATH}/{OWNER_ID}/{args_found[name]}")
 
-    current_post = Post(owner_id=uuid.UUID(OWNER_ID))
+    current_post = Post(
+        owner_id=uuid.UUID(OWNER_ID),
+        likes=0,
+        dislikes=0,
+        text="",
+        image="",
+        video="",
+        audio="",
+    )
     if "image-upload" in args_found:
         current_post.image = args_found["image-upload"]
     if "video-upload" in args_found:
