@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import hashlib
 import uuid
 from dataclasses import dataclass, field
@@ -23,7 +24,7 @@ class User:
     permissions: int = field(default=0)
 
     def __post_init__(self) -> None:
-        if self.password != None:
+        if self.password is not None:
             self.password = hashlib.sha256(bytes(self.password, "utf-8")).digest().hex()
 
     @staticmethod
@@ -70,4 +71,4 @@ class User:
 
     @property
     def is_admin(self) -> bool:
-        return self.permissions & 1 == 1
+        return self.permissions & 0b1 == 1

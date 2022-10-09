@@ -3,14 +3,13 @@ import json
 import pytest
 import requests
 from flask_api import status
-
-from . import *
+from friendhub.tests import LOGIN_ENDPOINT, USER_EMAIL, USER_PASSWORD
 
 
 @pytest.mark.unit
 def test_correct_details():
     res = requests.post(
-        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}
+        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3
     )
     assert res.status_code == status.HTTP_200_OK
 
@@ -18,7 +17,9 @@ def test_correct_details():
 @pytest.mark.unit
 def test_incorrect_password():
     res = requests.post(
-        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD + "123"}
+        LOGIN_ENDPOINT,
+        {"email": USER_EMAIL, "password": USER_PASSWORD + "123"},
+        timeout=3,
     )
     assert (
         json.loads(res.content)["reason"] == "incorrect password"
@@ -29,8 +30,7 @@ def test_incorrect_password():
 @pytest.mark.unit
 def test_user_does_not_exist():
     res = requests.post(
-        LOGIN_ENDPOINT,
-        {"email": "I do not exist", "password": ""},
+        LOGIN_ENDPOINT, {"email": "I do not exist", "password": ""}, timeout=3
     )
     assert (
         json.loads(res.content)["reason"] == "user does not exist"
@@ -40,7 +40,7 @@ def test_user_does_not_exist():
 
 @pytest.mark.unit
 def test_missing_parameters():
-    res = requests.post(LOGIN_ENDPOINT)
+    res = requests.post(LOGIN_ENDPOINT, timeout=3)
     content = json.loads(res.content)
     assert (
         content["reason"] == "missing parameters"

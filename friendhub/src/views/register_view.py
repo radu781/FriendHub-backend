@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, make_response, render_template, request
+from flask import Blueprint, make_response, render_template
 from flask.wrappers import Response
 
 register_view_blueprint = Blueprint("register_view_blueprint", __name__)

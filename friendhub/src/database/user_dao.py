@@ -8,8 +8,15 @@ from database.dbmanager import DBManager
 
 class UserDAO:
     @staticmethod
-    def get_user_by_id(id: uuid.UUID) -> User | None:
-        value = DBManager.execute("SELECT * FROM users WHERE id=%s", (str(id),))
+    def get_user_by_id(id_: uuid.UUID) -> User | None:
+        value = DBManager.execute("SELECT * FROM users WHERE id=%s", (str(id_),))
+        if value == []:
+            return None
+        return User.from_db(value[0])
+
+    @staticmethod
+    def get_user_by_email(email: str) -> User | None:
+        value = DBManager.execute("SELECT * FROM users WHERE email=%s", (email,))
         if value == []:
             return None
         return User.from_db(value[0])
@@ -38,8 +45,7 @@ class UserDAO:
 
     @staticmethod
     def user_exists(email: str) -> bool:
-        value = DBManager.execute("SELECT COUNT(*) FROM users WHERE email=%s", (email,))
-        return value[0][0] != 0
+        return UserDAO.get_user_by_email(email) is not None
 
     @staticmethod
     def correct_password(email: str, password: str) -> bool:

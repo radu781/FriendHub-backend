@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, render_template, request
+from flask import Blueprint, make_response, render_template
 from flask.wrappers import Response
 
 login_view_blueprint = Blueprint("login_view_blueprint", __name__)

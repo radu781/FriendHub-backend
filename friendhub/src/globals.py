@@ -1,7 +1,7 @@
 import sys
 from configparser import ConfigParser
 
-if sys.platform == "linux" or sys.platform == "linux2":
+if sys.platform in ("linux", "linux2"):
     import os
 
     os.chdir("/var/www/friendhub")
@@ -10,10 +10,10 @@ ini_file = ConfigParser()
 ini_file.read("friendhub/config/data.ini")
 
 SESSION_KEY = ini_file.get("pages", "key")
-DEBUG_ON = True if ini_file.get("pages", "debug") == "1" else False
+DEBUG_ON = ini_file.get("pages", "debug") == "1"
 
 DEPLOY_KEY = ini_file.get("deploy", "key")
-DEPLOYING = True if ini_file.get("deploy", "active") == "1" else False
+DEPLOYING = ini_file.get("deploy", "active") == "1"
 
 DB_HOST = ini_file.get("database", "host")
 DB_SCHEMA = ini_file.get("database", "schema")

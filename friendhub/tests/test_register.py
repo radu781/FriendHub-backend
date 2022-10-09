@@ -4,7 +4,18 @@ from random import randint
 import pytest
 import requests
 from flask_api import status
-from . import *
+from tests import (
+    REGISTER_ENDPOINT,
+    USER_CITY,
+    USER_COUNTRY,
+    USER_EDUCATION,
+    USER_EMAIL,
+    USER_EXTRA,
+    USER_FIRST_NAME,
+    USER_LAST_NAME,
+    USER_MIDDLE_NAME,
+    USER_PASSWORD,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -22,6 +33,7 @@ def test_missing_parameters():
             "password": USER_PASSWORD,
             "password-confirm": USER_PASSWORD,
         },
+        timeout=3,
     )
     content = json.loads(res.content)
     assert (
@@ -41,6 +53,7 @@ def test_user_exists():
             "password-confirm": "",
             "first-name": "",
         },
+        timeout=3,
     )
     content = json.loads(res.content)
     assert (
@@ -58,6 +71,7 @@ def test_passwords_mismatch():
             "password-confirm": USER_PASSWORD + "123",
             "first-name": USER_FIRST_NAME,
         },
+        timeout=3,
     )
     content = json.loads(res.content)
     assert (
@@ -75,6 +89,7 @@ def test_minimal_register():
             "password-confirm": USER_PASSWORD,
             "first-name": USER_FIRST_NAME,
         },
+        timeout=3,
     )
     assert res.status_code == status.HTTP_200_OK
 
@@ -94,5 +109,6 @@ def test_complete_register():
             "education": USER_EDUCATION,
             "extra": USER_EXTRA,
         },
+        timeout=3,
     )
     assert res.status_code == status.HTTP_200_OK

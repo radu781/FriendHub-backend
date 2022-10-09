@@ -1,18 +1,19 @@
 from datetime import datetime, timedelta
-from uuid import UUID, uuid4
-from models.token_model import Token
+from uuid import uuid4
+
+from database.token_dao import TokenDAO
+from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request, session
 from flask.wrappers import Response
 from flask_api import status
-from database.token_dao import TokenDAO
+from models.token_model import Token
 from models.user_model import User
-from database.user_dao import UserDAO
-from utils.argument_parser import Method
 from utils.argument_parser import (
     ArgsNotFoundException,
     ArgType,
     Argument,
     ArgumentParser,
+    Method,
 )
 
 login_blueprint = Blueprint("login_blueprint", __name__)
@@ -20,13 +21,14 @@ login_blueprint = Blueprint("login_blueprint", __name__)
 
 @login_blueprint.route("/api/login", methods=["POST"])
 def login() -> Response:
+    session.permanent = True
     parser = ArgumentParser(
         request,
         {
-            Argument("email", ArgType.Mandatory, None),
-            Argument("password", ArgType.Mandatory, None),
+            Argument("email", ArgType.MANDATORY, None),
+            Argument("password", ArgType.MANDATORY, None),
         },
-        Method.Post,
+        Method.POST,
     )
     try:
         values = parser.get_values()
@@ -54,6 +56,10 @@ def login() -> Response:
         return make_response(
             jsonify({"reason": "incorrect password"}), status.HTTP_401_UNAUTHORIZED
         )
+    current_user = UserDAO.get_user_by_email(values["email"])
+
+    if not current_user:
+        return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     current_token = Token(
         owner_id=current_user.id_,

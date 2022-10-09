@@ -5,6 +5,7 @@
 <div class="main">
     <div class="left"></div>
     <div class="middle">
+        {% if user %}
         <div class="upload-form">
             <p class="upload-form-title">{{ _("Create a post") }}</p>
             <form action="/api/upload" method="post" enctype="multipart/form-data">
@@ -40,6 +41,7 @@
                 <button type="submit" id="submit-post-button">{{ _('Post') }}</button>
             </form>
         </div>
+        {% endif %}
         <div class="posts">
             {% if posts %} {% for post in posts %}
             <div class="post-frame">

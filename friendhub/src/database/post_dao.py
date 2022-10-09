@@ -1,7 +1,7 @@
 from models.post_model import Post
+from models.post_wrapper import PostWrapper
 
 from database.dbmanager import DBManager
-from models.post_wrapper import PostWrapper
 from database.user_dao import UserDAO
 
 

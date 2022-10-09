@@ -6,14 +6,14 @@ from flask.wrappers import Request
 
 
 class Method(Enum):
-    Get = auto()
-    Post = auto()
+    GET = auto()
+    POST = auto()
 
 
 class ArgType(Enum):
-    Mandatory = auto()
-    Optional = auto()
-    Prefix = auto()
+    MANDATORY = auto()
+    OPTIONAL = auto()
+    PREFIX = auto()
 
 
 @dataclass(frozen=True, eq=True)
@@ -32,18 +32,18 @@ class ArgsNotFoundException(Exception):
 class ArgumentParser:
     url: Request
     args: set[Argument]
-    method: Method = field(default=Method.Get)
+    method: Method = field(default=Method.GET)
 
     def get_values(self) -> dict[str, str]:
         out: dict[str, str] = {}
         not_found: list[str] = []
 
         match self.method:
-            case Method.Post:
+            case Method.POST:
                 for arg in self.args:
-                    if arg.type == ArgType.Mandatory and not (arg.key in self.url.form or arg.key in self.url.args):
+                    if arg.type == ArgType.MANDATORY and not (arg.key in self.url.form or arg.key in self.url.args):
                         not_found.append(arg.key)
-                    elif arg.type == ArgType.Prefix:
+                    elif arg.type == ArgType.PREFIX:
                         for item in self.url.form:
                             if item.find(arg.key) != -1:
                                 out[arg.key] = item.split(arg.key)[1]
@@ -56,9 +56,9 @@ class ArgumentParser:
                             out[arg.key] = self.url.args.get(arg.key, arg.default_value, type=str)
                         else:
                             out[arg.key] = value
-            case Method.Get:
+            case Method.GET:
                 for arg in self.args:
-                    if arg.type == ArgType.Mandatory and not arg.key in self.url.args:
+                    if arg.type == ArgType.MANDATORY and not arg.key in self.url.args:
                         not_found.append(arg.key)
                     else:
                         out[arg.key] = self.url.args.get(arg.key, arg.default_value, type=str)

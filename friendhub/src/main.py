@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import Flask, request
 from flask_babel import Babel
 
@@ -19,6 +20,7 @@ app = Flask(__name__, template_folder="../templates", static_folder="../static")
 app.config["SECRET_KEY"] = SESSION_KEY
 app.config["SESSION_TYPE"] = "SameSite"
 app.config["SESSION_COOKIE_PATH"] = "/"
+app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(weeks=52)
 app.config["BABEL_DEFAULT_LOCALE"] = "en"
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "../translations"
 app.config["UPLOAD_FOLDER"] = "../static/uploads"

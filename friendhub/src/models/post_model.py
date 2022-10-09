@@ -4,8 +4,6 @@ import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from models.user_model import User
-
 
 @dataclass(kw_only=True)
 class Post:

@@ -1,40 +1,41 @@
-from datetime import datetime
 import random
+from datetime import datetime
 from uuid import uuid4
 
 from database.user_dao import UserDAO
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, jsonify, make_response, request, session
 from flask.wrappers import Response
 from flask_api import status
+from models.token_model import Token
 from models.user_model import User
-from utils.argument_parser import (
-    ArgsNotFoundException,
-    ArgType,
-    Argument,
-    ArgumentParser,
-    Method,
-)
+from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
+                                   ArgumentParser, Method)
 
 register_blueprint = Blueprint("register_blueprint", __name__)
 
 
 @register_blueprint.route("/api/register", methods=["POST"])
 def register() -> Response:
+    if Token.Purpose.USER_LOGIN in session:
+        return make_response(
+            jsonify({"reason": "logged in"}), status.HTTP_403_FORBIDDEN
+        )
+
     parser = ArgumentParser(
         request,
         {
-            Argument("email", ArgType.Mandatory, None),
-            Argument("password", ArgType.Mandatory, None),
-            Argument("password-confirm", ArgType.Mandatory, None),
-            Argument("first-name", ArgType.Mandatory, None),
-            Argument("middle-name", ArgType.Optional, ""),
-            Argument("last-name", ArgType.Optional, ""),
-            Argument("country", ArgType.Optional, ""),
-            Argument("city", ArgType.Optional, ""),
-            Argument("education", ArgType.Optional, ""),
-            Argument("extra", ArgType.Optional, ""),
+            Argument("email", ArgType.MANDATORY, None),
+            Argument("password", ArgType.MANDATORY, None),
+            Argument("password-confirm", ArgType.MANDATORY, None),
+            Argument("first-name", ArgType.MANDATORY, None),
+            Argument("middle-name", ArgType.OPTIONAL, ""),
+            Argument("last-name", ArgType.OPTIONAL, ""),
+            Argument("country", ArgType.OPTIONAL, ""),
+            Argument("city", ArgType.OPTIONAL, ""),
+            Argument("education", ArgType.OPTIONAL, ""),
+            Argument("extra", ArgType.OPTIONAL, ""),
         },
-        Method.Post,
+        Method.POST,
     )
     try:
         values = parser.get_values()
