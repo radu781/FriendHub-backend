@@ -33,7 +33,15 @@
                 <li><a href="/login">{{ _("Login") }}</a></li>
                 <li><a href="/register">{{ _("Register") }}</a></li>
                 {% else %}
-                <li><a href="{{ '/profile/' ~ user.id_ }}">{{ _("My profile") }}</a></li>
+                <li>
+                    <a href="{{ '/profile/' ~ user.id_ }}">
+                        <div class="my-profile">
+                            {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
+                            <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% endif %}
+                            <p>{{ _("My profile") }}</p>
+                        </div>
+                    </a>
+                </li>
                 {% endif %}
             </ul>
         </nav>

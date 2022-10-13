@@ -30,6 +30,7 @@ class __DBManager:
     def execute(
         self, statement: str, values: tuple[int | str | datetime | None, ...]
     ) -> list[tuple]:
+        statement = statement.replace("\n", " ").replace("  ", " ")
         try:
             self.cursor.execute(statement, values)
             if not statement.split(" ")[0].upper() in ["SELECT", "DESC"]:

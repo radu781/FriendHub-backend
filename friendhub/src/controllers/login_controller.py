@@ -52,6 +52,9 @@ def login() -> Response:
             jsonify({"reason": "user does not exist"}), status.HTTP_401_UNAUTHORIZED
         )
 
+    if not current_user.password:
+        return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     if not UserDAO.correct_password(current_user.email, current_user.password):
         return make_response(
             jsonify({"reason": "incorrect password"}), status.HTTP_401_UNAUTHORIZED

@@ -20,3 +20,5 @@ DB_SCHEMA = ini_file.get("database", "schema")
 DB_USERNAME = ini_file.get("database", "username")
 DB_PASSWORD = ini_file.get("database", "password")
 DB_PORT = ini_file.get("database", "port")
+
+DELETE_PROFILE_KEY = ini_file.get("admin_keys", "delete_profile")

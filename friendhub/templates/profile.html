@@ -4,11 +4,12 @@
 <div class="main">
     <div class="left"></div>
     <div class="middle">
+        {% if user %}
         <div class="user-profile">
-            <img src="{{ url_for('static', filename='assets/images/default_banner_picture.jpg') }}" class="banner-img" alt="banner">
+            <img src="{{ url_for('static', filename='assets/images/default_banner_picture.jpg') }}" class="banner-img" alt="banner" />
             <div class="alignment">
-
-                <div class="profile-and-name"> {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
+                <div class="profile-and-name">
+                    {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
                     <img src="{{ url_for('static', filename=profile_picture_path) }}" class="user-profile-picture" alt="profile picture" /> {% endif %}
                     <p>{{ user.first_name }} {{ user.middle_name or "" }} {{ user.last_name }}</p>
                 </div>
@@ -17,10 +18,13 @@
                 </div>
             </div>
             <div class="short-info">
-                <p> Location: {{ user.city }}, {{ user.country }} </p>
-                <p> Education: {{ user.education }} </p>
+                <p>Location: {{ user.city }}, {{ user.country }}</p>
+                <p>Education: {{ user.education }}</p>
             </div>
         </div>
+        {% else %}
+        <div>User not found</div>
+        {% endif %}
     </div>
     <div class="right"></div>
 </div>

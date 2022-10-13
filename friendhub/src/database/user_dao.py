@@ -24,7 +24,25 @@ class UserDAO:
     @staticmethod
     def register_user(user: User) -> None:
         DBManager.execute(
-            "INSERT INTO users(id, first_name, middle_name, last_name, join_time, country, city, education, extra, profile_picture, banner_picture, password, email, permissions) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            """INSERT INTO
+                 users(
+                   id,
+                   first_name,
+                   middle_name,
+                   last_name,
+                   join_time,
+                   country,
+                   city,
+                   education,
+                   extra,
+                   profile_picture,
+                   banner_picture,
+                   password,
+                   email,
+                   permissions
+                 )
+               VALUES
+               (% s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s)""",
             (
                 str(user.id_),
                 user.first_name,
@@ -54,3 +72,42 @@ class UserDAO:
             (email, password),
         )
         return value[0][0] == 1
+
+    @staticmethod
+    def delete_user(id_: uuid.UUID) -> None:
+        DBManager.execute(
+            """UPDATE
+                 users
+               SET
+                 first_name = %s,
+                 middle_name = %s,
+                 last_name = %s,
+                 join_time = %s,
+                 country = %s,
+                 city = %s,
+                 education = %s,
+                 extra = %s,
+                 profile_picture = %s,
+                 banner_picture = %s,
+                 password = %s,
+                 email = %s,
+                 permissions = %s
+               WHERE
+                 id = %s""",
+            (
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                str(id_),
+            ),
+        )

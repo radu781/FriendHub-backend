@@ -20,7 +20,7 @@ class User:
     extra: str = field(default="")
     banner_picture: str = field(default="")
     email: str = field(default="")
-    password: str = field(default="")
+    password: str | None = field(default="")
     permissions: int = field(default=0)
 
     def __post_init__(self) -> None:
@@ -60,15 +60,24 @@ class User:
             extra=d["extra"],
             profile_picture=d["profile_picture"],
             banner_picture=d["banner_picture"],
-            password=d["password"],
-            email=d["email"],
-            permissions=d["permissions"],
+            password=d.get("password", ""),
+            email=d.get("email", ""),
+            permissions=d.get("permissions", ""),
         )
 
     @property
     def ok(self) -> bool:
-        return not not self.email and not not self.first_name
+        return (
+            self.email is not None
+            and not not self.email
+            and self.first_name is not None
+            and not not self.first_name
+        )
 
     @property
     def is_admin(self) -> bool:
         return self.permissions & 0b1 == 1
+
+    def sanitize(self) -> User:
+        self.password = self.email = self.permissions = None  # type: ignore
+        return self

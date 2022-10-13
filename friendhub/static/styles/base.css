@@ -53,6 +53,18 @@ span.italics {
     cursor: pointer;
 }
 
+.my-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.my-profile>img {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+}
+
 .circular-highlight:hover {
     background-color: burlywood;
     border-radius: 50%;

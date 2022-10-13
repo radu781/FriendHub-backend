@@ -21,4 +21,4 @@ def profile(id_: str) -> Response:
         return make_response(
             jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND
         )
-    return make_response(jsonify({"user": vars(target_user)}))
+    return make_response(jsonify({"user": vars(target_user.sanitize())}))
