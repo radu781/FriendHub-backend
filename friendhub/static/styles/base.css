@@ -1,5 +1,24 @@
 * {
     margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    transition: background-color border-radius 250ms;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.button-main:hover {
+    background-color: #445a9b;
+    transition: background-color 250ms;
+    border-radius: 5px;
 }
 
 .header-nav>ul {
@@ -8,7 +27,6 @@
     justify-content: space-around;
     padding: 0;
     align-items: center;
-    list-style: none;
 }
 
 .header-nav {
@@ -53,16 +71,63 @@ span.italics {
     cursor: pointer;
 }
 
-.my-profile {
+.my-profile>a {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.my-profile>img {
+.my-profile>a>p {
+    display: flex;
+    align-items: center;
+}
+
+.my-profile>a>p>img {
+    width: 32px;
+    height: 32px;
+}
+
+.my-profile>a>img {
     width: 32px;
     height: 32px;
     margin-right: 5px;
+}
+
+.my-profile>#options-list {
+    display: none;
+    position: absolute;
+    float: left;
+    background-color: #839de4;
+    border-color: #445a9b;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 5px 20px;
+}
+
+.my-profile>#options-list>ul>li:nth-child(2n) {
+    border-top: 1px solid #445a9b;
+    border-bottom: 1px solid #445a9b;
+}
+
+.my-profile>#options-list>ul>li:last-child {
+    border-bottom: none;
+}
+
+.my-profile>#options-list>ul>li {
+    padding: 5px 0px;
+}
+
+#options-list>ul>li>img {
+    width: 24px;
+    height: 24px;
+}
+
+#options-list>ul>li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .circular-highlight:hover {

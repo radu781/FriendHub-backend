@@ -17,6 +17,7 @@ from views.index_view import index_view_blueprint
 from views.login_view import login_view_blueprint
 from views.profile_view import profile_view_blueprint
 from views.register_view import register_view_blueprint
+from views.settings.base import settings_base_blueprint
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
@@ -41,6 +42,7 @@ app.register_blueprint(upload_blueprint)
 app.register_blueprint(profile_blueprint)
 app.register_blueprint(profile_view_blueprint)
 app.register_blueprint(delete_user_blueprint)
+app.register_blueprint(settings_base_blueprint)
 
 babel = Babel(app)
 
@@ -51,7 +53,7 @@ def get_locale() -> str:
 
 
 @app.errorhandler(403)
-def accesS_forbidden(err):
+def access_forbidden(err):
     return make_response("Access forbidden", status.HTTP_403_FORBIDDEN)
 
 

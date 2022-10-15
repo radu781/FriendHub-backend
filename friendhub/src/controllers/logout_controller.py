@@ -21,4 +21,5 @@ def logout() -> Response:
         del session[Token.Purpose.USER_LOGIN]
         return make_response(jsonify({"_": "token was invalid"}))
 
+    del session[Token.Purpose.USER_LOGIN]
     return make_response()

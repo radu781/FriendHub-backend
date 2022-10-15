@@ -9,7 +9,9 @@
     <meta name="description" content="Simple social media web application" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" /> {% block extra_head %} {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" />
+    <script src="{{ url_for('static', filename='scripts/base.js') }}" defer></script>
+    {% block extra_head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -34,13 +36,41 @@
                 <li><a href="/register">{{ _("Register") }}</a></li>
                 {% else %}
                 <li>
-                    <a href="{{ '/profile/' ~ user.id_ }}">
-                        <div class="my-profile">
-                            {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
-                            <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% endif %}
-                            <p>{{ _("My profile") }}</p>
+                    <div class="my-profile">
+                        <a href="{{ '/profile/' ~ user.id_ }}" class="my-profile-menu">
+								{% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
+								<img
+									src="{{ url_for('static', filename=profile_picture_path) }}"
+									alt="profile picture"
+								/>
+								{% endif %}
+								<p>
+									{{ _("My profile") }}
+									<img src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}"
+										alt="drop down menu" />
+								</p>
+							</a>
+                        <div id="options-list">
+                            <ul>
+                                <li>
+                                    {{ _("Online status") }}
+                                    <img src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}" alt="drop down menu" />
+                                </li>
+                                <li>{{ _("Switch account") }}
+                                    <img src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}" alt="drop down menu" />
+                                </li>
+                                <li>{{ _("Theme") }}</li>
+                                <li>{{ _("Accessibility") }}</li>
+                                <li>{{ _("More settings") }}</li>
+                                <li>{{ _("Feedback") }}</li>
+                                <li>
+                                    <form action="/api/logout" method="post">
+                                        <button type="submit" class="button-main">{{ _("Log out") }}</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
-                    </a>
+                    </div>
                 </li>
                 {% endif %}
             </ul>

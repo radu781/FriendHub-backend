@@ -1,24 +1,15 @@
-from flask import Blueprint, make_response, render_template, session
+from flask import Blueprint, make_response, render_template
 from flask.wrappers import Response
 
 from database.post_dao import PostDAO
-from database.token_dao import TokenDAO
-from database.user_dao import UserDAO
-from models.token_model import Token
+from utils.session import get_user_in_session
 
 index_view_blueprint = Blueprint("index_view_blueprint", __name__)
 
 
 @index_view_blueprint.route("/", methods=["GET"])
 def index_view() -> Response:
-    if Token.Purpose.USER_LOGIN not in session:
-        current_user = None
-    else:
-        current_token = TokenDAO.get_token_by_value(session[Token.Purpose.USER_LOGIN])
-        if not current_token or not current_token.is_valid:
-            current_user = None
-        else:
-            current_user = UserDAO.get_user_by_id(current_token.owner_id)
+    current_user = get_user_in_session()
     return make_response(
         render_template(
             "index.html",
