@@ -1,3 +1,5 @@
+from uuid import UUID
+from database.vote_dao import VoteDAO
 from models.post_model import Post
 from models.post_wrapper import PostWrapper
 
@@ -29,8 +31,17 @@ class PostDAO:
         out: list[PostWrapper] = []
         for row in value:
             current_post = Post.from_db(row)
-            current_user = UserDAO.get_user_by_id(current_post.owner_id)
-            if not current_user:
+            VoteDAO.get_votes_for_post(current_post)
+            author = UserDAO.get_user_by_id(current_post.owner_id)
+            if not author:
                 continue
-            out.append(PostWrapper(current_post, current_user))
+            out.append(PostWrapper(current_post, author))
         return out
+
+    @staticmethod
+    def get_post_by_id(id_: UUID) -> Post | None:
+        value = DBManager.execute("SELECT * FROM posts where id=%s", (str(id_),))
+        if value == []:
+            return None
+        # TODO: add new likes and dislikes counter
+        return Post.from_db(value[0])

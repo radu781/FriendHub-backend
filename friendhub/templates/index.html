@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %} FriendHub {% endblock %} {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" />
 <script src="{{ url_for('static', filename='scripts/index.js') }}" defer></script>
+<script src="{{ url_for('static', filename='scripts/index_ajax.js') }}" defer></script>
 {% endblock %} {% block body %}
 <div class="main">
     <div class="left"></div>
@@ -47,12 +48,12 @@
             <div class="post-frame">
                 <div class="post-vote-side">
                     <p>
-                        <img src="{{ url_for('static', filename='assets/icons/like_icon.svg') }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" />
+                        <img src="{{ url_for('static', filename='assets/icons/like_icon.svg') }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" onclick="upvotePost('{{ post.post.id_ }}')" />
                     </p>
-                    <p>{{ post.post.likes }}</p>
-                    <p>{{ post.post.dislikes }}</p>
+                    <p id="upvote-{{ post.post.id_ }}">{{ post.post.likes }}</p>
+                    <p id="downvote-{{ post.post.id_ }}">{{ post.post.dislikes }}</p>
                     <p>
-                        <img src="{{ url_for('static', filename='assets/icons/dislike_icon.svg') }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" />
+                        <img src="{{ url_for('static', filename='assets/icons/dislike_icon.svg') }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" onclick="downvotePost('{{ post.post.id_ }}')" />
                     </p>
                 </div>
                 <div class="post-main">
@@ -61,7 +62,9 @@
                             <div class="post-user-profile pointer-cursor" alt="{{ post.user.first_name }}'s profile">
                                 {% if post.user.profile_picture %} {% set profile_picture_path = post.user.profile_picture %}
                                 <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% endif %}
-                                <p>{{ post.user.first_name }} {{ post.user.middle_name or "" }} {{ post.user.last_name }}</p>
+                                <p>
+                                    {{ post.user.first_name }} {{ post.user.middle_name or "" }} {{ post.user.last_name }}
+                                </p>
                             </div>
                         </a>
                         <p>{{ _("at") }} {{ post.post.create_time }}</p>

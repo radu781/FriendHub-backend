@@ -37,7 +37,7 @@ class __DBManager:
                 self.connector.commit()
             return self.cursor.fetchall()
         except Exception as e:
-            print(e, "statement:", statement, sep="\n")
+            print(f"MySQL error: {e}, statement: {statement}")
             return []
 
     def execute_multiple(

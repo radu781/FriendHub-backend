@@ -62,8 +62,6 @@ def test_structure_posts():
         "id",
         "owner_id",
         "create_time",
-        "likes",
-        "dislikes",
         "text",
         "image",
         "video",
