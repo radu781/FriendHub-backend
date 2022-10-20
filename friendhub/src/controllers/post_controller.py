@@ -34,22 +34,22 @@ def post(id_: str) -> Response:
             )
         target_post = VoteDAO.get_votes_for_post(target_post)
         return make_response(jsonify(vars(target_post)))
-    else:
-        current_user = get_user_in_session()
-        if current_user is None:
-            return make_response(
-                jsonify({"reason": "you need to be logged in"}),
-                status.HTTP_401_UNAUTHORIZED,
-            )
-        parser = ArgumentParser(
-            request,
-            {
-                Argument("upvote", ArgType.OPTIONAL, None),
-                Argument("downvote", ArgType.OPTIONAL, None),
-                Argument("clear", ArgType.OPTIONAL, None),
-            },
-            Method.POST,
+
+    current_user = get_user_in_session()
+    if current_user is None:
+        return make_response(
+            jsonify({"reason": "you need to be logged in"}),
+            status.HTTP_401_UNAUTHORIZED,
         )
+    parser = ArgumentParser(
+        request,
+        {
+            Argument("upvote", ArgType.OPTIONAL, None),
+            Argument("downvote", ArgType.OPTIONAL, None),
+            Argument("clear", ArgType.OPTIONAL, None),
+        },
+        Method.POST,
+    )
     try:
         values = parser.get_values()
     except ArgsNotFoundException as ex:

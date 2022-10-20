@@ -7,11 +7,11 @@ import uuid
 
 @dataclass(kw_only=True)
 class Vote:
-    id_: uuid.UUID = field(default=uuid.uuid4())
+    id_: uuid.UUID = field(default_factory=uuid.uuid4)
     parent_id: uuid.UUID
     author_id: uuid.UUID
     value: Value
-    create_time: datetime = field(default=datetime.now())
+    create_time: datetime = field(default_factory=datetime.now)
 
     class Value(str, Enum):
         UPVOTE = "upvote"

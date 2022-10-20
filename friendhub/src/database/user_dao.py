@@ -42,7 +42,7 @@ class UserDAO:
                    permissions
                  )
                VALUES
-               (% s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s)""",
+               (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 str(user.id_),
                 user.first_name,

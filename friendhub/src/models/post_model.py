@@ -7,9 +7,9 @@ from datetime import datetime
 
 @dataclass(kw_only=True)
 class Post:
-    id_: uuid.UUID = field(default=uuid.uuid4())
-    owner_id: uuid.UUID = field(default=uuid.uuid4())
-    create_time: datetime = field(default=datetime.now())
+    id_: uuid.UUID = field(default_factory=uuid.uuid4)
+    owner_id: uuid.UUID = field(default_factory=uuid.uuid4)
+    create_time: datetime = field(default_factory=datetime.now)
     likes: int
     dislikes: int
     text: str

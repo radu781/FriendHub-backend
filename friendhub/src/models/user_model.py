@@ -8,19 +8,19 @@ from datetime import datetime
 
 @dataclass(kw_only=True)
 class User:
-    id_: uuid.UUID = field(default=uuid.uuid4())
+    id_: uuid.UUID = field(default_factory=uuid.uuid4)
     first_name: str = field(default="")
     profile_picture: str = field(default="")
     middle_name: str = field(default="")
     last_name: str = field(default="")
-    join_time: datetime = field(default=datetime.now())
+    join_time: datetime = field(default_factory=datetime.now)
     country: str = field(default="")
     city: str = field(default="")
     education: str = field(default="")
     extra: str = field(default="")
     banner_picture: str = field(default="")
     email: str = field(default="")
-    password: str | None = field(default="")
+    password: str | None = field(default=None)
     permissions: int = field(default=0)
 
     def __post_init__(self) -> None:

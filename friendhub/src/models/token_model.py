@@ -10,10 +10,10 @@ from enum import Enum
 
 @dataclass(kw_only=True)
 class Token:
-    id_: uuid.UUID = field(default=uuid.uuid4())
+    id_: uuid.UUID = field(default_factory=uuid.uuid4)
     value: str = base64.b64encode(str(random.getrandbits(160)).encode("utf-8")).decode()[:-2]
     owner_id: uuid.UUID
-    date_created: datetime=field(default=datetime.now())
+    date_created: datetime=field(default_factory=datetime.now)
     valid_until: datetime
     purpose: Purpose
 
