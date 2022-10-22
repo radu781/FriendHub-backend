@@ -1,10 +1,13 @@
 from uuid import UUID
-from database.vote_dao import VoteDAO
+
 from models.post_model import Post
 from models.post_wrapper import PostWrapper
+from models.vote_model import Vote
+from utils import session
 
 from database.dbmanager import DBManager
 from database.user_dao import UserDAO
+from database.vote_dao import VoteDAO
 
 
 class PostDAO:
@@ -31,11 +34,15 @@ class PostDAO:
         out: list[PostWrapper] = []
         for row in value:
             current_post = Post.from_db(row)
-            VoteDAO.get_votes_for_post(current_post)
+            current_post = VoteDAO.get_votes_for_post(current_post)
             author = UserDAO.get_user_by_id(current_post.owner_id)
             if not author:
                 continue
-            out.append(PostWrapper(current_post, author))
+            current_user = session.get_user_in_session()
+            if not current_user:
+                continue
+            current_vote = VoteDAO.get_vote(current_post.id_, current_user.id_)
+            out.append(PostWrapper(current_post, author, current_vote))
         return out
 
     @staticmethod
