@@ -16,9 +16,7 @@ def setup() -> None:
         os.mkdir("friendhub/translations")
     except FileExistsError:
         pass
-    os.system(
-        "pybabel extract -F friendhub/babel.cfg -o friendhub/translations/messages.pot ."
-    )
+    os.system("pybabel extract -F friendhub/babel.cfg -o friendhub/translations/messages.pot .")
     file_lines: list[str] = []
     with open("friendhub/translations/messages.pot") as messages:
         file_lines = messages.readlines()
@@ -60,9 +58,7 @@ def translate_and_replace(language: str, file_path: str) -> None:
         if line.find("msgid") != -1 and len(line) > 9:
             msgid = line[len("msgid") + 2 : -2]
             try:
-                return_file.append(
-                    f'msgstr "{str(ts.google(msgid, to_language=language))}"\n'
-                )
+                return_file.append(f'msgstr "{str(ts.google(msgid, to_language=language))}"\n')
             except Exception as ex:
                 with threading.Lock():
                     failed_translations.add((language, ex))
@@ -92,9 +88,7 @@ def treat_language(language: str) -> None:
 def spawn_threads_and_work(languages: set[str]) -> None:
     processes: list[multiprocessing.Process] = []
     for language in languages:
-        processes.append(
-            multiprocessing.Process(target=treat_language, args=(language,))
-        )
+        processes.append(multiprocessing.Process(target=treat_language, args=(language,)))
     for process in processes:
         process.start()
     for process in processes:

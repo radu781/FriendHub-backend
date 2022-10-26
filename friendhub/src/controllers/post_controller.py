@@ -1,10 +1,10 @@
 from uuid import UUID
-from database.post_dao import PostDAO
 
+from database.post_dao import PostDAO
+from database.vote_dao import VoteDAO
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
-from database.vote_dao import VoteDAO
 from models.vote_model import Vote
 from utils.argument_parser import (
     ArgsNotFoundException,
@@ -29,9 +29,7 @@ def post(id_: str) -> Response:
                 status.HTTP_400_BAD_REQUEST,
             )
         if target_post is None:
-            return make_response(
-                jsonify({"reason": "post not found"}), status.HTTP_404_NOT_FOUND
-            )
+            return make_response(jsonify({"reason": "post not found"}), status.HTTP_404_NOT_FOUND)
         target_post = VoteDAO.get_votes_for_post(target_post)
         return make_response(jsonify(vars(target_post)))
 
@@ -54,16 +52,12 @@ def post(id_: str) -> Response:
         values = parser.get_values()
     except ArgsNotFoundException as ex:
         return make_response(
-            jsonify(
-                {"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}
-            ),
+            jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
     if len([v for v in values if values[v] is not None]) != 1:
         return make_response(
-            jsonify(
-                {"reason": "only one of 'upvote', 'downvote', 'clear' is supported"}
-            ),
+            jsonify({"reason": "only one of 'upvote', 'downvote', 'clear' is supported"}),
             status.HTTP_400_BAD_REQUEST,
         )
 
@@ -74,9 +68,7 @@ def post(id_: str) -> Response:
         return make_response(jsonify(), status.HTTP_202_ACCEPTED)
 
     if db_vote is None and user_intent != Vote.Value.CLEAR:
-        VoteDAO.add(
-            Vote(parent_id=UUID(id_), author_id=current_user.id_, value=user_intent)
-        )
+        VoteDAO.add(Vote(parent_id=UUID(id_), author_id=current_user.id_, value=user_intent))
         return make_response(jsonify(), status.HTTP_201_CREATED)
 
     if db_vote is not None and user_intent == Vote.Value.CLEAR:
@@ -88,8 +80,6 @@ def post(id_: str) -> Response:
 
     if db_vote is not None and db_vote.value != user_intent:
         VoteDAO.delete(db_vote.id_)
-        VoteDAO.add(
-            Vote(parent_id=UUID(id_), author_id=current_user.id_, value=user_intent)
-        )
+        VoteDAO.add(Vote(parent_id=UUID(id_), author_id=current_user.id_, value=user_intent))
         return make_response(jsonify(), status.HTTP_201_CREATED)
     return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)

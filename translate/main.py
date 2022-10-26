@@ -20,7 +20,7 @@ def main() -> None:
         "ar",
         "bn",
         "pt",
-        "id"
+        "id",
     }
     setup()
     spawn_threads_and_work(languages)

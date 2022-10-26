@@ -16,9 +16,7 @@ def deploy() -> Response:
             jsonify({"reason": "'key' argument required"}), status.HTTP_401_UNAUTHORIZED
         )
     if request.args["key"] != globals.DEPLOY_KEY:
-        return make_response(
-            jsonify({"reason": "wrong deploy key"}), status.HTTP_401_UNAUTHORIZED
-        )
+        return make_response(jsonify({"reason": "wrong deploy key"}), status.HTTP_401_UNAUTHORIZED)
 
     with open("deploy.log", "a") as file:
         time = datetime.now()

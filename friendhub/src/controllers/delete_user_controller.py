@@ -26,9 +26,7 @@ def delete_user(id_: str) -> Response:
             status.HTTP_400_BAD_REQUEST,
         )
     if not target_user or not target_user.ok:
-        return make_response(
-            jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND
-        )
+        return make_response(jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND)
     parser = ArgumentParser(
         request,
         {
@@ -40,9 +38,7 @@ def delete_user(id_: str) -> Response:
         values = parser.get_values()
     except ArgsNotFoundException as ex:
         return make_response(
-            jsonify(
-                {"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}
-            ),
+            jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
 

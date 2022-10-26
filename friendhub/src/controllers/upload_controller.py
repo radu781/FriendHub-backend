@@ -29,9 +29,7 @@ except FileExistsError:
 @upload_blueprint.route("/api/upload", methods=["POST"])
 def upload() -> Response:
     if Token.Purpose.USER_LOGIN not in session:
-        return make_response(
-            jsonify({"reason": "not logged in"}), status.HTTP_403_FORBIDDEN
-        )
+        return make_response(jsonify({"reason": "not logged in"}), status.HTTP_403_FORBIDDEN)
 
     parser = ArgumentParser(
         request,
@@ -47,15 +45,11 @@ def upload() -> Response:
         values = parser.get_values()
     except ArgsNotFoundException as ex:
         return make_response(
-            jsonify(
-                {"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}
-            ),
+            jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
     if values["text"] == "":
-        return make_response(
-            jsonify({"reason": "text missing"}), status.HTTP_406_NOT_ACCEPTABLE
-        )
+        return make_response(jsonify({"reason": "text missing"}), status.HTTP_406_NOT_ACCEPTABLE)
 
     current_token = TokenDAO.get_token_by_value(session[Token.Purpose.USER_LOGIN])
 

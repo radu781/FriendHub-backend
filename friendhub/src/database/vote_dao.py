@@ -35,9 +35,7 @@ class VoteDAO:
 
     @staticmethod
     def get_votes_for_post(post: Post) -> Post:
-        value = DBManager.execute(
-            "SELECT * FROM votes WHERE parent_id=%s", (str(post.id_),)
-        )
+        value = DBManager.execute("SELECT * FROM votes WHERE parent_id=%s", (str(post.id_),))
         votes: list[Vote] = []
         for val in value:
             votes.append(Vote.from_db(val))

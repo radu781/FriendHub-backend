@@ -2,7 +2,6 @@ from uuid import UUID
 
 from models.post_model import Post
 from models.post_wrapper import PostWrapper
-from models.vote_model import Vote
 from utils import session
 
 from database.dbmanager import DBManager

@@ -41,7 +41,9 @@ class ArgumentParser:
         match self.method:
             case Method.POST:
                 for arg in self.args:
-                    if arg.type == ArgType.MANDATORY and not (arg.key in self.url.form or arg.key in self.url.args):
+                    if arg.type == ArgType.MANDATORY and not (
+                        arg.key in self.url.form or arg.key in self.url.args
+                    ):
                         not_found.append(arg.key)
                     elif arg.type == ArgType.PREFIX:
                         for item in self.url.form:

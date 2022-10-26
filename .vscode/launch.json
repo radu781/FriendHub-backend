@@ -6,7 +6,7 @@
 			"request": "launch",
 			"program": "friendhub/src/main.py",
 			"console": "integratedTerminal",
-			"justMyCode": true,
+			"justMyCode": false,
 			"cwd": "${workspaceFolder}",
 			"env": { "PYTHONPATH": "friendhub/src" }
 		},

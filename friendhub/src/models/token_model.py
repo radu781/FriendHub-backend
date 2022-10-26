@@ -13,7 +13,7 @@ class Token:
     id_: uuid.UUID = field(default_factory=uuid.uuid4)
     value: str = base64.b64encode(str(random.getrandbits(160)).encode("utf-8")).decode()[:-2]
     owner_id: uuid.UUID
-    date_created: datetime=field(default_factory=datetime.now)
+    date_created: datetime = field(default_factory=datetime.now)
     valid_until: datetime
     purpose: Purpose
 
@@ -29,7 +29,7 @@ class Token:
             valid_until=row[2],
             value=row[3],
             purpose=row[4],
-            date_created=row[5]
+            date_created=row[5],
         )
 
     @property

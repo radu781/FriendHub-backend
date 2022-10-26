@@ -8,9 +8,7 @@ from friendhub.tests import LOGIN_ENDPOINT, USER_EMAIL, USER_PASSWORD
 
 @pytest.mark.unit
 def test_correct_details():
-    res = requests.post(
-        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3
-    )
+    res = requests.post(LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3)
     assert res.status_code == status.HTTP_200_OK
 
 
@@ -29,9 +27,7 @@ def test_incorrect_password():
 
 @pytest.mark.unit
 def test_user_does_not_exist():
-    res = requests.post(
-        LOGIN_ENDPOINT, {"email": "I do not exist", "password": ""}, timeout=3
-    )
+    res = requests.post(LOGIN_ENDPOINT, {"email": "I do not exist", "password": ""}, timeout=3)
     assert (
         json.loads(res.content)["reason"] == "user does not exist"
         and res.status_code == status.HTTP_401_UNAUTHORIZED
@@ -45,8 +41,7 @@ def test_missing_parameters():
     assert (
         content["reason"] == "missing parameters"
         and (
-            content["parameters"] == "password, email"
-            or content["parameters"] == "email, password"
+            content["parameters"] == "password, email" or content["parameters"] == "email, password"
         )
         and res.status_code == status.HTTP_401_UNAUTHORIZED
     )

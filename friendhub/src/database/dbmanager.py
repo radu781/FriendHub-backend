@@ -5,6 +5,7 @@ from datetime import datetime
 import globals
 import mysql.connector as con
 import mysql.connector.connection_cext as connection
+from mysql.connector.errors import Error
 import mysql.connector.cursor_cext as _cursor
 
 
@@ -36,7 +37,7 @@ class __DBManager:
             if not statement.split(" ")[0].upper() in ["SELECT", "DESC"]:
                 self.connector.commit()
             return self.cursor.fetchall()
-        except Exception as e:
+        except Error as e:
             print(f"MySQL error: {e}, statement: {statement}")
             return []
 

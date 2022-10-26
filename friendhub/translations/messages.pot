@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FriendHub 1.0\n"
 "Report-Msgid-Bugs-To: poparadu501@gmail.com\n"
-"POT-Creation-Date: 2022-10-02 13:53+0300\n"
-"PO-Revision-Date: 2022-10-02 13:53+0300\n"
+"POT-Creation-Date: 2022-10-15 20:08+0300\n"
+"PO-Revision-Date: 2022-10-15 20:08+0300\n"
 "Last-Translator: Radu-Alexandru Popa <poparadu501@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,67 +17,99 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: friendhub/templates/base.html:19
+#: friendhub/templates/base.html:24
 msgid "Logo"
 msgstr ""
 
-#: friendhub/templates/base.html:22
+#: friendhub/templates/base.html:29
 msgid "Search"
 msgstr ""
 
-#: friendhub/templates/base.html:27
+#: friendhub/templates/base.html:35 friendhub/templates/login.html:1
 msgid "Login"
 msgstr ""
 
-#: friendhub/templates/base.html:28
+#: friendhub/templates/base.html:36 friendhub/templates/register.html:1
 msgid "Register"
 msgstr ""
 
-#: friendhub/templates/base.html:29
+#: friendhub/templates/base.html:48
 msgid "My profile"
 msgstr ""
 
-#: friendhub/templates/index.html:9
+#: friendhub/templates/base.html:56
+msgid "Online status"
+msgstr ""
+
+#: friendhub/templates/base.html:59
+msgid "Switch account"
+msgstr ""
+
+#: friendhub/templates/base.html:62
+msgid "Theme"
+msgstr ""
+
+#: friendhub/templates/base.html:63
+msgid "Accessibility"
+msgstr ""
+
+#: friendhub/templates/base.html:64
+msgid "More settings"
+msgstr ""
+
+#: friendhub/templates/base.html:65
+msgid "Feedback"
+msgstr ""
+
+#: friendhub/templates/base.html:68
+msgid "Log out"
+msgstr ""
+
+#: friendhub/templates/index.html:10
 msgid "Create a post"
 msgstr ""
 
-#: friendhub/templates/index.html:11
+#: friendhub/templates/index.html:12
 msgid "Share your thoughts"
 msgstr ""
 
-#: friendhub/templates/index.html:13
+#: friendhub/templates/index.html:14
 msgid "Attach media"
 msgstr ""
 
-#: friendhub/templates/index.html:19
+#: friendhub/templates/index.html:20
 msgid "Upload an image"
 msgstr ""
 
-#: friendhub/templates/index.html:27
+#: friendhub/templates/index.html:28
 msgid "Upload a video"
 msgstr ""
 
-#: friendhub/templates/index.html:35
+#: friendhub/templates/index.html:36
 msgid "Upload an audio file"
 msgstr ""
 
-#: friendhub/templates/index.html:40
+#: friendhub/templates/index.html:41
 msgid "Post"
 msgstr ""
 
-#: friendhub/templates/index.html:48
+#: friendhub/templates/index.html:50
 msgid "Like this post"
 msgstr ""
 
-#: friendhub/templates/index.html:53
+#: friendhub/templates/index.html:55
 msgid "Dislike this post"
 msgstr ""
 
-#: friendhub/templates/index.html:76
+#: friendhub/templates/index.html:67
+msgid "at"
+msgstr ""
+
+#: friendhub/templates/index.html:79
 msgid "Comment on this post"
 msgstr ""
 
-#: friendhub/templates/index.html:77
+#: friendhub/templates/index.html:80
 msgid "Share this post"
 msgstr ""
 

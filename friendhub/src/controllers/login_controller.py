@@ -34,9 +34,7 @@ def login() -> Response:
         values = parser.get_values()
     except ArgsNotFoundException as ex:
         return make_response(
-            jsonify(
-                {"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}
-            ),
+            jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
 

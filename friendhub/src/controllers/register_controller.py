@@ -8,8 +8,7 @@ from flask.wrappers import Response
 from flask_api import status
 from models.token_model import Token
 from models.user_model import User
-from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
-                                   ArgumentParser, Method)
+from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 
 register_blueprint = Blueprint("register_blueprint", __name__)
 
@@ -17,9 +16,7 @@ register_blueprint = Blueprint("register_blueprint", __name__)
 @register_blueprint.route("/api/register", methods=["POST"])
 def register() -> Response:
     if Token.Purpose.USER_LOGIN in session:
-        return make_response(
-            jsonify({"reason": "logged in"}), status.HTTP_403_FORBIDDEN
-        )
+        return make_response(jsonify({"reason": "logged in"}), status.HTTP_403_FORBIDDEN)
 
     parser = ArgumentParser(
         request,
@@ -41,9 +38,7 @@ def register() -> Response:
         values = parser.get_values()
     except ArgsNotFoundException as ex:
         return make_response(
-            jsonify(
-                {"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}
-            ),
+            jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
 

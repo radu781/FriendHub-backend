@@ -18,7 +18,5 @@ def profile(id_: str) -> Response:
             status.HTTP_400_BAD_REQUEST,
         )
     if not target_user or not target_user.ok:
-        return make_response(
-            jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND
-        )
+        return make_response(jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND)
     return make_response(jsonify({"user": vars(target_user.sanitize())}))
