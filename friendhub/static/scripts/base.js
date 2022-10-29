@@ -9,5 +9,7 @@ function onMouseOver() {
 function onMouseOff() {
     profileOptions.style.display = "none"
 }
-profileMenu.addEventListener("mouseenter", onMouseOver)
-profileMenu.addEventListener("mouseleave", onMouseOff)
+if (profileMenu) {
+    profileMenu.addEventListener("mouseenter", onMouseOver)
+    profileMenu.addEventListener("mouseleave", onMouseOff)
+}

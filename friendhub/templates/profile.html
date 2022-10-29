@@ -22,8 +22,10 @@
                 {% endif %}
             </div>
             <div class="short-info">
-                <p>Location: {{ target_user.city }}, {{ target_user.country }}</p>
-                <p>Education: {{ target_user.education }}</p>
+                <p>
+                    Location: {% if target_user.city and target_user.country %} {{ target_user.city }}, {{ target_user.country }} {% elif target_user.city or target_user.country %} {{ target_user.city or target_user.country }} {% else %} {{ _("Unspecified") }} {% endif %}
+                </p>
+                <p>Education: {{ target_user.education or _("Unspecified") }}</p>
             </div>
         </div>
         {% else %}

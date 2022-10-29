@@ -8,10 +8,14 @@ from datetime import datetime
 from enum import Enum
 
 
+def random_b64() -> str:
+    return base64.b64encode(str(random.getrandbits(160)).encode("utf-8")).decode()[:-2]
+
+
 @dataclass(kw_only=True)
 class Token:
     id_: uuid.UUID = field(default_factory=uuid.uuid4)
-    value: str = base64.b64encode(str(random.getrandbits(160)).encode("utf-8")).decode()[:-2]
+    value: str = field(default_factory=random_b64)
     owner_id: uuid.UUID
     date_created: datetime = field(default_factory=datetime.now)
     valid_until: datetime

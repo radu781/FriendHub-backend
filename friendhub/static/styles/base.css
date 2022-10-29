@@ -10,14 +10,14 @@ ul {
 button {
     border: none;
     background-color: transparent;
-    transition: background-color border-radius 250ms;
+    transition: all 250ms;
     cursor: pointer;
     padding: 5px 10px;
 }
 
 .button-main:hover {
     background-color: #445a9b;
-    transition: background-color 250ms;
+    transition: all 250ms;
     border-radius: 5px;
 }
 
@@ -39,6 +39,10 @@ input[type="text"],
 input[type="password"] {
     border-radius: 5px;
     border: 1px solid #445a9b;
+}
+
+input:focus {
+    outline: none;
 }
 
 a,

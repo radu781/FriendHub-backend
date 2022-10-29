@@ -11,6 +11,7 @@
     <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" />
     <script src="{{ url_for('static', filename='scripts/base.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/base_ajax.js') }}" defer></script>
     {% block extra_head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -64,9 +65,7 @@
                                 <li>{{ _("More settings") }}</li>
                                 <li>{{ _("Feedback") }}</li>
                                 <li>
-                                    <form action="/api/logout" method="post">
-                                        <button type="submit" class="button-main">{{ _("Log out") }}</button>
-                                    </form>
+                                    <button type="submit" class="button-main" onclick="onLogoutPressed()">{{ _("Log out") }}</button>
                                 </li>
                             </ul>
                         </div>

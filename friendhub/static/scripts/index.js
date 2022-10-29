@@ -1,15 +1,17 @@
 const postButton = document.querySelector("#submit-post-button")
 const textArea = document.querySelector("#text")
-textArea.addEventListener("input", (event) => {
-    if (textArea.value !== "") {
-        postButton.disabled = false
-        postButton.style.color = "white"
-        postButton.style.backgroundColor = "#4b74e5"
-        postButton.style.cursor = "pointer"
-    } else {
-        postButton.disabled = true
-        postButton.style.color = "#6d6d6d"
-        postButton.style.backgroundColor = "#839de4"
-        postButton.style.cursor = "default"
-    }
-})
+if (textArea && postButton) {
+    textArea.addEventListener("input", (event) => {
+        if (textArea.value !== "") {
+            postButton.disabled = false
+            postButton.style.color = "white"
+            postButton.style.backgroundColor = "#4b74e5"
+            postButton.style.cursor = "pointer"
+        } else {
+            postButton.disabled = true
+            postButton.style.color = "#6d6d6d"
+            postButton.style.backgroundColor = "#839de4"
+            postButton.style.cursor = "default"
+        }
+    })
+}

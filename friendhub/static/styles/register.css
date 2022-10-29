@@ -1,9 +1,9 @@
-form {
+#inputs {
     display: flex;
     justify-content: space-evenly;
 }
 
-form>div>p {
+#inputs>div>p {
     margin-bottom: 10px;
 }
 
@@ -29,6 +29,16 @@ form>div>p {
 .account-details>input,
 .more-details>input {
     margin-bottom: 10px;
+}
+
+.bad-input {
+    color: red;
+    font-weight: bold;
+}
+
+.good-input {
+    color: greenyellow;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 700px) {

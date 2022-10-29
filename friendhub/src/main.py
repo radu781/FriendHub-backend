@@ -3,6 +3,7 @@ from datetime import timedelta
 from flask import Flask, make_response, request
 from flask_api import status
 from flask_babel import Babel
+from flask_babel_js import BabelJS
 
 from controllers.delete_user_controller import delete_user_blueprint
 from controllers.deploy import deploy_blueprint
@@ -49,6 +50,7 @@ app.register_blueprint(post_blueprint)
 app.register_blueprint(relationship_blueprint)
 
 babel = Babel(app)
+babel_js = BabelJS(app)
 
 
 @babel.localeselector
