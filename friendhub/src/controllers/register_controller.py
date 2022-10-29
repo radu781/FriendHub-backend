@@ -51,6 +51,7 @@ def register() -> Response:
             jsonify({"reason": "passwords mismatch"}), status.HTTP_401_UNAUTHORIZED
         )
 
+    DEFAULT_PROFILE_PICTURE = "assets/images/default_profile_picture/default_profile_picture"
     UserDAO.register_user(
         User(
             id_=uuid4(),
@@ -62,7 +63,7 @@ def register() -> Response:
             city=values["city"],
             education=values["education"],
             extra=values["extra"],
-            profile_picture=f"assets/images/default_profile_picture/default_profile_picture_{random.randint(1, 10)}.png",
+            profile_picture=f"{DEFAULT_PROFILE_PICTURE}_{random.randint(1, 10)}.png",
             banner_picture="",
             password=values["password"],
             email=values["email"],

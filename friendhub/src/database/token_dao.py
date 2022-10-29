@@ -18,6 +18,10 @@ class TokenDAO:
         )
 
     @staticmethod
+    def invalidate(token: Token) -> None:
+        DBManager.execute("UPDATE tokens SET force_invalid=true WHERE id=%s", (str(token.id_),))
+
+    @staticmethod
     def get_token_by_value(value: str) -> Token | None:
         result = DBManager.execute("SELECT * FROM tokens where value=%s", (value,))
         if not result:

@@ -4,22 +4,26 @@
 <div class="main">
     <div class="left"></div>
     <div class="middle">
-        {% if user %}
+        {% if target_user %}
         <div class="user-profile">
             <img src="{{ url_for('static', filename='assets/images/default_banner_picture.jpg') }}" class="banner-img" alt="banner" />
             <div class="alignment">
-                <div class="profile-and-name">
-                    {% if user.profile_picture %} {% set profile_picture_path = user.profile_picture %}
+                <div class="target_user-and-name">
+                    {% if target_user.profile_picture %} {% set profile_picture_path = target_user.profile_picture %}
                     <img src="{{ url_for('static', filename=profile_picture_path) }}" class="user-profile-picture" alt="profile picture" /> {% endif %}
-                    <p>{{ user.first_name }} {{ user.middle_name or "" }} {{ user.last_name }}</p>
+                    <p>{{ target_user.first_name }} {{ target_user.middle_name or "" }} {{ target_user.last_name }}</p>
                 </div>
+                {% if user.id_ != target_user.id_ and user.id_ %}
                 <div class="profile-and-name-buttons">
-                    <button type="submit" class="pointer-cursor">Add friend</button>
+                    <form action="/api/relationship/" method="post">
+                        <button type="submit" class="pointer-cursor">Add friend</button>
+                    </form>
                 </div>
+                {% endif %}
             </div>
             <div class="short-info">
-                <p>Location: {{ user.city }}, {{ user.country }}</p>
-                <p>Education: {{ user.education }}</p>
+                <p>Location: {{ target_user.city }}, {{ target_user.country }}</p>
+                <p>Education: {{ target_user.education }}</p>
             </div>
         </div>
         {% else %}

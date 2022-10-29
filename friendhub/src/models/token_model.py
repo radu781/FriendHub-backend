@@ -16,6 +16,7 @@ class Token:
     date_created: datetime = field(default_factory=datetime.now)
     valid_until: datetime
     purpose: Purpose
+    force_invalid: bool
 
     class Purpose(str, Enum):
         DELETE_PROFILE = "delete_profile"
@@ -30,11 +31,12 @@ class Token:
             value=row[3],
             purpose=row[4],
             date_created=row[5],
+            force_invalid=row[6],
         )
 
     @property
     def is_valid(self) -> bool:
-        return datetime.now() < self.valid_until
+        return datetime.now() < self.valid_until and not self.force_invalid
 
     @property
     def is_delete_profile(self) -> bool:

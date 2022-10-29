@@ -8,7 +8,10 @@ from models.token_model import Token
 @pytest.mark.unit
 def test_create_invalid_token():
     token = Token(
-        owner_id=uuid4(), valid_until=datetime.now(), purpose=Token.Purpose.DELETE_PROFILE
+        owner_id=uuid4(),
+        valid_until=datetime.now(),
+        purpose=Token.Purpose.DELETE_PROFILE,
+        force_invalid=False,
     )
     assert not token.is_valid
 
@@ -19,5 +22,6 @@ def test_create_valid_token():
         owner_id=uuid4(),
         valid_until=datetime.now() + timedelta(days=1),
         purpose=Token.Purpose.DELETE_PROFILE,
+        force_invalid=False,
     )
     assert token.is_valid

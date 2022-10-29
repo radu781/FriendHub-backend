@@ -46,7 +46,7 @@ class PostDAO:
 
     @staticmethod
     def get_post_by_id(id_: UUID) -> Post | None:
-        value = DBManager.execute("SELECT * FROM posts where id=%s", (str(id_),))
+        value = DBManager.execute("SELECT * FROM posts WHERE id=%s", (str(id_),))
         if value == []:
             return None
         # TODO: add new likes and dislikes counter

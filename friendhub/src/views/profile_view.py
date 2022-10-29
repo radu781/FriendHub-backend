@@ -4,6 +4,7 @@ from flask.wrappers import Response
 from controllers.profile_controller import profile
 from models.user_model import User
 from flask_api import status
+from utils.session import get_user_in_session
 
 profile_view_blueprint = Blueprint("profile_view_blueprint", __name__)
 
@@ -15,4 +16,6 @@ def profile_view(id_: str) -> Response:
         return make_response(render_template("profile.html", user=None))
 
     target_user = User.from_dict(json.loads(res.data)["user"])
-    return make_response(render_template("profile.html", user=target_user))
+    return make_response(
+        render_template("profile.html", target_user=target_user, user=get_user_in_session())
+    )

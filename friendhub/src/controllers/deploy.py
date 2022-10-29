@@ -18,7 +18,7 @@ def deploy() -> Response:
     if request.args["key"] != globals.DEPLOY_KEY:
         return make_response(jsonify({"reason": "wrong deploy key"}), status.HTTP_401_UNAUTHORIZED)
 
-    with open("deploy.log", "a") as file:
+    with open("deploy.log", "a", encoding="latin1") as file:
         time = datetime.now()
         try:
             pull_output = subprocess.check_output(["git", "pull"])
