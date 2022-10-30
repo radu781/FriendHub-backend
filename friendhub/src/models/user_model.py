@@ -47,7 +47,7 @@ class User:
         )
 
     @staticmethod
-    def from_dict(d: dict) -> User:
+    def from_dict(d: dict) -> User:  # pylint: disable=invalid-name
         return User(
             id_=d["id_"],
             first_name=d["first_name"],
@@ -66,12 +66,12 @@ class User:
         )
 
     @property
-    def ok(self) -> bool:
+    def is_ok(self) -> bool:
         return (
             self.email is not None
-            and not not self.email
+            and not not self.email  # pylint: disable=unneeded-not
             and self.first_name is not None
-            and not not self.first_name
+            and not not self.first_name  # pylint: disable=unneeded-not
         )
 
     @property

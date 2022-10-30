@@ -11,7 +11,7 @@ from utils.argument_parser import (
     ArgumentParser,
     Method,
 )
-from globals import DELETE_PROFILE_KEY
+from config_keys import DELETE_PROFILE_KEY
 
 delete_user_blueprint = Blueprint("delete_user_blueprint", __name__)
 
@@ -25,7 +25,7 @@ def delete_user(id_: str) -> Response:
             jsonify({"reason": "given id is not a UUID", "id": id_}),
             status.HTTP_400_BAD_REQUEST,
         )
-    if not target_user or not target_user.ok:
+    if not target_user or not target_user.is_ok:
         return make_response(jsonify({"reason": "user not found"}), status.HTTP_404_NOT_FOUND)
     parser = ArgumentParser(
         request,

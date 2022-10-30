@@ -34,7 +34,7 @@ class ArgumentParser:
     args: set[Argument]
     method: Method = field(default=Method.GET)
 
-    def get_values(self) -> dict[str, str]:
+    def get_values(self) -> dict[str, str]:  # pylint: disable=too-many-branches
         out: dict[str, str] = {}
         not_found: list[str] = []
 

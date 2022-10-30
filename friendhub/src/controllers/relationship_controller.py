@@ -1,6 +1,5 @@
 from datetime import datetime
 import uuid
-from database.dbmanager import DBManager
 from database.relationship_dao import RelationshipDAO
 
 from database.user_dao import UserDAO

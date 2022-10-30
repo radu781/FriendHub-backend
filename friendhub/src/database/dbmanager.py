@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from dataclasses import dataclass, field
 from datetime import datetime
 
-import globals
+import config_keys
 import mysql.connector as con
 import mysql.connector.connection_cext as connection
 from mysql.connector.errors import Error
@@ -20,11 +20,11 @@ class __DBManager:
         ini_file = ConfigParser()
         ini_file.read("config/data.ini")
         self.connector: connection.CMySQLConnection = con.connect(  # type: ignore
-            database=globals.DB_SCHEMA,
-            user=globals.DB_USERNAME,
-            password=globals.DB_PASSWORD,
-            host=globals.DB_HOST,
-            port=globals.DB_PORT,
+            database=config_keys.DB_SCHEMA,
+            user=config_keys.DB_USERNAME,
+            password=config_keys.DB_PASSWORD,
+            host=config_keys.DB_HOST,
+            port=config_keys.DB_PORT,
         )
         self.cursor = self.connector.cursor()  # type: ignore
 
@@ -37,9 +37,9 @@ class __DBManager:
             if not statement.split(" ")[0].upper() in ["SELECT", "DESC"]:
                 self.connector.commit()
             return self.cursor.fetchall()
-        except Error as e:
+        except Error as ex:
             print(
-                f"""MySQL error: {e}, statement: {statement.replace('  ', ' ')},
+                f"""MySQL error: {ex}, statement: {statement.replace('  ', ' ')},
                 args: {[str(val).strip() for val in values]}"""
             )
             return []

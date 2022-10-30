@@ -13,8 +13,9 @@ class PostDAO:
     @staticmethod
     def create_post(post: Post) -> None:
         DBManager.execute(
-            """INSERT INTO posts(id, owner_id, create_time, likes, dislikes, text, image, video, audio)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+            """INSERT INTO
+                 posts(id, owner_id, create_time, likes, dislikes, text, image, video, audio)
+                 VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 str(post.id_),
                 str(post.owner_id),
@@ -50,5 +51,4 @@ class PostDAO:
         value = DBManager.execute("SELECT * FROM posts WHERE id=%s", (str(id_),))
         if value == []:
             return None
-        # TODO: add new likes and dislikes counter
         return Post.from_db(value[0])

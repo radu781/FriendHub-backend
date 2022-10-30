@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class Email(ABC):
-    to: str
+    receiver: str
     subject: str
     raw: Any = field(init=False)
     text: str = field(default="")
@@ -17,7 +17,7 @@ class Email(ABC):
 
     def __post_init__(self) -> None:
         self.message["Subject"] = self.subject
-        self.message["To"] = self.to
+        self.message["To"] = self.receiver
 
         self.message.attach(MIMEText(self.text, "plain"))
         if self.html != "":

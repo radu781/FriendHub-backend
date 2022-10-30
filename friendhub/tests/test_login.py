@@ -3,7 +3,8 @@ import json
 import pytest
 import requests
 from flask_api import status
-from friendhub.tests import LOGIN_ENDPOINT, USER_EMAIL, USER_PASSWORD
+
+from . import LOGIN_ENDPOINT, USER_EMAIL, USER_PASSWORD
 
 
 @pytest.mark.unit

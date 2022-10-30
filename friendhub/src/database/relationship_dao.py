@@ -20,7 +20,6 @@ class RelationshipDAO:
 
     @staticmethod
     def get_relationship(id_: UUID) -> Relationship | None:
-        # TODO: should use both user ids, not the relationship id
         value = DBManager.execute("SELECT * FROM relationships WHERE id=%s", (str(id_),))
         if value == []:
             return None

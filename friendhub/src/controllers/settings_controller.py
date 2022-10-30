@@ -6,4 +6,4 @@ settings_blueprint = Blueprint("settings_blueprint", __name__)
 
 @settings_blueprint.route("/api/settings/<string:category>", methods=["POST"])
 def settings(category: str) -> Response:
-    return make_response()
+    return make_response(category)
