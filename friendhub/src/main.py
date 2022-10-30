@@ -16,6 +16,7 @@ from controllers.post_controller import post_blueprint
 from controllers.relationship_controller import relationship_blueprint
 from globals import DEBUG_ON, SESSION_KEY
 from views.api_view import api_blueprint
+from views.docs_view import docs_blueprint
 from views.index_view import index_view_blueprint
 from views.login_view import login_view_blueprint
 from views.profile_view import profile_view_blueprint
@@ -37,6 +38,7 @@ app.register_blueprint(login_view_blueprint)
 app.register_blueprint(register_view_blueprint)
 app.register_blueprint(index_view_blueprint)
 app.register_blueprint(api_blueprint)
+app.register_blueprint(docs_blueprint)
 app.register_blueprint(deploy_blueprint)
 app.register_blueprint(login_blueprint)
 app.register_blueprint(logout_blueprint)

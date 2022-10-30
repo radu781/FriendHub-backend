@@ -6,7 +6,8 @@ class TokenDAO:
     @staticmethod
     def add(token: Token) -> None:
         DBManager.execute(
-            "INSERT INTO tokens(id, owner, valid_until, value, purpose, date_created) VALUES(%s, %s, %s, %s, %s, %s)",
+            """INSERT INTO tokens(id, owner, valid_until, value, purpose, date_created)
+             VALUES(%s, %s, %s, %s, %s, %s)""",
             (
                 str(token.id_),
                 str(token.owner_id),

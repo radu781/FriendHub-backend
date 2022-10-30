@@ -1,5 +1,5 @@
-import smtplib, ssl
-from time import sleep
+import smtplib
+import ssl
 
 from mail.email import Email
 from . import _from, _password

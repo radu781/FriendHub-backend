@@ -8,7 +8,8 @@ class RelationshipDAO:
     def insert_or_update(rel: Relationship) -> None:
         if RelationshipDAO.get_relationship(rel.id_) is None:
             DBManager.execute(
-                "INSERT INTO relationships(id, user_id1, user_id2, type, change_time) VALUES(%s, %s, %s, %s, %s)",
+                """INSERT INTO relationships(id, user_id1, user_id2, type, change_time)
+                VALUES(%s, %s, %s, %s, %s)""",
                 (str(rel.id_), str(rel.user_id1), str(rel.user_id2), rel.type, rel.change_time),
             )
         else:

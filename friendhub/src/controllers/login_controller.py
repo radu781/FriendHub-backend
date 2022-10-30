@@ -66,7 +66,7 @@ def login() -> Response:
         owner_id=current_user.id_,
         valid_until=datetime.now() + timedelta(14),
         purpose=Token.Purpose.USER_LOGIN,
-        force_invalid=False
+        force_invalid=False,
     )
     TokenDAO.add(current_token)
     session[Token.Purpose.USER_LOGIN] = current_token.value

@@ -47,8 +47,10 @@
 								{% endif %}
 								<p>
 									{{ _("My profile") }}
-									<img src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}"
-										alt="drop down menu" />
+									<img
+										src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}"
+										alt="drop down menu"
+									/>
 								</p>
 							</a>
                         <div id="options-list">
@@ -57,7 +59,8 @@
                                     {{ _("Online status") }}
                                     <img src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}" alt="drop down menu" />
                                 </li>
-                                <li>{{ _("Switch account") }}
+                                <li>
+                                    {{ _("Switch account") }}
                                     <img src="{{ url_for('static', filename='assets/icons/arrow_drop_down.svg') }}" alt="drop down menu" />
                                 </li>
                                 <li>{{ _("Theme") }}</li>
@@ -65,7 +68,9 @@
                                 <li>{{ _("More settings") }}</li>
                                 <li>{{ _("Feedback") }}</li>
                                 <li>
-                                    <button type="submit" class="button-main" onclick="onLogoutPressed()">{{ _("Log out") }}</button>
+                                    <button type="submit" class="button-main" onclick="onLogoutPressed()">
+											{{ _("Log out") }}
+										</button>
                                 </li>
                             </ul>
                         </div>
@@ -76,7 +81,16 @@
         </nav>
     </header>
     {% block body %} {% endblock %}
-    <footer></footer>
+    <footer>
+        <div>
+            <p>Made with &#9829; by Radu-Alexandru Popa (2022)</p>
+            <ul>
+                <li><a href="/docs">Documentation</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="https://github.com/radu781/FriendHub">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
 </body>
 
 </html>

@@ -3,6 +3,32 @@
     padding: 0;
 }
 
+body>footer>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0px;
+    background-color: #9e97ea;
+}
+
+body>footer>div>ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+footer>div>ul>li,
+footer>div>p {
+    padding: 2px 0px;
+}
+
+body>footer {
+    flex-grow: 1;
+    border-top: 1px solid #445a9b;
+}
+
 ul {
     list-style: none;
 }

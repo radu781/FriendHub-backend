@@ -60,6 +60,11 @@ span.post {
     text-transform: uppercase;
 }
 
+span.put {
+    color: blue;
+    text-transform: uppercase;
+}
+
 span.delete {
     color: red;
     text-transform: uppercase;
