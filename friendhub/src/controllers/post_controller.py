@@ -55,14 +55,14 @@ def post(id_: str) -> Response:
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
-    if len([v for v in values.items() if v is not None]) != 1:
+    if len([v for v in values.items() if v[1] is not None]) != 1:
         return make_response(
             jsonify({"reason": "only one of 'upvote', 'downvote', 'clear' is supported"}),
             status.HTTP_400_BAD_REQUEST,
         )
 
     db_vote = VoteDAO.get_vote(UUID(id_), current_user.id_)
-    user_intent = Vote.Value([v for v in values.items() if v is not None][0])
+    user_intent = Vote.Value([v for v in values.items() if v[1] is not None][0][0])
 
     if db_vote is None and user_intent == Vote.Value.CLEAR:
         return make_response(jsonify(), status.HTTP_202_ACCEPTED)
