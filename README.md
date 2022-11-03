@@ -1,6 +1,8 @@
 # FriendHub
 
 ![Lint](https://github.com/radu781/FriendHub/actions/workflows/format_and_lint.yml/badge.svg)
+![Lint](https://github.com/radu781/FriendHub/actions/workflows/run_tests.yml/badge.svg)
+![Lint](https://github.com/radu781/FriendHub/actions/workflows/deploy.yml/badge.svg)
 
 Simple social media platform where you can share photos, chat and have fun with friends
 

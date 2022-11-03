@@ -12,12 +12,12 @@ def get_locale() -> str:
 
 @app.errorhandler(403)
 def access_forbidden(err):
-    return make_response("Access forbidden" + err, status.HTTP_403_FORBIDDEN)
+    return make_response("Access forbidden" + str(err), status.HTTP_403_FORBIDDEN)
 
 
 @app.errorhandler(404)
 def page_not_found(err):
-    return make_response("Page not found" + err, status.HTTP_404_NOT_FOUND)
+    return make_response("Page not found" + str(err), status.HTTP_404_NOT_FOUND)
 
 
 if __name__ == "__main__":

@@ -1,14 +1,26 @@
-import os
 from configparser import ConfigParser
+from config_keys import GH_ACTIONS
 
-if os.path.exists("friendhub/config/testing.ini"):
+LOGIN_ENDPOINT = "/api/login"
+REGISTER_ENDPOINT = "/api/register"
+
+# github action only
+USER_EMAIL = ""
+USER_PASSWORD = ""
+USER_FIRST_NAME = ""
+USER_MIDDLE_NAME = ""
+USER_LAST_NAME = ""
+USER_COUNTRY = ""
+USER_CITY = ""
+USER_EDUCATION = ""
+USER_EXTRA = ""
+
+if not GH_ACTIONS:
     ini_file = ConfigParser()
     ini_file.read("friendhub/config/testing.ini")
 
     LOCAL = "http://127.0.0.1"
     HOST = ini_file.get("url", "host") if ini_file.get("deploy", "active") == "1" else LOCAL
-    LOGIN_ENDPOINT = HOST + ini_file.get("url", "login")
-    REGISTER_ENDPOINT = HOST + ini_file.get("url", "register")
 
     USER_EMAIL = ini_file.get("mock_user", "email")
     USER_PASSWORD = ini_file.get("mock_user", "password")

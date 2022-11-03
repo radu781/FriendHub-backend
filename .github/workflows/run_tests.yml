@@ -20,5 +20,12 @@ jobs:
         pip install pytest
         pip install -r friendhub/config/requirements.txt
     - name: Running database structure tests
+      env:
+        GH_ACTIONS_ENV: 1
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PORT: ${{ secrets.DB_PORT }}
       run: |
         PYTHONPATH="friendhub/src" pytest friendhub/tests/ -m db
