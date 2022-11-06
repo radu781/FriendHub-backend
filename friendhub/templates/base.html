@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" />
     <script src="{{ url_for('static', filename='scripts/base.js') }}" defer></script>
     <script src="{{ url_for('static', filename='scripts/base_ajax.js') }}" defer></script>
+    <script src="{{ url_for('babel_catalog') }}"></script>
     {% block extra_head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>

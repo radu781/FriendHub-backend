@@ -9,11 +9,11 @@ export function clearOldDiv() {
     }
 }
 
-export function clearAndInsertStatus(className, text) {
+export function clearAndInsertStatus(className, text, insertAfterId) {
     let newDiv = document.createElement("div")
     clearOldDiv()
     newDiv.classList.add(className)
     newDiv.innerHTML = text
-    let inputs = document.querySelector("#inputs")
+    let inputs = document.querySelector(`#${insertAfterId}`)
     inputs.insertAdjacentElement("afterend", newDiv)
 }

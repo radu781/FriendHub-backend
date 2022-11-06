@@ -77,4 +77,3 @@ If you want to self host this web app:
     systemctl reload apache2
     sudo service apache2 restart
     ```
-

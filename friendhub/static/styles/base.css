@@ -189,6 +189,16 @@ span.italics {
     width: 25%;
 }
 
+.bad-input {
+    color: red;
+    font-weight: bold;
+}
+
+.good-input {
+    color: greenyellow;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 1200px) {
     .left {
         width: 0%;

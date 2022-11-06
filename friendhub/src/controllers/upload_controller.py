@@ -83,7 +83,10 @@ def __treat_file_upload(req: Request, user_id: uuid.UUID) -> Post:
     names: list[str] = ["image-upload", "video-upload", "audio-upload"]
     args_found: dict[str, str] = {}
     for name in names:
-        file = req.files[name]
+        try:
+            file = req.files[name]
+        except KeyError:
+            continue
         if file.filename is not None and file.filename != "":
             args_found[name] = secure_filename(file.filename)
             try:

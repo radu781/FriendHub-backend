@@ -1,7 +1,6 @@
 {% extends "base.html" %} {% block title %} {{ _("Register") }} | FriendHub {% endblock %} {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/register.css') }}" />
 <script type="module" src="{{ url_for('static', filename='scripts/auth/register.js') }}" defer></script>
-<script src="{{ url_for('babel_catalog') }}"></script>
 {% endblock %}{% block body %}
 <div class="main">
     <div class="left"></div>

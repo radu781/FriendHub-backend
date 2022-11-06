@@ -27,7 +27,7 @@ function onKeyPressed(event) {
     }
     for (let item of requiredFields) {
         if (item.value === "") {
-            clearAndInsertStatus("bad-input", _("Missing required fields"))
+            clearAndInsertStatus("bad-input", _("Missing required fields"), "inputs")
             return
         }
     }
@@ -49,14 +49,14 @@ function onKeyPressed(event) {
     xmlHttp.send();
     xmlHttp.onload = function() {
         if (xmlHttp.status < 400) {
-            clearAndInsertStatus("good-input", _('Account created'))
+            clearAndInsertStatus("good-input", _('Account created'), "inputs")
 
             let xmlHttp = new XMLHttpRequest();
             xmlHttp.open("POST", `/api/login?email=${requiredFields[0].value}&password=${requiredFields[1].value}`, true);
             xmlHttp.responseType = "json"
             xmlHttp.send();
             xmlHttp.onload = function() {
-                clearAndInsertStatus("good-input", _('Redirecting soon...'))
+                clearAndInsertStatus("good-input", _('Redirecting soon...'), "inputs")
                 window.location = "/"
             }
         } else {
@@ -71,7 +71,7 @@ function onKeyPressed(event) {
                 default:
                     newDivText = xmlHttp.response["reason"];
             }
-            clearAndInsertStatus("bad-input", newDivText)
+            clearAndInsertStatus("bad-input", newDivText, "inputs")
         }
     }
 }

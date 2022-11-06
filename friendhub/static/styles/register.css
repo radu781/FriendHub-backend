@@ -31,16 +31,6 @@
     margin-bottom: 10px;
 }
 
-.bad-input {
-    color: red;
-    font-weight: bold;
-}
-
-.good-input {
-    color: greenyellow;
-    font-weight: bold;
-}
-
 @media screen and (max-width: 700px) {
     form {
         flex-direction: column;

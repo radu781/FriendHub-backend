@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %} FriendHub {% endblock %} {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" />
-<script src="{{ url_for('static', filename='scripts/index.js') }}" defer></script>
+<script type="module" src="{{ url_for('static', filename='scripts/index.js') }}" defer></script>
 <script src="{{ url_for('static', filename='scripts/index_ajax.js') }}" defer></script>
 {% endblock %} {% block body %}
 <div class="main">
@@ -9,7 +9,7 @@
         {% if user %}
         <div class="upload-form">
             <p class="upload-form-title">{{ _("Create a post") }}</p>
-            <form action="/api/upload" method="post" enctype="multipart/form-data">
+            <form action="/api/upload" method="post" enctype="multipart/form-data" id="create-post-form">
                 <textarea name="text" id="text" placeholder="{{ _('Share your thoughts') }}" required></textarea>
                 <div class="line-align">
                     <span>{{ _("Attach media") }}</span>
@@ -44,39 +44,40 @@
         </div>
         {% endif %}
         <div class="posts">
-            {% if posts %} {% for post in posts %}
+            {% if posts %} {% for post_wrapper in posts %}
             <div class="post-frame">
                 <div class="post-vote-side">
                     <p>
-                        {% if post.vote.value == "upvote" %} {% set button_img = "assets/icons/like_pressed_icon.svg" %} {% else %} {% set button_img = "assets/icons/like_icon.svg" %}{% endif %}
-                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" onclick="upvotePost('{{ post.post.id_ }}')" />
+                        {% if post_wrapper.vote.value == "upvote" %} {% set button_img = "assets/icons/like_pressed_icon.svg" %} {% else %} {% set button_img = "assets/icons/like_icon.svg" %}{% endif %}
+                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" onclick="upvotePost('{{ post_wrapper.post.id_ }}')" />
                     </p>
-                    <p id="upvote-{{ post.post.id_ }}">{{ post.post.likes }}</p>
-                    <p id="downvote-{{ post.post.id_ }}">{{ post.post.dislikes }}</p>
+                    <p id="upvote-{{ post_wrapper.post.id_ }}">{{ post_wrapper.post.likes }}</p>
+                    <p id="downvote-{{ post_wrapper.post.id_ }}">{{ post_wrapper.post.dislikes }}</p>
                     <p>
-                        {% if post.vote.value == "downvote" %} {% set button_img = "assets/icons/dislike_pressed_icon.svg" %} {% else %} {% set button_img = "assets/icons/dislike_icon.svg" %} {% endif %}
-                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" onclick="downvotePost('{{ post.post.id_ }}')" />
+                        {% if post_wrapper.vote.value == "downvote" %} {% set button_img = "assets/icons/dislike_pressed_icon.svg" %} {% else %} {% set button_img = "assets/icons/dislike_icon.svg" %} {% endif %}
+                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" onclick="downvotePost('{{ post_wrapper.post.id_ }}')" />
                     </p>
                 </div>
                 <div class="post-main">
                     <div class="post-info">
-                        <a href="/profile/{{ post.user.id_}}">
-                            <div class="post-user-profile pointer-cursor" alt="{{ post.user.first_name }}'s profile">
-                                {% if post.user.profile_picture %} {% set profile_picture_path = post.user.profile_picture %}
+                        <a href="/profile/{{ post_wrapper.user.id_}}">
+                            <div class="post-user-profile pointer-cursor" alt="{{ post_wrapper.user.first_name }}'s profile">
+                                {% if post_wrapper.user.profile_picture %} {% set profile_picture_path = post_wrapper.user.profile_picture %}
                                 <img src="{{ url_for('static', filename=profile_picture_path) }}" alt="profile picture" /> {% endif %}
                                 <p>
-                                    {{ post.user.first_name }} {{ post.user.middle_name or "" }} {{ post.user.last_name }}
+                                    {{ post_wrapper.user.first_name }} {{ post_wrapper.user.middle_name or "" }} {{ post_wrapper.user.last_name }}
                                 </p>
                             </div>
                         </a>
-                        <p>{{ _("at") }} {{ post.post.create_time }}</p>
+                        <p>{{ _("at") }} {{ post_wrapper.post.create_time }}</p>
                     </div>
-                    <p>{{ post.post.text }}</p>
-                    {% if post.image %} {% set image_path = "uploads/"~ post.owner_id~"/"+post.image %}
-                    <img src="{{ url_for('static', filename=image_path) }}" class="pointer-cursor user-image-upload" alt="upload" /> {% endif %} {% if post.post.video %} {% set video_path = "uploads/"~ post.post.owner_id~"/"+post.post.video %}
+                    <p>{{ post_wrapper.post.text }}</p>
+                    {% if post_wrapper.post.image %} {% set image_path = "uploads/"~ post_wrapper.post.owner_id~"/"+post_wrapper.post.image %}
+                    <img src="{{ url_for('static', filename=image_path) }}" class="pointer-cursor user-image-upload" alt="upload" /> {% endif %} {% if post_wrapper.post.video %} {% set video_path = "uploads/"~ post_wrapper.post.owner_id~"/"+post_wrapper.post.video
+                    %}
                     <video controls class="pointer-cursor user-video-upload">
 						<source src="{{ url_for('static', filename=video_path) }}" type="video/mp4" />
-					</video> {% endif %} {% if post.post.audio %} {% set audio_path = "uploads/"~ post.post.owner_id~"/"+post.post.audio %}
+					</video> {% endif %} {% if post_wrapper.post.audio %} {% set audio_path = "uploads/"~ post_wrapper.post.owner_id~"/"+post_wrapper.post.audio %}
                     <audio controls>
 						<source src="{{ url_for('static', filename=audio_path) }}" type="audio/mp3" />
 					</audio> {% endif %}
