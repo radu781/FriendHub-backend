@@ -1,18 +1,17 @@
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import Any
 
 
 @dataclass
 class Email(ABC):
     receiver: str
     subject: str
-    raw: Any = field(init=False)
-    text: str = field(default="")
-    html: str = field(default="")
+    text: str
+    html: str = field(init=False, default="")
     message: MIMEMultipart = field(init=False, default=MIMEMultipart("alternative"))
 
     def __post_init__(self) -> None:
@@ -24,5 +23,5 @@ class Email(ABC):
             self.message.attach(MIMEText(self.html, "html"))
 
     @abstractmethod
-    def format_mails(self) -> list[Email]:
+    def format(self) -> Email:
         ...

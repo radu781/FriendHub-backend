@@ -14,21 +14,21 @@ function onKeyPressed(event) {
     }
     for (let item of requiredFields) {
         if (item.value === "") {
-            clearAndInsertStatus("bad-input", _("Missing required fields"))
+            clearAndInsertStatus("bad-input", _("Missing required fields"), "status")
             return
         }
     }
 
     const emailValue = document.querySelector("#email").value
     const passwordValue = document.querySelector("#password").value
-    let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", `/api/login?email=${emailValue}&password=${passwordValue}`, true);
+    let xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("POST", `/api/login?email=${emailValue}&password=${passwordValue}`, true)
     xmlHttp.responseType = "json"
-    xmlHttp.send();
+    xmlHttp.send()
     xmlHttp.onload = function() {
         clearOldDiv()
         if (xmlHttp.status < 400) {
-            clearAndInsertStatus("good-input", _('Redirecting soon...'))
+            clearAndInsertStatus("good-input", _('Redirecting soon...'), "status")
             window.location = "/"
         } else {
             let newDivText = ""
@@ -40,9 +40,9 @@ function onKeyPressed(event) {
                     newDivText = _("Incorrect password")
                     break
                 default:
-                    newDivText = xmlHttp.response["reason"];
+                    newDivText = xmlHttp.response["reason"]
             }
-            clearAndInsertStatus("bad-input", newDivText)
+            clearAndInsertStatus("bad-input", newDivText, "status")
         }
     }
 }

@@ -32,7 +32,7 @@ function onKeyPressed(event) {
         }
     }
 
-    let xmlHttp = new XMLHttpRequest();
+    let xmlHttp = new XMLHttpRequest()
     let mainArgs = ""
     for (let item of requiredFields) {
         mainArgs += `${item.name}=${item.value}&`
@@ -44,17 +44,17 @@ function onKeyPressed(event) {
             extraArgs += `&${item.name}=${item.value}`
         }
     }
-    xmlHttp.open("POST", `/api/register?${mainArgs}${extraArgs}`, true);
+    xmlHttp.open("POST", `/api/register?${mainArgs}${extraArgs}`, true)
     xmlHttp.responseType = "json"
-    xmlHttp.send();
+    xmlHttp.send()
     xmlHttp.onload = function() {
         if (xmlHttp.status < 400) {
             clearAndInsertStatus("good-input", _('Account created'), "inputs")
 
-            let xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("POST", `/api/login?email=${requiredFields[0].value}&password=${requiredFields[1].value}`, true);
+            let xmlHttp = new XMLHttpRequest()
+            xmlHttp.open("POST", `/api/login?email=${requiredFields[0].value}&password=${requiredFields[1].value}`, true)
             xmlHttp.responseType = "json"
-            xmlHttp.send();
+            xmlHttp.send()
             xmlHttp.onload = function() {
                 clearAndInsertStatus("good-input", _('Redirecting soon...'), "inputs")
                 window.location = "/"
@@ -69,7 +69,7 @@ function onKeyPressed(event) {
                     newDivText = _("Passwords are not matching")
                     break
                 default:
-                    newDivText = xmlHttp.response["reason"];
+                    newDivText = xmlHttp.response["reason"]
             }
             clearAndInsertStatus("bad-input", newDivText, "inputs")
         }

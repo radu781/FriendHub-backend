@@ -46,8 +46,8 @@ class __DBManager:
             return self.cursor.fetchall()
         except Error as ex:
             print(
-                f"""MySQL error: {ex}, statement: {statement.replace('  ', ' ')},
-                args: {[str(val).strip() for val in values]}"""
+                f"MySQL error: {ex}, statement: {statement.replace('  ', ' ')}, "
+                f"args: {[str(val).strip() for val in values]}"
             )
             if isinstance(ex, OperationalError):
                 print("Restarting MySQL connection")

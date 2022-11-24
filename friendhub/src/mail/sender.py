@@ -13,8 +13,7 @@ class EmailSender:
     @staticmethod
     def queue(email: Email):
         email.message["From"] = EmailSender.FROM
-        for mail in email.format_mails():
-            EmailSender.mails.append(mail)
+        EmailSender.mails.append(email.format())
         EmailSender.__send()
 
     @staticmethod

@@ -45,7 +45,7 @@ createPostForm.onsubmit = function(event) {
     let xmlHttp = new XMLHttpRequest()
     xmlHttp.open("POST", `/api/upload`, true)
     xmlHttp.responseType = "json"
-    xmlHttp.send(formData);
+    xmlHttp.send(formData)
     xmlHttp.onload = function() {
         clearAndInsertStatus("good-input", _("Uploaded, redirecting soon..."), "text")
         window.location = "/"
