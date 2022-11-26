@@ -9,3 +9,4 @@
 deploy.log
 friendhub/static/uploads/
 *.po
+friendhub/performance/

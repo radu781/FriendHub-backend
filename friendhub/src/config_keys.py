@@ -29,4 +29,5 @@ else:
     DB_PASSWORD = ini_file.get("database", "password")
     DB_PORT = ini_file.get("database", "port")
 
-    DELETE_PROFILE_KEY = ini_file.get("admin_keys", "delete_profile")
+    DELETE_PROFILE_KEY = ini_file.get("admin", "delete_profile")
+    SAFE_IPS = ini_file.get("admin", "safe_ips").split(",")
