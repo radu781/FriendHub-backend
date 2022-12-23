@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %} {{ user.first_name }} | FriendHub {% endblock %} {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}" /> {% endblock %} {% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}" />
+<script type="module" src="{{ url_for('static', filename='scripts/profile.js') }}" defer></script>{% endblock %} {% block body %}
 <div class="main">
     <div class="left"></div>
     <div class="middle">
@@ -15,8 +16,8 @@
                 </div>
                 {% if user.id_ != target_user.id_ and user.id_ %}
                 <div class="profile-and-name-buttons">
-                    <form action="/api/relationship/" method="post">
-                        <button type="submit" class="pointer-cursor">Add friend</button>
+                    <form action="/api/relationship/" method="post" id="add-friend-form">
+                        <button type="submit" class="pointer-cursor">{{ _("Add friend") }}</button>
                     </form>
                 </div>
                 {% endif %}

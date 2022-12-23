@@ -9,14 +9,15 @@
     <meta name="description" content="Simple social media web application" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/email/base.css') }}" />
-    <script src="{{ url_for('babel_catalog') }}"></script>
+    <!-- <script src="{{ url_for('babel_catalog') }}"></script> -->
     {% block extra_head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
-    {% block body %} {% endblock %}
+    <div style="margin: 3% 10%; display: flex; align-items: center; justify-content: center; flex-direction: column">
+        {% block body %} {% endblock %}
+    </div>
 </body>
 
 </html>

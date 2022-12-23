@@ -8,7 +8,8 @@
 			"console": "integratedTerminal",
 			"justMyCode": false,
 			"cwd": "${workspaceFolder}",
-			"env": { "PYTHONPATH": "friendhub/src;." }
+			"env": { "PYTHONPATH": "friendhub/src;." },
+			"args": ["-Xfrozen_modules=off"]
 		},
 		{
 			"name": "Make translations",

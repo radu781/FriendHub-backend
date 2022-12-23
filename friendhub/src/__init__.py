@@ -67,5 +67,8 @@ if "PROFILE" in os.environ:
 
     app.config["PROFILE"] = True
     app.wsgi_app = ProfilerMiddleware(
-        app.wsgi_app, restrictions=[10], profile_dir="friendhub/performance/", stream=None  # type:ignore
+        app.wsgi_app,
+        restrictions=[10],
+        profile_dir="friendhub/performance/",
+        stream=None,  # type:ignore
     )

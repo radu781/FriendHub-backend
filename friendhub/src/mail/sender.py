@@ -26,7 +26,8 @@ class EmailSender:
             "smtp.gmail.com", 465, context=ssl.create_default_context()
         ) as server:
             server.login(EmailSender.FROM, EmailSender.PASSWORD)
-            server.sendmail(EmailSender.FROM, email.receiver, email.message.as_string())
+            # server.sendmail(EmailSender.FROM, email.receiver, email.message.as_string())
+            server.sendmail(EmailSender.FROM, "friendhub.mail@gmail.com", email.message.as_string())
             server.quit()
 
     @staticmethod

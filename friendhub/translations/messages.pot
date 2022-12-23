@@ -8,148 +8,210 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FriendHub 1.0\n"
 "Report-Msgid-Bugs-To: poparadu501@gmail.com\n"
-"POT-Creation-Date: 2022-10-15 20:08+0300\n"
-"PO-Revision-Date: 2022-10-15 20:08+0300\n"
+"POT-Creation-Date: 2022-12-23 19:30+0200\n"
+"PO-Revision-Date: 2022-12-23 19:30+0300\n"
 "Last-Translator: Radu-Alexandru Popa <poparadu501@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.11.0\n"
 
-#: friendhub/templates/base.html:24
+#: friendhub/static/scripts/index.js:30
+msgid "Post description cannot be empty"
+msgstr ""
+
+#: friendhub/static/scripts/index.js:50
+msgid "Uploaded, redirecting soon..."
+msgstr ""
+
+#: friendhub/static/scripts/profile.js:13
+msgid "Request sent"
+msgstr ""
+
+#: friendhub/static/scripts/auth/login.js:17
+#: friendhub/static/scripts/auth/register.js:30
+msgid "Missing required fields"
+msgstr ""
+
+#: friendhub/static/scripts/auth/login.js:31
+#: friendhub/static/scripts/auth/register.js:59
+msgid "Redirecting soon..."
+msgstr ""
+
+#: friendhub/static/scripts/auth/login.js:37
+msgid "Email address does not match any account"
+msgstr ""
+
+#: friendhub/static/scripts/auth/login.js:40
+msgid "Incorrect password"
+msgstr ""
+
+#: friendhub/static/scripts/auth/register.js:52
+msgid "Account created"
+msgstr ""
+
+#: friendhub/static/scripts/auth/register.js:66
+msgid "An user with the same email address already exists"
+msgstr ""
+
+#: friendhub/static/scripts/auth/register.js:69
+msgid "Passwords are not matching"
+msgstr ""
+
+#: friendhub/templates/base.html:26
 msgid "Logo"
 msgstr ""
 
-#: friendhub/templates/base.html:29
+#: friendhub/templates/base.html:31
 msgid "Search"
 msgstr ""
 
-#: friendhub/templates/base.html:35 friendhub/templates/login.html:1
+#: friendhub/templates/base.html:37 friendhub/templates/login.html:1
 msgid "Login"
 msgstr ""
 
-#: friendhub/templates/base.html:36 friendhub/templates/register.html:1
+#: friendhub/templates/base.html:38 friendhub/templates/register.html:1
 msgid "Register"
 msgstr ""
 
-#: friendhub/templates/base.html:48
+#: friendhub/templates/base.html:50
 msgid "My profile"
 msgstr ""
 
-#: friendhub/templates/base.html:56
+#: friendhub/templates/base.html:60
 msgid "Online status"
 msgstr ""
 
-#: friendhub/templates/base.html:59
+#: friendhub/templates/base.html:64
 msgid "Switch account"
 msgstr ""
 
-#: friendhub/templates/base.html:62
+#: friendhub/templates/base.html:67
 msgid "Theme"
 msgstr ""
 
-#: friendhub/templates/base.html:63
+#: friendhub/templates/base.html:68
 msgid "Accessibility"
 msgstr ""
 
-#: friendhub/templates/base.html:64
+#: friendhub/templates/base.html:69
 msgid "More settings"
 msgstr ""
 
-#: friendhub/templates/base.html:65
+#: friendhub/templates/base.html:70
 msgid "Feedback"
 msgstr ""
 
-#: friendhub/templates/base.html:68
+#: friendhub/templates/base.html:73
 msgid "Log out"
 msgstr ""
 
-#: friendhub/templates/index.html:10
+#: friendhub/templates/index.html:11
 msgid "Create a post"
 msgstr ""
 
-#: friendhub/templates/index.html:12
+#: friendhub/templates/index.html:13
 msgid "Share your thoughts"
 msgstr ""
 
-#: friendhub/templates/index.html:14
+#: friendhub/templates/index.html:15
 msgid "Attach media"
 msgstr ""
 
-#: friendhub/templates/index.html:20
+#: friendhub/templates/index.html:21
 msgid "Upload an image"
 msgstr ""
 
-#: friendhub/templates/index.html:28
+#: friendhub/templates/index.html:29
 msgid "Upload a video"
 msgstr ""
 
-#: friendhub/templates/index.html:36
+#: friendhub/templates/index.html:37
 msgid "Upload an audio file"
 msgstr ""
 
-#: friendhub/templates/index.html:41
+#: friendhub/templates/index.html:42
 msgid "Post"
 msgstr ""
 
-#: friendhub/templates/index.html:50
+#: friendhub/templates/index.html:52
 msgid "Like this post"
 msgstr ""
 
-#: friendhub/templates/index.html:55
+#: friendhub/templates/index.html:58
 msgid "Dislike this post"
 msgstr ""
 
-#: friendhub/templates/index.html:67
+#: friendhub/templates/index.html:72
 msgid "at"
 msgstr ""
 
-#: friendhub/templates/index.html:79
+#: friendhub/templates/index.html:85
 msgid "Comment on this post"
 msgstr ""
 
-#: friendhub/templates/index.html:80
+#: friendhub/templates/index.html:86
 msgid "Share this post"
 msgstr ""
 
-#: friendhub/templates/login.html:3 friendhub/templates/register.html:10
+#: friendhub/templates/login.html:10 friendhub/templates/register.html:11
 msgid "Email address"
 msgstr ""
 
-#: friendhub/templates/login.html:5 friendhub/templates/register.html:12
+#: friendhub/templates/login.html:12 friendhub/templates/register.html:13
 msgid "Password"
 msgstr ""
 
-#: friendhub/templates/register.html:9
+#: friendhub/templates/profile.html:20
+msgid "Add friend"
+msgstr ""
+
+#: friendhub/templates/profile.html:27 friendhub/templates/profile.html:29
+msgid "Unspecified"
+msgstr ""
+
+#: friendhub/templates/register.html:10
 msgid "Account information"
 msgstr ""
 
-#: friendhub/templates/register.html:14
+#: friendhub/templates/register.html:15
 msgid "Confirm password"
 msgstr ""
 
-#: friendhub/templates/register.html:18
+#: friendhub/templates/register.html:19
 msgid "More information"
 msgstr ""
 
-#: friendhub/templates/register.html:19
+#: friendhub/templates/register.html:20
 msgid "First name"
 msgstr ""
 
-#: friendhub/templates/register.html:21
+#: friendhub/templates/register.html:22
 msgid "Middle name"
 msgstr ""
 
-#: friendhub/templates/register.html:23
+#: friendhub/templates/register.html:24
 msgid "Last name"
 msgstr ""
 
-#: friendhub/templates/register.html:25
+#: friendhub/templates/register.html:26
 msgid "Country"
 msgstr ""
 
-#: friendhub/templates/register.html:27
+#: friendhub/templates/register.html:28
 msgid "City"
+msgstr ""
+
+#: friendhub/templates/email/welcome.html:3
+msgid "Welcome to"
+msgstr ""
+
+#: friendhub/templates/email/welcome.html:5
+msgid "We are pleased to have you here"
+msgstr ""
+
+#: friendhub/templates/email/welcome.html:7
+msgid "Continue customizing your profile at"
 msgstr ""
 

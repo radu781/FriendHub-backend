@@ -14,7 +14,7 @@ All API related information can be found at [https://friendhub.social/api](https
 
 If you want to self host this web app:
 
-- install python 3.10
+- install python 3.11
 - install python requirements
 
     ```bash
@@ -42,7 +42,7 @@ If you want to self host this web app:
   - enable mod_wsgi and create flask app (it is recommended to never run pip install as root)
 
     ```bash
-    sudo apt-get install libapache2-mod-wsgi python-dev
+    sudo apt-get install libapache2-mod-wsgi-py3 python-dev
     cd /var/www
     sudo mkdir appName
     cd appName
@@ -57,13 +57,13 @@ If you want to self host this web app:
     <VirtualHost *:80>
         ServerName ip
         ServerAdmin email@mywebsite.com
-        WSGIScriptAlias / /var/www/webApp/webapp.wsgi
-        <Directory /var/www/webApp/webApp/>
+        WSGIScriptAlias / /var/www/appName/appName.wsgi
+        <Directory /var/www/appName/appName/>
             Order allow,deny
             Allow from all
         </Directory>
-        Alias /static /var/www/webApp/webApp/static
-        <Directory /var/www/webApp/webApp/static/>
+        Alias /static /var/www/appName/appName/static
+        <Directory /var/www/appName/appName/static/>
             Order allow,deny
             Allow from all
         </Directory>
