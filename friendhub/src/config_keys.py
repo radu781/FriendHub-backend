@@ -1,6 +1,4 @@
 import os
-import sys
-from configparser import ConfigParser
 
 GH_ACTIONS = "GH_ACTIONS_ENV" in os.environ
 
@@ -11,6 +9,9 @@ if GH_ACTIONS:
     DB_PASSWORD = os.environ["DB_PASSWORD"]
     DB_PORT = os.environ["DB_PORT"]
 else:
+    import sys
+    from configparser import ConfigParser
+
     if sys.platform in ("linux", "linux2"):
         os.chdir("/var/www/friendhub")
     ini_file = ConfigParser()

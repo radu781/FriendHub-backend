@@ -3,18 +3,13 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 import config_keys
-import mysql.connector as con
-import mysql.connector.connection_cext as connection
-from mysql.connector.errors import Error, OperationalError
-import mysql.connector.cursor_cext as _cursor
+import psycopg2
+import psycopg2.extensions
 
 
 @dataclass
 class __DBManager:
-    connector: connection.CMySQLConnection = field(
-        init=False, default=connection.CMySQLConnection()
-    )
-    cursor: _cursor.CMySQLCursor = field(init=False)
+    cursor: psycopg2.extensions.cursor = field(init=False)
 
     def __post_init__(self) -> None:
         ini_file = ConfigParser()
@@ -24,16 +19,14 @@ class __DBManager:
     def __restart_connection(self) -> None:
         if hasattr(self, "cursor") and not self.cursor:
             self.cursor.close()
-        if hasattr(self, "connector") and not self.connector:
-            self.connector.close()
-        self.connector: connection.CMySQLConnection = con.connect(  # type: ignore
+        self.connector = psycopg2.connect(
             database=config_keys.DB_SCHEMA,
             user=config_keys.DB_USERNAME,
             password=config_keys.DB_PASSWORD,
             host=config_keys.DB_HOST,
             port=config_keys.DB_PORT,
         )
-        self.cursor = self.connector.cursor()  # type: ignore
+        self.cursor = self.connector.cursor()
 
     def execute(
         self, statement: str, values: tuple[int | str | datetime | None, ...]
@@ -44,13 +37,13 @@ class __DBManager:
             if not statement.split(" ")[0].upper() in ["SELECT", "DESC"]:
                 self.connector.commit()
             return self.cursor.fetchall()
-        except Error as ex:
+        except psycopg2.Error as ex:
             print(
-                f"MySQL error: {ex}, statement: {statement.replace('  ', ' ')}, "
+                f"PostgreSQL error: {ex}, statement: {statement.replace('  ', ' ')}, "
                 f"args: {[str(val).strip() for val in values]}"
             )
-            if isinstance(ex, OperationalError):
-                print("Restarting MySQL connection")
+            if isinstance(ex, psycopg2.OperationalError):
+                print("Restarting PostgreSQL connection")
                 self.__restart_connection()
             return []
 

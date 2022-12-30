@@ -40,7 +40,10 @@ class Token:
 
     @property
     def is_valid(self) -> bool:
-        return datetime.now() < self.valid_until and not self.force_invalid
+        return (
+            datetime.now().replace(tzinfo=None) < self.valid_until.replace(tzinfo=None)
+            and not self.force_invalid
+        )
 
     @property
     def is_delete_profile(self) -> bool:

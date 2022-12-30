@@ -1,6 +1,6 @@
 flask==2.1.2
 flask_api==3.0.post1
-mysql-connector-python==8.0.29
 flask-babel==2.0.0
 flask-babel-js==1.0.2 # https://github.com/emdemir/Flask-Babel-JS/issues/7
 requests==2.28.1
+psycopg2==2.9.5

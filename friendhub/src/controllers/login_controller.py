@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
-
+from utils.session import set_session_token
 from database.token_dao import TokenDAO
 from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request, session
@@ -69,5 +69,5 @@ def login() -> Response:
         force_invalid=False,
     )
     TokenDAO.add(current_token)
-    session[Token.Purpose.USER_LOGIN] = current_token.value
+    set_session_token(current_token, Token.Purpose.USER_LOGIN)
     return make_response(jsonify({"token": vars(current_token)}))

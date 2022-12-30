@@ -2,7 +2,7 @@ from uuid import UUID
 
 from models.post_model import Post
 from models.post_wrapper import PostWrapper
-from utils import session
+from models.user_model import User
 
 from database.dbmanager import DBManager
 from database.user_dao import UserDAO
@@ -28,7 +28,7 @@ class PostDAO:
         )
 
     @staticmethod
-    def get_visible_posts() -> list[PostWrapper]:
+    def get_visible_posts(user: User | None) -> list[PostWrapper]:
         value = DBManager.execute("SELECT * FROM posts ORDER BY create_time DESC", ())
         out: list[PostWrapper] = []
         for row in value:
@@ -37,10 +37,9 @@ class PostDAO:
             author = UserDAO.get_user_by_id(current_post.owner_id)
             if not author:
                 continue
-            current_user = session.get_user_in_session()
-            if not current_user:
+            if not user:
                 continue
-            current_vote = VoteDAO.get_vote(current_post.id_, current_user.id_)
+            current_vote = VoteDAO.get_vote(current_post.id_, user.id_)
             out.append(PostWrapper(current_post, author, current_vote))
         return out
 

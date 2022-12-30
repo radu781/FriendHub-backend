@@ -9,7 +9,7 @@ class VoteDAO:
     def add(vote: Vote) -> None:
         DBManager.execute(
             "INSERT INTO votes(id, parent_id, author_id, value) VALUES(%s, %s, %s, %s)",
-            (str(vote.id_), str(vote.parent_id), str(vote.author_id), vote.value),
+            (str(vote.id_), str(vote.parent_id), str(vote.author_id), vote.value.value),
         )
 
     @staticmethod

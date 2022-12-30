@@ -13,7 +13,7 @@ def index_view() -> Response:
     return make_response(
         render_template(
             "index.html",
-            posts=PostDAO.get_visible_posts(),
+            posts=PostDAO.get_visible_posts(current_user),
             user=current_user,
         )
     )
