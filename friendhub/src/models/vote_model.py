@@ -1,8 +1,9 @@
 from __future__ import annotations
+
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-import uuid
 
 
 @dataclass(kw_only=True)
@@ -17,6 +18,10 @@ class Vote:
         UPVOTE = "upvote"
         DOWNVOTE = "downvote"
         CLEAR = "clear"
+
+        @property
+        def is_clear(self) -> bool:
+            return self.value == Vote.Value.CLEAR
 
     @staticmethod
     def from_db(row: tuple) -> Vote:

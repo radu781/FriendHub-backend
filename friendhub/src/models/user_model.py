@@ -81,3 +81,8 @@ class User:
     def sanitize(self) -> User:
         self.password = self.email = self.permissions = None  # type: ignore
         return self
+
+    def __eq__(self, __o: object) -> bool:
+        if not isinstance(__o, User):
+            return False
+        return self.id_ == __o.id_

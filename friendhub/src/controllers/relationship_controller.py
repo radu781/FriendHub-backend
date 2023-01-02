@@ -1,25 +1,23 @@
-from datetime import datetime
 import uuid
-from database.relationship_dao import RelationshipDAO
+from datetime import datetime
 
+from database.relationship_dao import RelationshipDAO
 from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
 from models.relationship_model import Relationship
-from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
-from utils.session import get_user_in_session
+from models.user_model import User
+from utils.argument_parser import *
 from utils.etc import is_uuid_valid
+from utils.validators.decorators import needs_login
 
 relationship_blueprint = Blueprint("relationship_blueprint", __name__)
 
 
 @relationship_blueprint.route("/api/relationship", methods=["POST"])
-def relationship() -> Response:
-    current_user = get_user_in_session()
-    if current_user is None:
-        return make_response(status.HTTP_403_FORBIDDEN)
-
+@needs_login
+def relationship(*, current_user: User) -> Response:
     parser = ArgumentParser(
         request,
         {

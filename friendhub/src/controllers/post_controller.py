@@ -5,17 +5,18 @@ from database.vote_dao import VoteDAO
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
+from models.user_model import User
 from models.vote_model import Vote
-from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
-from utils.session import get_user_in_session
-from utils.validators import Types, check_params
+from utils.argument_parser import *
+from utils.validators.decorators import Types, check_params, needs_login
 
 post_blueprint = Blueprint("post_blueprint", __name__)
 
 
 @post_blueprint.route("/api/post/<string:id_>", methods=["GET", "PUT"])
 @check_params({"id_": Types.UUID})
-def post(id_: uuid.UUID) -> Response:
+@needs_login
+def post(*, id_: uuid.UUID, current_user: User) -> Response:
     if request.method == "GET":
         target_post = PostDAO.get_post_by_id(id_)
         if target_post is None:
@@ -23,18 +24,10 @@ def post(id_: uuid.UUID) -> Response:
         target_post = VoteDAO.get_votes_for_post(target_post)
         return make_response(jsonify(vars(target_post)))
 
-    current_user = get_user_in_session()
-    if current_user is None:
-        return make_response(
-            jsonify({"reason": "you need to be logged in"}),
-            status.HTTP_401_UNAUTHORIZED,
-        )
     parser = ArgumentParser(
         request,
         {
-            Argument("upvote", ArgType.OPTIONAL, None),
-            Argument("downvote", ArgType.OPTIONAL, None),
-            Argument("clear", ArgType.OPTIONAL, None),
+            Argument("vote", ArgType.MANDATORY, None),
         },
         Method.POST,
     )
@@ -45,31 +38,26 @@ def post(id_: uuid.UUID) -> Response:
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
         )
-    if len([v for v in values.items() if v[1] is not None]) != 1:
-        return make_response(
-            jsonify({"reason": "only one of 'upvote', 'downvote', 'clear' is supported"}),
-            status.HTTP_400_BAD_REQUEST,
-        )
 
     db_vote = VoteDAO.get_vote(id_, current_user.id_)
-    user_intent = Vote.Value([v for v in values.items() if v[1] is not None][0][0])
+    user_intent = Vote.Value(values["vote"])
 
-    if db_vote is None and user_intent == Vote.Value.CLEAR:
-        return make_response(jsonify(), status.HTTP_202_ACCEPTED)
+    if db_vote is None and user_intent.is_clear:
+        return make_response("", status.HTTP_202_ACCEPTED)
 
-    if db_vote is None and user_intent != Vote.Value.CLEAR:
+    if db_vote is None and not user_intent.is_clear:
         VoteDAO.add(Vote(parent_id=id_, author_id=current_user.id_, value=user_intent))
-        return make_response(jsonify(), status.HTTP_201_CREATED)
+        return make_response("", status.HTTP_201_CREATED)
 
-    if db_vote is not None and user_intent == Vote.Value.CLEAR:
+    if db_vote is not None and user_intent.is_clear:
         VoteDAO.delete(db_vote.id_)
-        return make_response(status.HTTP_205_RESET_CONTENT)
+        return make_response("", status.HTTP_205_RESET_CONTENT)
 
     if db_vote is not None and db_vote.value == user_intent:
-        return make_response(jsonify(), status.HTTP_202_ACCEPTED)
+        return make_response("", status.HTTP_202_ACCEPTED)
 
     if db_vote is not None and db_vote.value != user_intent:
         VoteDAO.delete(db_vote.id_)
         VoteDAO.add(Vote(parent_id=id_, author_id=current_user.id_, value=user_intent))
-        return make_response(jsonify(), status.HTTP_201_CREATED)
-    return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return make_response("", status.HTTP_201_CREATED)
+    return make_response("unexpected error", status.HTTP_500_INTERNAL_SERVER_ERROR)

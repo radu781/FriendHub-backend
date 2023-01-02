@@ -1,5 +1,5 @@
 from database.token_dao import TokenDAO
-from flask import Blueprint, jsonify, make_response, session, request
+from flask import Blueprint, jsonify, make_response, request, session
 from flask.wrappers import Response
 from flask_api import status
 from models.token_model import Token
@@ -13,7 +13,7 @@ def logout() -> Response:
     if Token.Purpose.USER_LOGIN not in session:
         return make_response(jsonify({"_": "already logged out"}))
     if "Authorization" in request.headers:
-        user = get_user_in_request(request)
+        user = get_user_in_request()
         if not user:
             return make_response(jsonify({"_": "already logged out"}))
 

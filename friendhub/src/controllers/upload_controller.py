@@ -2,20 +2,13 @@ import os
 import uuid
 
 from database.post_dao import PostDAO
-from database.token_dao import TokenDAO
-from database.user_dao import UserDAO
-from flask import Blueprint, jsonify, make_response, request, session
+from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Request, Response
 from flask_api import status
 from models.post_model import Post
-from models.token_model import Token
-from utils.argument_parser import (
-    ArgsNotFoundException,
-    ArgType,
-    Argument,
-    ArgumentParser,
-    Method,
-)
+from models.user_model import User
+from utils.argument_parser import *
+from utils.validators.decorators import needs_login
 from werkzeug.utils import secure_filename
 
 upload_blueprint = Blueprint("upload_blueprint", __name__)
@@ -27,10 +20,8 @@ except FileExistsError:
 
 
 @upload_blueprint.route("/api/upload", methods=["POST"])
-def upload() -> Response:
-    if Token.Purpose.USER_LOGIN not in session:
-        return make_response(jsonify({"reason": "not logged in"}), status.HTTP_403_FORBIDDEN)
-
+@needs_login
+def upload(*, current_user: User) -> Response:
     parser = ArgumentParser(
         request,
         {
@@ -51,21 +42,11 @@ def upload() -> Response:
     if values["text"] == "":
         return make_response(jsonify({"reason": "text missing"}), status.HTTP_406_NOT_ACCEPTABLE)
 
-    current_token = TokenDAO.get_token_by_value(session[Token.Purpose.USER_LOGIN])
-
-    if not current_token:
-        return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    current_user = UserDAO.get_user_by_id(current_token.owner_id)
-
-    if not current_user:
-        return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     post_got = __treat_file_upload(request, current_user.id_)
     post_got.text = values["text"]
     PostDAO.create_post(post_got)
 
-    return make_response("")
+    return make_response("", status.HTTP_201_CREATED)
 
 
 def __treat_file_upload(req: Request, user_id: uuid.UUID) -> Post:

@@ -2,19 +2,21 @@ import random
 from datetime import datetime
 from uuid import uuid4
 
+import utils.validators.other as validators
 from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request, session
 from flask.wrappers import Response
 from flask_api import status
 from models.token_model import Token
 from models.user_model import User
-from utils import validators
-from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
+from utils.argument_parser import *
+from utils.validators.decorators import needs_logout
 
 register_blueprint = Blueprint("register_blueprint", __name__)
 
 
 @register_blueprint.route("/api/register", methods=["POST"])
+@needs_logout
 def register() -> Response:
     if Token.Purpose.USER_LOGIN in session:
         return make_response(jsonify({"reason": "logged in"}), status.HTTP_403_FORBIDDEN)
@@ -43,8 +45,13 @@ def register() -> Response:
             status.HTTP_401_UNAUTHORIZED,
         )
     try:
-        validators.validate_email(values["email"])
-        validators.validate_password(values["password"])
+        validators.check_email(values["email"])
+        validators.check_password(values["password"])
+        validators.check_name(values["first-name"])
+        if values["middle-name"] != "":
+            validators.check_name(values["middle-name"])
+        if values["last-name"] != "":
+            validators.check_name(values["last-name"])
     except ValueError as ex:
         return make_response(
             jsonify({"reason": "one of the inputs has an incorrect format", "error": ex.args[0]}),
