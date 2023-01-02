@@ -11,6 +11,7 @@ from controllers.profile_controller import profile_blueprint
 from controllers.register_controller import register_blueprint
 from controllers.relationship_controller import relationship_blueprint
 from controllers.upload_controller import upload_blueprint
+from controllers.settings_controller import settings_blueprint
 from flask import Flask
 from flask_babel import Babel
 from flask_babel_js import BabelJS
@@ -43,6 +44,7 @@ app.register_blueprint(login_blueprint)
 app.register_blueprint(logout_blueprint)
 app.register_blueprint(register_blueprint)
 app.register_blueprint(upload_blueprint)
+app.register_blueprint(settings_blueprint)
 app.register_blueprint(profile_blueprint)
 app.register_blueprint(profile_view_blueprint)
 app.register_blueprint(delete_user_blueprint)
@@ -55,20 +57,6 @@ babel_js = BabelJS(app)
 
 
 if "PROFILE" in os.environ:
-    import shutil
+    import perf
 
-    from werkzeug.middleware.profiler import ProfilerMiddleware
-
-    try:
-        shutil.rmtree("friendhub/performance/", ignore_errors=True)
-        os.mkdir("friendhub/performance/")
-    except (FileNotFoundError, FileExistsError):
-        pass
-
-    app.config["PROFILE"] = True
-    app.wsgi_app = ProfilerMiddleware(
-        app.wsgi_app,
-        restrictions=[10],
-        profile_dir="friendhub/performance/",
-        stream=None,  # type:ignore
-    )
+    perf.profile(app)

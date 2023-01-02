@@ -1,7 +1,9 @@
+import os
+
+from config_keys import DEBUG_ON
 from flask import make_response, request
 from flask_api import status
 
-from config_keys import DEBUG_ON
 from friendhub.src import app, babel
 
 
@@ -21,4 +23,12 @@ def page_not_found(err):
 
 
 if __name__ == "__main__":
+    if "PROFILE" in os.environ:
+        from threading import Thread
+
+        import perf
+
+        mover = Thread(target=perf.move_files)
+        mover.start()
+
     app.run(port=80, debug=DEBUG_ON)

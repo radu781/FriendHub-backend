@@ -5,7 +5,7 @@ from database.dbmanager import DBManager
 @pytest.mark.unit
 @pytest.mark.db
 def test_connection():
-    assert DBManager.execute("SELECT 'mock' FROM dual", ()) == [("mock",)]
+    assert DBManager.execute("SELECT 1", ()) == [(1,)]
 
 
 @pytest.mark.unit

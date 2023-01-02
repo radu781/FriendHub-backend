@@ -8,6 +8,7 @@ from flask.wrappers import Response
 from flask_api import status
 from models.token_model import Token
 from models.user_model import User
+from utils import validators
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 
 register_blueprint = Blueprint("register_blueprint", __name__)
@@ -40,6 +41,14 @@ def register() -> Response:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_401_UNAUTHORIZED,
+        )
+    try:
+        validators.validate_email(values["email"])
+        validators.validate_password(values["password"])
+    except ValueError as ex:
+        return make_response(
+            jsonify({"reason": "one of the inputs has an incorrect format", "error": ex.args[0]}),
+            status.HTTP_400_BAD_REQUEST,
         )
 
     if UserDAO.user_exists(values["email"]):

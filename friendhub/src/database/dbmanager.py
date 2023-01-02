@@ -9,6 +9,8 @@ import psycopg2.extensions
 
 @dataclass
 class __DBManager:
+    NO_COMMIT_OPERATIONS = ["SELECT", "DESC"]
+    NO_FETCH_OPERATIONS = ["INSERT"]
     cursor: psycopg2.extensions.cursor = field(init=False)
 
     def __post_init__(self) -> None:
@@ -34,8 +36,10 @@ class __DBManager:
         statement = statement.replace("\n", " ").replace("  ", " ")
         try:
             self.cursor.execute(statement, values)
-            if not statement.split(" ")[0].upper() in ["SELECT", "DESC"]:
+            if not statement.split(" ")[0].upper() in self.NO_COMMIT_OPERATIONS:
                 self.connector.commit()
+            if statement.split(" ")[0].upper() in self.NO_FETCH_OPERATIONS:
+                return []
             return self.cursor.fetchall()
         except psycopg2.Error as ex:
             print(

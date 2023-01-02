@@ -18,7 +18,8 @@ If you want to self host this web app:
 - install python requirements
 
     ```bash
-    pip install -r friendhub/config/requirements.txt
+    sudo apt-get install python3-pip
+    pip3 install -r friendhub/config/requirements.txt
     ```
 
 - edit [friendhub.wsgi](friendhub.wsgi) to use your project path
@@ -42,12 +43,10 @@ If you want to self host this web app:
   - enable mod_wsgi and create flask app (it is recommended to never run pip install as root)
 
     ```bash
-    sudo apt-get install libapache2-mod-wsgi-py3 python-dev
+    sudo apt-get install libapache2-mod-wsgi-py3 python3-dev
     cd /var/www
     sudo mkdir appName
     cd appName
-    sudo apt-get install python-pip
-    sudo pip install Flask 
     ```
 
   - enable virtual host
