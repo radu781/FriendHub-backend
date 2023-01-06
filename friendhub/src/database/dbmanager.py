@@ -10,7 +10,7 @@ import psycopg2.extensions
 @dataclass
 class __DBManager:
     NO_COMMIT_OPERATIONS = ["SELECT", "DESC"]
-    NO_FETCH_OPERATIONS = ["INSERT", "DELETE"]
+    NO_FETCH_OPERATIONS = ["INSERT", "DELETE", "UPDATE"]
     cursor: psycopg2.extensions.cursor = field(init=False)
 
     def __post_init__(self) -> None:
@@ -33,7 +33,7 @@ class __DBManager:
     def execute(
         self, statement: str, values: tuple[int | str | datetime | None, ...]
     ) -> list[tuple]:
-        statement = statement.replace("\n", " ").replace("  ", " ")
+        statement = statement.replace("\n", " ").replace("\t", " ").replace("  ", " ")
         try:
             self.cursor.execute(statement, values)
             if not statement.split(" ")[0].upper() in self.NO_COMMIT_OPERATIONS:
@@ -49,6 +49,8 @@ class __DBManager:
             if isinstance(ex, psycopg2.OperationalError):
                 print("Restarting PostgreSQL connection")
                 self.__restart_connection()
+                print("Resending values")
+                self.execute(statement, values)
             return []
 
     def execute_multiple(

@@ -10,12 +10,13 @@ from models.token_model import Token
 from models.user_model import User
 from utils.argument_parser import *
 from utils.session import set_session_token
-from utils.validators.decorators import needs_logout
+from utils.validators.decorators import log_endpoint, needs_logout
 
 login_blueprint = Blueprint("login_blueprint", __name__)
 
 
 @login_blueprint.route("/api/login", methods=["POST"])
+@log_endpoint
 @needs_logout
 def login() -> Response:
     session.permanent = True

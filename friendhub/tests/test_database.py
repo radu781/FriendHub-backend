@@ -5,7 +5,7 @@ from database.dbmanager import DBManager
 @pytest.mark.unit
 @pytest.mark.db
 def test_connection():
-    assert DBManager.execute("SELECT 1", ()) == [(1,)]
+    assert DBManager.execute("SELECT 1", ()) == [(1,)], "No connection"
 
 
 @pytest.mark.unit

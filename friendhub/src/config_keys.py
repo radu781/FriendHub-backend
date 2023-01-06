@@ -1,3 +1,4 @@
+import base64
 import os
 
 GH_ACTIONS = "GH_ACTIONS_ENV" in os.environ
@@ -32,3 +33,5 @@ else:
 
     DELETE_PROFILE_KEY = ini_file.get("admin", "delete_profile")
     SAFE_IPS = ini_file.get("admin", "safe_ips").split(",")
+
+    FERNET_KEY = base64.b64encode(ini_file.get("fernet", "key_hex").encode("utf-8"))

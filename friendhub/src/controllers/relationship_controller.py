@@ -35,7 +35,7 @@ def relationship(*, current_user: User) -> Response:
         )
     if not is_uuid_valid(values["userId"]):
         return make_response(
-            jsonify({"reason": "given id is not a UUID", "id": values["userId"]}),
+            jsonify({"error": "given id is not a UUID", "id": values["userId"]}),
             status.HTTP_400_BAD_REQUEST,
         )
     if not UserDAO.get_user_by_id(uuid.UUID(values["userId"])):
@@ -44,7 +44,7 @@ def relationship(*, current_user: User) -> Response:
         return make_response(
             jsonify(
                 {
-                    "reason": "type does not exist",
+                    "reason": "'type' does not exist",
                     "supportedTypes": list(Relationship.Type.values()),
                 }
             ),

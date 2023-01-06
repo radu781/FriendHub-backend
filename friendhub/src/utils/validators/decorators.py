@@ -1,8 +1,10 @@
+import os
 import uuid
 from enum import Enum, auto
 from typing import Any, Callable
 
-from flask import jsonify, make_response
+import logger
+from flask import jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
 from utils.session import get_user_in_request, get_user_in_session
@@ -11,6 +13,7 @@ from utils.session import get_user_in_request, get_user_in_session
 class Types(Enum):
     UUID = auto()
     POS_INT = auto()
+    FILE = auto()
 
 
 def __check_uuid(val: Any) -> uuid.UUID:
@@ -29,11 +32,18 @@ def __check_pos_int(val: Any) -> int:
     return int_
 
 
-__functions = {Types.UUID: __check_uuid, Types.POS_INT: __check_pos_int}
+def __check_file(val: Any) -> str:
+    root, ext = os.path.splitext(val)
+    if root != "" and ext in ["png", "jpg"]:
+        return str(val)
+    raise ValueError(f"{val} is not a path")
+
+
+__functions = {Types.UUID: __check_uuid, Types.POS_INT: __check_pos_int, Types.FILE: __check_file}
 
 
 def check_params(names: dict[str, Types]) -> Callable:
-    def decorator(func: Callable[[uuid.UUID], Response]) -> Callable[[], Response]:
+    def decorator(func: Callable[[uuid.UUID], Response]) -> Callable[..., Response]:
         def wrapper(*args, **kwargs) -> Response:
             for key in names:
                 type_ = names[key]
@@ -60,7 +70,7 @@ def check_params(names: dict[str, Types]) -> Callable:
     return decorator
 
 
-def needs_login(func: Callable) -> Callable[[], Response]:
+def needs_login(func: Callable[..., Response]) -> Callable[..., Response]:
     def decorator(*args, **kwargs) -> Response:
         session_user = get_user_in_session()
         request_user = get_user_in_request()
@@ -89,7 +99,7 @@ def needs_login(func: Callable) -> Callable[[], Response]:
     return decorator
 
 
-def needs_logout(func: Callable) -> Callable[[], Response]:
+def needs_logout(func: Callable[..., Response]) -> Callable[..., Response]:
     def decorator(*args, **kwargs) -> Response:
         session_user = get_user_in_session()
         request_user = get_user_in_request()
@@ -107,5 +117,21 @@ def needs_logout(func: Callable) -> Callable[[], Response]:
                 jsonify({"error": "not logged out", "action": "clear bearer token or cookies"})
             )
         return func(*args, **kwargs)
+
+    return decorator
+
+
+def log_endpoint(func: Callable[..., Response]) -> Callable[..., Response]:
+    def decorator(*args, **kwargs) -> Response:
+        try:
+            result = func(*args, **kwargs)
+        except Exception as ex:
+            logger.error(f"{request.full_path} - {ex}")
+            return make_response(
+                jsonify({"error": ex.args[0]}), status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        else:
+            logger.debug(f"{request.full_path} - {result.status}")
+        return result
 
     return decorator
