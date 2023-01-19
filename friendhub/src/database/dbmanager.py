@@ -42,9 +42,11 @@ class __DBManager:
                 return []
             return self.cursor.fetchall()
         except psycopg2.Error as ex:
+            # TODO: catch exception by type and restart connection
             print(
                 f"PostgreSQL error: {ex}, statement: {statement.replace('  ', ' ')}, "
                 f"args: {[str(val).strip() for val in values]}"
+                f"{type(ex)=}"
             )
             if isinstance(ex, psycopg2.OperationalError):
                 print("Restarting PostgreSQL connection")
