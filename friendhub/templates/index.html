@@ -49,13 +49,13 @@
                 <div class="post-vote-side">
                     <p>
                         {% if post_wrapper.vote.value == "upvote" %} {% set button_img = "assets/icons/like_pressed_icon.svg" %} {% else %} {% set button_img = "assets/icons/like_icon.svg" %}{% endif %}
-                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" onclick="upvotePost('{{ post_wrapper.post.id_ }}')" />
+                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="like" title="{{ _('Like this post') }}" id="upvote_{{ post_wrapper.post.id_ }}" onclick="upvotePost('{{ post_wrapper.post.id_ }}')" />
                     </p>
                     <p id="upvote-{{ post_wrapper.post.id_ }}">{{ post_wrapper.post.likes }}</p>
                     <p id="downvote-{{ post_wrapper.post.id_ }}">{{ post_wrapper.post.dislikes }}</p>
                     <p>
                         {% if post_wrapper.vote.value == "downvote" %} {% set button_img = "assets/icons/dislike_pressed_icon.svg" %} {% else %} {% set button_img = "assets/icons/dislike_icon.svg" %} {% endif %}
-                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" onclick="downvotePost('{{ post_wrapper.post.id_ }}')" />
+                        <img src="{{ url_for('static', filename=button_img) }}" class="pointer-cursor circular-highlight" alt="dislike" title="{{ _('Dislike this post') }}" id="downvote_{{ post_wrapper.post.id_ }}" onclick="downvotePost('{{ post_wrapper.post.id_ }}')" />
                     </p>
                 </div>
                 <div class="post-main">

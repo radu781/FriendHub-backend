@@ -1,4 +1,4 @@
-import { clearAndInsertStatus } from "./base.js"
+import { clearAndInsertStatus, clearOldDiv } from "./base.js"
 
 const requiredFields = [
     document.querySelector("#email"),
@@ -44,16 +44,5 @@ function onKeyPressed(event) {
             }
             clearAndInsertStatus("bad-input", newDivText, "status")
         }
-    }
-}
-
-function clearOldDiv() {
-    let statusDiv = document.querySelector(".bad-input")
-    if (statusDiv) {
-        statusDiv.parentElement.removeChild(statusDiv)
-    }
-    statusDiv = document.querySelector(".good-input")
-    if (statusDiv) {
-        statusDiv.parentElement.removeChild(statusDiv)
     }
 }

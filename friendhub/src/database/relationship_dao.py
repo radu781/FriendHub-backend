@@ -5,22 +5,40 @@ from database.dbmanager import DBManager
 
 class RelationshipDAO:
     @staticmethod
-    def insert_or_update(rel: Relationship) -> None:
-        if RelationshipDAO.get_relationship(rel.id_) is None:
+    def upsert(rel: Relationship) -> None:
+        if RelationshipDAO.get_relationship_by_id(rel.from_, rel.to) is None:
             DBManager.execute(
-                """INSERT INTO relationships(id, user_id1, user_id2, type, change_time)
+                """INSERT INTO relationships(id, "from", "to", type, change_time)
                 VALUES(%s, %s, %s, %s, %s)""",
-                (str(rel.id_), str(rel.user_id1), str(rel.user_id2), rel.type, rel.change_time),
+                (str(rel.id_), str(rel.from_), str(rel.to), rel.type, rel.change_time),
             )
         else:
             DBManager.execute(
-                "UPDATE relationships SET type=%s, change_time=%s WHERE id=%s",
-                (rel.type, rel.change_time, str(rel.id_)),
+                """UPDATE relationships SET type=%s, change_time=%s WHERE "from"=%s AND "to"=%s""",
+                (rel.type, rel.change_time, str(rel.from_), str(rel.to)),
             )
 
     @staticmethod
-    def get_relationship(id_: UUID) -> Relationship | None:
-        value = DBManager.execute("SELECT * FROM relationships WHERE id=%s", (str(id_),))
+    def get_relationship_by_id(from_id: UUID, to_id: UUID) -> Relationship | None:
+        value = DBManager.execute(
+            """SELECT * FROM relationships WHERE "from"=%s and "to"=%s""",
+            (str(from_id), str(to_id)),
+        )
         if value == []:
             return None
         return Relationship.from_db(value[0])
+
+    @staticmethod
+    def get_relationship(id1: UUID, id2: UUID) -> dict[str, Relationship]:
+        out: dict[str, Relationship] = {}
+        value = DBManager.execute(
+            """SELECT * FROM relationships WHERE "from"=%s AND "to"=%s""",
+            (str(id1), str(id2)),
+        )
+        out["from"] = Relationship.from_db(value[0])
+        value = DBManager.execute(
+            """SELECT * FROM relationships WHERE "to"=%s AND "from"=%s""",
+            (str(id1), str(id2)),
+        )
+        out["to"] = Relationship.from_db(value[0])
+        return out

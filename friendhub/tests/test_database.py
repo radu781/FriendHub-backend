@@ -85,8 +85,8 @@ def test_structure_posts():
 def test_structure_relationships():
     EXPECTED = [
         "id",
-        "user_id1",
-        "user_id2",
+        "from",
+        "to",
         "type",
         "change_time",
     ]

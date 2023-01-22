@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 @dataclass(kw_only=True)
 class Relationship:
     id_: uuid.UUID = field(default_factory=uuid.uuid4)
-    user_id1: uuid.UUID
-    user_id2: uuid.UUID
+    from_: uuid.UUID
+    to: uuid.UUID
     type: Type
     change_time: datetime
 
@@ -28,6 +28,4 @@ class Relationship:
 
     @staticmethod
     def from_db(row: tuple) -> Relationship:
-        return Relationship(
-            id_=row[0], user_id1=row[1], user_id2=row[2], type=row[3], change_time=row[4]
-        )
+        return Relationship(id_=row[0], from_=row[1], to=row[2], type=row[3], change_time=row[4])

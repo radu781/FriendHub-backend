@@ -23,10 +23,7 @@ def __check_uuid(val: Any) -> uuid.UUID:
 
 
 def __check_pos_int(val: Any) -> int:
-    try:
-        int_ = int(val)
-    except ValueError:
-        raise
+    int_ = int(val)
     if int_ < 0:
         raise ValueError(f"{val} is a negative integer")
     return int_
@@ -111,10 +108,16 @@ def needs_logout(func: Callable[..., Response]) -> Callable[..., Response]:
         if session_user or request_user:
             if session_user:
                 return make_response(
-                    jsonify({"error": "not logged out", "action": "clear session cookies"})
+                    jsonify(
+                        {"error": "not logged out", "action": "clear session cookies"},
+                        status.HTTP_401_UNAUTHORIZED,
+                    )
                 )
             return make_response(
-                jsonify({"error": "not logged out", "action": "clear bearer token or cookies"})
+                jsonify(
+                    {"error": "not logged out", "action": "clear bearer token or cookies"},
+                    status.HTTP_401_UNAUTHORIZED,
+                )
             )
         return func(*args, **kwargs)
 

@@ -8,6 +8,7 @@ from flask_api import status
 from models.user_model import User
 from utils.session import get_user_in_session
 from utils.validators.decorators import Types, check_params
+from database.relationship_dao import RelationshipDAO
 
 profile_view_blueprint = Blueprint("profile_view_blueprint", __name__)
 
@@ -20,6 +21,15 @@ def profile_view(*, id_: uuid.UUID) -> Response:
         return make_response(render_template("profile.html", user=None))
 
     target_user = User.from_dict(json.loads(res.data)["user"])
+    current_user = get_user_in_session()
+    if current_user is None:
+        return make_response(
+            render_template("profile.html", target_user=target_user, user=None, relationship=None)
+        )
+    relationship = RelationshipDAO.get_relationship(current_user.id_, id_)
+    rel = [relationship[r].type for r in relationship]
     return make_response(
-        render_template("profile.html", target_user=target_user, user=get_user_in_session())
+        render_template(
+            "profile.html", target_user=target_user, user=current_user, relationship=rel
+        )
     )

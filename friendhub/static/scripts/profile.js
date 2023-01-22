@@ -1,11 +1,12 @@
 const addFriend = document.querySelector("#add-friend-form")
+const targetId = addFriend.dataset.targetId
+const requestType = addFriend.dataset.type
 addFriend.addEventListener("submit", (event) => {
     event.preventDefault()
     let xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `/api/relationship?userId=${1}&type=request_sent`, true)
+    xmlHttp.open("POST", `/api/relationship?userId=${targetId}&type=${requestType}`, true)
     xmlHttp.responseType = "json"
     xmlHttp.send()
-    xmlHttp.onload = function() { window.location = "/" }
 })
 
 function changeButtonText(text) {

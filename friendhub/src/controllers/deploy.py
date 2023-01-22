@@ -1,5 +1,4 @@
 import subprocess
-from datetime import datetime
 
 import config_keys
 from flask import Blueprint, jsonify, make_response, request
@@ -18,7 +17,6 @@ def deploy() -> Response:
     if request.args["key"] != config_keys.DEPLOY_KEY:
         return make_response(jsonify({"reason": "wrong deploy key"}), status.HTTP_401_UNAUTHORIZED)
 
-    time = datetime.now()
     try:
         pull_output = subprocess.check_output(
             ["sudo", "sh", "-c", "cd /var/www/friendhub && git pull"]
@@ -36,4 +34,4 @@ def deploy() -> Response:
             jsonify({"reason": str(ex), "git pull": pull_output.decode()}),
             status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-    return make_response("", status.HTTP_200_OK)
+    return make_response(reload_output.decode(), status.HTTP_200_OK)

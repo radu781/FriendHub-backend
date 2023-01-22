@@ -7,7 +7,6 @@ from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request, session
 from flask.wrappers import Response
 from flask_api import status
-from models.token_model import Token
 from models.user_model import User
 from utils.argument_parser import *
 from utils.validators.decorators import needs_logout
@@ -18,9 +17,6 @@ register_blueprint = Blueprint("register_blueprint", __name__)
 @register_blueprint.route("/api/register", methods=["POST"])
 @needs_logout
 def register() -> Response:
-    if Token.Purpose.USER_LOGIN in session:
-        return make_response(jsonify({"reason": "logged in"}), status.HTTP_403_FORBIDDEN)
-
     parser = ArgumentParser(
         request,
         {
@@ -42,7 +38,7 @@ def register() -> Response:
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
-            status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_400_BAD_REQUEST,
         )
     try:
         validators.check_email(values["email"])

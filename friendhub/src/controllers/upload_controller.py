@@ -56,9 +56,9 @@ def __treat_file_upload(req: Request, user_id: uuid.UUID) -> Post:
             likes=0,
             dislikes=0,
             text="",
-            image="",
-            video="",
-            audio="",
+            image=None,
+            video=None,
+            audio=None,
         )
 
     names: list[str] = ["image-upload", "video-upload", "audio-upload"]
@@ -81,9 +81,9 @@ def __treat_file_upload(req: Request, user_id: uuid.UUID) -> Post:
         likes=0,
         dislikes=0,
         text="",
-        image="",
-        video="",
-        audio="",
+        image=None,
+        video=None,
+        audio=None,
     )
     if "image-upload" in args_found:
         current_post.image = args_found["image-upload"]

@@ -14,8 +14,8 @@ class PostDAO:
     def create_post(post: Post) -> None:
         DBManager.execute(
             """INSERT INTO
-                 posts(id, owner_id, create_time, text, image, video, audio)
-                 VALUES(%s, %s, %s, %s, %s, %s, %s)""",
+                 posts(id, owner_id, create_time, text, image, video, audio, likes, dislikes)
+                 VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 str(post.id_),
                 str(post.owner_id),
@@ -24,12 +24,16 @@ class PostDAO:
                 post.image,
                 post.video,
                 post.audio,
+                0,
+                0,
             ),
         )
 
     @staticmethod
-    def get_visible_posts(user: User | None) -> list[PostWrapper]:
-        value = DBManager.execute("SELECT * FROM posts ORDER BY create_time DESC", ())
+    def get_visible_posts(user: User | None, start: int, end: int) -> list[PostWrapper]:
+        value = DBManager.execute(
+            f"SELECT * FROM posts ORDER BY create_time DESC LIMIT {end-start} OFFSET {start}", ()
+        )
         out: list[PostWrapper] = []
         for row in value:
             current_post = Post.from_db(row)

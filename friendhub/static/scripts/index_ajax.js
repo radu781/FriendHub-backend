@@ -1,6 +1,22 @@
 function upvotePost(postId) {
+    let upvoteIcon = document.querySelector(`#upvote_${postId}`)
+    let downvoteIcon = document.querySelector(`#downvote_${postId}`)
+
+    let currentState = upvoteIcon.src
+    let nextState = ""
+    let isPressed = false
+    if (currentState.indexOf("_pressed_icon") != -1) {
+        nextState = currentState.replace("_pressed_icon", "_icon")
+        isPressed = true
+    } else {
+        nextState = currentState.replace("_icon", "_pressed_icon")
+        isPressed = false
+    }
+    upvoteIcon.src = "static/assets/icons/spinner_icon.svg"
+    upvoteIcon.classList.add("spinner")
     let xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("PUT", `/api/post/${postId}?upvote`, true)
+    const vote = isPressed ? "clear" : "upvote"
+    xmlHttp.open("PUT", `/api/post/${postId}?vote=${vote}`, true)
     xmlHttp.responseType = "json"
     xmlHttp.send()
     xmlHttp.onload = function() {
@@ -14,17 +30,32 @@ function upvotePost(postId) {
             let upvoteP = document.querySelector(`#upvote-${postId}`)
             upvoteP.innerHTML = xmlHttp.response["likes"]
 
-            let likeIcon = upvoteP.parentNode.childNodes[1].firstElementChild
-            likeIcon.src = likeIcon.src.replace("_icon", "_pressed_icon")
-            let dislikeIcon = downvoteP.parentNode.childNodes[7].firstElementChild
-            dislikeIcon.src = dislikeIcon.src.replace("_pressed_icon", "_icon")
+            downvoteIcon.src = downvoteIcon.src.replace("_pressed_icon", "_icon")
+            upvoteIcon.src = nextState
+            upvoteIcon.classList.remove("spinner")
         }
     }
 }
 
 function downvotePost(postId) {
+    let upvoteIcon = document.querySelector(`#upvote_${postId}`)
+    let downvoteIcon = document.querySelector(`#downvote_${postId}`)
+
+    let currentState = downvoteIcon.src
+    let nextState = ""
+    let isPressed = false
+    if (currentState.indexOf("_pressed_icon") != -1) {
+        nextState = currentState.replace("_pressed_icon", "_icon")
+        isPressed = true
+    } else {
+        nextState = currentState.replace("_icon", "_pressed_icon")
+        isPressed = false
+    }
+    downvoteIcon.src = "static/assets/icons/spinner_icon.svg"
+    downvoteIcon.classList.add("spinner")
     let xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("PUT", `/api/post/${postId}?downvote`, true)
+    const vote = isPressed ? "clear" : "downvote"
+    xmlHttp.open("PUT", `/api/post/${postId}?vote=${vote}`, true)
     xmlHttp.responseType = "json"
     xmlHttp.send()
     xmlHttp.onload = function() {
@@ -38,10 +69,9 @@ function downvotePost(postId) {
             let upvoteP = document.querySelector(`#upvote-${postId}`)
             upvoteP.innerHTML = xmlHttp.response["likes"]
 
-            let likeIcon = upvoteP.parentNode.childNodes[1].firstElementChild
-            likeIcon.src = likeIcon.src.replace("_pressed_icon", "_icon")
-            let dislikeIcon = downvoteP.parentNode.childNodes[7].firstElementChild
-            dislikeIcon.src = dislikeIcon.src.replace("_icon", "_pressed_icon")
+            upvoteIcon.src = upvoteIcon.src.replace("_pressed_icon", "_icon")
+            downvoteIcon.src = nextState
+            downvoteIcon.classList.remove("spinner")
         }
     }
 }

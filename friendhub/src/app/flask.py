@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 
 from config_keys import SESSION_KEY
+from controllers.all_posts_controller import all_post_blueprint
 from controllers.delete_user_controller import delete_user_blueprint
 from controllers.deploy import deploy_blueprint
 from controllers.login_controller import login_blueprint
@@ -50,6 +51,7 @@ flask_app.register_blueprint(profile_blueprint)
 flask_app.register_blueprint(profile_view_blueprint)
 flask_app.register_blueprint(delete_user_blueprint)
 flask_app.register_blueprint(settings_base_blueprint)
+flask_app.register_blueprint(all_post_blueprint)
 flask_app.register_blueprint(post_blueprint)
 flask_app.register_blueprint(relationship_blueprint)
 

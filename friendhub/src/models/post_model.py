@@ -13,9 +13,9 @@ class Post:
     likes: int
     dislikes: int
     text: str
-    image: str
-    video: str
-    audio: str
+    image: str | None
+    video: str | None
+    audio: str | None
 
     @staticmethod
     def from_db(row: tuple) -> Post:
@@ -23,10 +23,10 @@ class Post:
             id_=row[0],
             owner_id=row[1],
             create_time=row[2],
-            text=row[3],
-            image=row[4],
-            video=row[5],
-            audio=row[6],
+            text=row[5],
+            image=row[6],
+            video=row[7],
+            audio=row[8],
             likes=0,
             dislikes=0,
         )

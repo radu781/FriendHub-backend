@@ -1,7 +1,8 @@
 {% extends "base.html" %} {% block title %} {{ user.first_name }} | FriendHub {% endblock %} {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}" />
-<script type="module" src="{{ url_for('static', filename='scripts/profile.js') }}" defer></script>{% endblock %} {% block body %}
+<script type="module" src="{{ url_for('static', filename='scripts/profile.js') }}" defer></script>
+{% endblock %} {% block body %}
 <div class="main">
     <div class="left"></div>
     <div class="middle">
@@ -14,10 +15,30 @@
                     <img src="{{ url_for('static', filename=profile_picture_path) }}" class="user-profile-picture" alt="profile picture" /> {% endif %}
                     <p>{{ target_user.first_name }} {{ target_user.middle_name or "" }} {{ target_user.last_name }}</p>
                 </div>
-                {% if user.id_ != target_user.id_ and user.id_ %}
+                {% if user and user.id_ and user.id_ != target_user.id_ %}
                 <div class="profile-and-name-buttons">
-                    <form action="/api/relationship/" method="post" id="add-friend-form">
+                    {% if relationship %} {% if relationship[0] == "request_sent" %}
+                    <form action="/api/relationship/" method="post" id="add-friend-form" data-target-id="{{ target_user.id_ }}" data-type="request_sent">
+                        <button type="submit" class="pointer-cursor">{{ _("Accept request") }}</button>
+                    </form>
+                    {% elif relationship[0] == "friend" %}
+                    <form action="/api/relationship/" method="post" id="add-friend-form" data-target-id="{{ target_user.id_ }}" data-type="none">
+                        <button type="submit" class="pointer-cursor">{{ _("Unfriend") }}</button>
+                    </form>
+                    {% else %}
+                    <form action="/api/relationship/" method="post" id="add-friend-form" data-target-id="{{ target_user.id_ }}" data-type="request_sent">
                         <button type="submit" class="pointer-cursor">{{ _("Add friend") }}</button>
+                    </form>
+                    {% endif %} {% else %}
+                    <form action="/api/relationship/" method="post" id="add-friend-form" data-target-id="{{ target_user.id_ }}" data-type="request_sent">
+                        <button type="submit" class="pointer-cursor">{{ _("Add friend") }}</button>
+                    </form>
+                    {% endif %}
+                    <form action="/api/relationship/" method="post" id="block-friend-form" data-target-id="{{ target_user.id_ }}" data-type="blocked">
+                        <button type="submit" class="pointer-cursor">{{ _("Block user") }}</button>
+                    </form>
+                    <form action="/api/relationship/" method="post" id="hide-friend-form" data-target-id="{{ target_user.id_ }}" data-type="hidden">
+                        <button type="submit" class="pointer-cursor">{{ _("Hide user") }}</button>
                     </form>
                 </div>
                 {% endif %}

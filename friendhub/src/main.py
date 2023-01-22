@@ -36,7 +36,7 @@ def chat():
 @check_params({"id_": Types.UUID})
 def multimedia(*, id_: uuid.UUID, name: str):
     try:
-        return send_from_directory("../static", f"uploads/{id_}/{name}")
+        return send_from_directory("../../static", f"uploads/{id_}/{name}")
     except NotFound as ex:
         return make_response(jsonify({"error": ex.description}), status.HTTP_404_NOT_FOUND)
 
@@ -52,4 +52,4 @@ if __name__ == "__main__":
 
     import logger  # pylint: disable=unused-import
 
-    socketio.run(flask_app, port=80, debug=DEBUG_ON, host="192.168.0.73")
+    socketio.run(flask_app, port=80, debug=DEBUG_ON)
