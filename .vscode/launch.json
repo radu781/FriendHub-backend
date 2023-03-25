@@ -1,44 +1,75 @@
 {
-	"configurations": [
-		{
-			"name": "Run project",
-			"type": "python",
-			"request": "launch",
-			"program": "friendhub/src/main.py",
-			"console": "integratedTerminal",
-			"justMyCode": false,
-			"cwd": "${workspaceFolder}",
-			"env": { "PYTHONPATH": "friendhub/src;." },
-			"args": ["-Xfrozen_modules=off"]
-		},
-		{
-			"name": "Make translations",
-			"type": "python",
-			"request": "launch",
-			"program": "translate/main.py",
-			"console": "integratedTerminal",
-			"cwd": "${workspaceFolder}",
-			"justMyCode": true
-		},
-		{
-			"name": "Run tests",
-			"type": "python",
-			"request": "launch",
-			"console": "integratedTerminal",
-			"cwd": "${workspaceFolder}",
-			"module": "pytest",
-			"args": ["friendhub/tests/", "-m db"],
-			"env": { "PYTHONPATH": "friendhub/src" }
-		},
-		{
-			"name": "Profile",
-			"type": "python",
-			"request": "launch",
-			"program": "friendhub/src/main.py",
-			"console": "integratedTerminal",
-			"justMyCode": true,
-			"cwd": "${workspaceFolder}",
-			"env": { "PYTHONPATH": "friendhub/src;.", "PROFILE": "" }
-		}
-	]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run project",
+            "type": "python",
+            "request": "launch",
+            "program": "friendhub/src/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "friendhub/src;."
+            },
+            "args": [
+                "-Xfrozen_modules=off"
+            ]
+        },
+        {
+            "name": "Make translations",
+            "type": "python",
+            "request": "launch",
+            "program": "translate/main.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        },
+        {
+            "name": "Run tests",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "module": "pytest",
+            "args": [
+                "friendhub/tests/",
+                "-m db"
+            ],
+            "env": {
+                "PYTHONPATH": "friendhub/src"
+            }
+        },
+        {
+            "name": "Profile",
+            "type": "python",
+            "request": "launch",
+            "program": "friendhub/src/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "friendhub/src;.",
+                "PROFILE": ""
+            }
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'friendhub-frontend'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=friendhub-frontend",
+                    "--package=friendhub-frontend"
+                ],
+                "filter": {
+                    "name": "friendhub-frontend",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
 }
