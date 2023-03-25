@@ -27,7 +27,7 @@ def profile_view(*, id_: uuid.UUID) -> Response:
             render_template("profile.html", target_user=target_user, user=None, relationship=None)
         )
     relationship = RelationshipDAO.get_relationship(current_user.id_, id_)
-    rel = [relationship[r].type for r in relationship]
+    rel = [r[1].type_ for r in relationship.items()]
     return make_response(
         render_template(
             "profile.html", target_user=target_user, user=current_user, relationship=rel

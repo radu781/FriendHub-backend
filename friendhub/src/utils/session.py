@@ -1,6 +1,10 @@
+import random
+import string
+from typing import Callable
+
 from database.token_dao import TokenDAO
 from database.user_dao import UserDAO
-from flask import request, session
+from flask import Response, request, session
 from models.token_model import Token
 from models.user_model import User
 
@@ -17,7 +21,7 @@ def get_user_in_session() -> User | None:
 
 
 def get_user_in_request() -> User | None:
-    if not "Authorization" in request.headers:
+    if "Authorization" not in request.headers:
         return None
 
     current_token = TokenDAO.get_token_by_value(
@@ -31,3 +35,15 @@ def get_user_in_request() -> User | None:
 
 def set_session_token(token: Token, purpose: Token.Purpose) -> None:
     session[purpose] = token.value
+
+
+def setup_session(func: Callable[..., Response]) -> Callable[..., Response]:
+    def decorator(*args, **kwargs) -> Response:
+        if "session_id" not in session:
+            session.permanent = True
+            session["session_id"] = "".join(
+                random.choices(string.ascii_lowercase + string.digits, k=6)
+            )
+        return func(*args, **kwargs)
+
+    return decorator

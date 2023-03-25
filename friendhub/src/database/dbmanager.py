@@ -54,14 +54,14 @@ class __DBManager:
             result = self.__execute(qItem.statement, qItem.values)
             self.queue.task_done()
 
-            if not qItem.id_ in self.results:
+            if qItem.id_ not in self.results:
                 self.results[qItem.id_] = []
             self.results[qItem.id_].append(result)
 
     def execute(self, statement: str, values: tuple[DBType, ...]) -> list[tuple]:
         id_ = self.__random_id()
         self.queue.put(self.QueueItem(statement, values, id_, 1))
-        while not id_ in self.results:
+        while id_ not in self.results:
             pass
         while len(self.results[id_]) != 1:
             pass
@@ -89,17 +89,15 @@ class __DBManager:
         statement = statement.replace("\n", " ").replace("\t", " ").replace("  ", " ")
         try:
             self.cursor.execute(statement, values)
-            if not statement.split(" ")[0].upper() in self.NO_COMMIT_OPERATIONS:
+            if statement.split(" ")[0].upper() not in self.NO_COMMIT_OPERATIONS:
                 self.connector.commit()
             if statement.split(" ")[0].upper() in self.NO_FETCH_OPERATIONS:
                 return []
             return self.cursor.fetchall()
         except psycopg2.Error as ex:
-            # TODO: catch exception by type and restart connection
             print(
                 f"PostgreSQL error: {ex}, statement: {statement.replace('  ', ' ')}, "
                 f"args: {[str(val).strip() for val in values]}"
-                f"{type(ex)=}"
             )
             if isinstance(ex, psycopg2.OperationalError):
                 print("Restarting PostgreSQL connection")

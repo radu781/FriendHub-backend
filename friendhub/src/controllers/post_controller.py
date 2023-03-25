@@ -7,7 +7,7 @@ from flask.wrappers import Response
 from flask_api import status
 from models.user_model import User
 from models.vote_model import Vote
-from utils.argument_parser import *
+from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 from utils.validators.decorators import Types, check_params, needs_login
 
 post_blueprint = Blueprint("post_blueprint", __name__)

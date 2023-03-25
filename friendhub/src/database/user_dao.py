@@ -1,9 +1,8 @@
-from datetime import datetime
 import uuid
-
-from models.user_model import User
+from datetime import datetime
 
 from database.dbmanager import DBManager
+from models.user_model import User
 
 
 class UserDAO:

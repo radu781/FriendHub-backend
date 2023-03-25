@@ -1,7 +1,8 @@
 import uuid
+
+from database.dbmanager import DBManager
 from models.post_model import Post
 from models.vote_model import Vote
-from database.dbmanager import DBManager
 
 
 class VoteDAO:

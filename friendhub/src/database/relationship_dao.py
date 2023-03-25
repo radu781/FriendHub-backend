@@ -6,16 +6,16 @@ from database.dbmanager import DBManager
 class RelationshipDAO:
     @staticmethod
     def upsert(rel: Relationship) -> None:
-        if RelationshipDAO.get_relationship_by_id(rel.from_, rel.to) is None:
+        if RelationshipDAO.get_relationship_by_id(rel.from_, rel.to_) is None:
             DBManager.execute(
                 """INSERT INTO relationships(id, "from", "to", type, change_time)
                 VALUES(%s, %s, %s, %s, %s)""",
-                (str(rel.id_), str(rel.from_), str(rel.to), rel.type, rel.change_time),
+                (str(rel.id_), str(rel.from_), str(rel.to_), rel.type_, rel.change_time),
             )
         else:
             DBManager.execute(
                 """UPDATE relationships SET type=%s, change_time=%s WHERE "from"=%s AND "to"=%s""",
-                (rel.type, rel.change_time, str(rel.from_), str(rel.to)),
+                (rel.type_, rel.change_time, str(rel.from_), str(rel.to_)),
             )
 
     @staticmethod

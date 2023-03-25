@@ -1,7 +1,7 @@
 import os
 from time import sleep
 
-from helpers import *
+from helpers import WAIT_TIME_SEC, failed_translations, setup, spawn_threads_and_work
 
 
 def main() -> None:

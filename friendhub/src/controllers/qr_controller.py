@@ -19,7 +19,7 @@ qr_blueprint = Blueprint("qr_blueprint", __name__)
 def qr_code(*, current_user: User) -> Response:
     if not request.json:
         return make_response(jsonify({"error": "missing body"}), status.HTTP_400_BAD_REQUEST)
-    if not "for" in request.json or not "data" in request.json:
+    if "for" not in request.json or "data" not in request.json:
         return make_response(jsonify({"error": "invalid body"}), status.HTTP_400_BAD_REQUEST)
 
     src = "https://friendhub.social" if DEPLOYING else "http://127.0.0.1"

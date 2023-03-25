@@ -9,6 +9,7 @@ settings_blueprint = Blueprint("settings_blueprint", __name__)
 @settings_blueprint.route("/api/settings", methods=["GET", "POST"])
 @needs_login
 def settings(*, current_user: User) -> Response:
+    current_user.city = ""
     if request.method == "GET":
         return make_response({"userPreferences": None})
 

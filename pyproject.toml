@@ -1,2 +1,10 @@
 [tool.black]
 line-length = 100
+
+[tool.pylint.'MESSAGES CONTROL']
+disable=[
+  'no-name-in-module'
+]
+
+[tool.ruff]
+line-length = 100

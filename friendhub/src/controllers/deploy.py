@@ -10,7 +10,7 @@ deploy_blueprint = Blueprint("deploy_blueprint", __name__)
 
 @deploy_blueprint.route("/api/deploy", methods=["POST"])
 def deploy() -> Response:
-    if not "key" in request.args:
+    if "key" not in request.args:
         return make_response(
             jsonify({"reason": "'key' argument required"}), status.HTTP_401_UNAUTHORIZED
         )

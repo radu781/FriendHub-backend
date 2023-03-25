@@ -21,7 +21,8 @@ def check_name(name: str) -> None:
     if not DEPLOYING:
         return
     if not re.match(
-        r"^[A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+([\ A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+)*$",
+        r"^[A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+"
+        r"([\ A-Za-z\x{00C0}-\x{00FF}][A-Za-z\x{00C0}-\x{00FF}\'\-]+)*$",
         name,
     ):
         raise ValueError("incorrect name format")

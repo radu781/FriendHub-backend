@@ -4,11 +4,11 @@ from uuid import uuid4
 
 import utils.validators.other as validators
 from database.user_dao import UserDAO
-from flask import Blueprint, jsonify, make_response, request, session
+from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
 from models.user_model import User
-from utils.argument_parser import *
+from utils.argument_parser import ArgumentParser, Argument, ArgType, ArgsNotFoundException, Method
 from utils.validators.decorators import needs_logout
 
 register_blueprint = Blueprint("register_blueprint", __name__)

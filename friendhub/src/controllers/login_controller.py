@@ -3,23 +3,23 @@ from uuid import uuid4
 
 from database.token_dao import TokenDAO
 from database.user_dao import UserDAO
-from flask import Blueprint, jsonify, make_response, request, session
+from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
 from models.token_model import Token
 from models.user_model import User
-from utils.argument_parser import *
-from utils.session import set_session_token
+from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
+from utils.session import set_session_token, setup_session
 from utils.validators.decorators import log_endpoint, needs_logout
 
 login_blueprint = Blueprint("login_blueprint", __name__)
 
 
 @login_blueprint.route("/api/login", methods=["POST"])
+@setup_session
 @log_endpoint
 @needs_logout
 def login() -> Response:
-    session.permanent = True
     parser = ArgumentParser(
         request,
         {

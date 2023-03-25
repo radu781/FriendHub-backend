@@ -3,7 +3,7 @@ import logging
 import os
 import time
 
-from flask import request
+from flask import request, session
 
 __logger: logging.Logger | None = None
 
@@ -39,27 +39,29 @@ if __logger is None:
             os.remove(f"friendhub/logs/{file}")
 
 
-def __ip() -> str:
-    if request and request.remote_addr:
-        return request.remote_addr
-    return "unknown"
-
-
 def debug(msg: str) -> None:
-    __logger.debug(f"({__ip()}){msg}")  # pylint: disable=logging-fstring-interpolation
+    __logger.debug(__log_extra() + msg)  # pylint: disable=logging-fstring-interpolation
 
 
 def info(msg: str) -> None:
-    __logger.info(f"({__ip()}){msg}")  # pylint: disable=logging-fstring-interpolation
+    __logger.info(__log_extra() + msg)  # pylint: disable=logging-fstring-interpolation
 
 
 def warning(msg: str) -> None:
-    __logger.warning(f"({__ip()}){msg}")  # pylint: disable=logging-fstring-interpolation
+    __logger.warning(__log_extra() + msg)  # pylint: disable=logging-fstring-interpolation
 
 
 def error(msg: str) -> None:
-    __logger.error(f"({__ip()}){msg}")  # pylint: disable=logging-fstring-interpolation
+    __logger.error(__log_extra() + msg)  # pylint: disable=logging-fstring-interpolation
 
 
 def critical(msg: str) -> None:
-    __logger.critical(f"({__ip()}){msg}")  # pylint: disable=logging-fstring-interpolation
+    __logger.critical(__log_extra() + msg)  # pylint: disable=logging-fstring-interpolation
+
+
+def __log_extra() -> str:
+    ip = "unknown"
+    if request and request.remote_addr:
+        ip = request.remote_addr
+    sid = session.get("session_id", "null")
+    return f"[{ip}:{sid}]"

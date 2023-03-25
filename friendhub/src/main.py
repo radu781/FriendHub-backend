@@ -7,7 +7,6 @@ from flask_api import status
 from utils.validators.decorators import Types, check_params
 from werkzeug.exceptions import NotFound
 
-import app.flask  # pylint: disable=unused-import
 from app import flask_app, babel
 from app.websocket import socketio
 
@@ -49,7 +48,5 @@ if __name__ == "__main__":
 
         mover = Thread(target=perf.move_files)
         mover.start()
-
-    import logger  # pylint: disable=unused-import
 
     socketio.run(flask_app, port=80, debug=DEBUG_ON)

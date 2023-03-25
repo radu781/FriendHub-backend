@@ -1,12 +1,11 @@
 from uuid import UUID
 
-from models.post_model import Post
-from models.post_wrapper import PostWrapper
-from models.user_model import User
-
 from database.dbmanager import DBManager
 from database.user_dao import UserDAO
 from database.vote_dao import VoteDAO
+from models.post_model import Post
+from models.post_wrapper import PostWrapper
+from models.user_model import User
 
 
 class PostDAO:

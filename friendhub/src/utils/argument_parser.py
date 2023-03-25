@@ -60,7 +60,7 @@ class ArgumentParser:
                             out[arg.key] = value
             case Method.GET:
                 for arg in self.args:
-                    if arg.type == ArgType.MANDATORY and not arg.key in self.url.args:
+                    if arg.type == ArgType.MANDATORY and arg.key not in self.url.args:
                         not_found.append(arg.key)
                     else:
                         out[arg.key] = self.url.args.get(arg.key, arg.default_value, type=str)

@@ -3,11 +3,11 @@ import json
 from controllers.all_posts_controller import all_posts
 from flask import Blueprint, make_response, render_template
 from flask.wrappers import Response
-from utils.session import get_user_in_session
+from models.post_model import Post
 from models.post_wrapper import PostWrapper
 from models.user_model import User
-from models.post_model import Post
 from models.vote_model import Vote
+from utils.session import get_user_in_session
 
 index_view_blueprint = Blueprint("index_view_blueprint", __name__)
 

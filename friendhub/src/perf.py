@@ -2,6 +2,7 @@ import os
 import re
 import shutil
 import time
+from typing import Never
 
 from flask import Flask
 from werkzeug.middleware.profiler import ProfilerMiddleware
@@ -23,7 +24,7 @@ def profile(app: Flask) -> None:
     )
 
 
-def move_files() -> None:
+def move_files() -> Never:
     api_endpoints = ["root", "api", "profile", "post", "docs"]
     while True:
         for file in os.listdir("friendhub/performance/"):

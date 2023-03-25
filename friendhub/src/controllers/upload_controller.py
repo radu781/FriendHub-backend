@@ -7,7 +7,7 @@ from flask.wrappers import Request, Response
 from flask_api import status
 from models.post_model import Post
 from models.user_model import User
-from utils.argument_parser import *
+from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 from utils.validators.decorators import needs_login
 from werkzeug.utils import secure_filename
 

@@ -128,7 +128,7 @@ def log_endpoint(func: Callable[..., Response]) -> Callable[..., Response]:
     def decorator(*args, **kwargs) -> Response:
         try:
             result = func(*args, **kwargs)
-        except Exception as ex:
+        except Exception as ex:  # pylint: disable=broad-except
             logger.error(f"{request.full_path} - {ex}")
             return make_response(
                 jsonify({"error": ex.args[0]}), status.HTTP_500_INTERNAL_SERVER_ERROR
