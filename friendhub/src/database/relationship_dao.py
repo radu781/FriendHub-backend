@@ -35,6 +35,8 @@ class RelationshipDAO:
             """SELECT * FROM relationships WHERE "from"=%s AND "to"=%s""",
             (str(id1), str(id2)),
         )
+        if value == []:
+            return {}
         out["from"] = Relationship.from_db(value[0])
         value = DBManager.execute(
             """SELECT * FROM relationships WHERE "to"=%s AND "from"=%s""",

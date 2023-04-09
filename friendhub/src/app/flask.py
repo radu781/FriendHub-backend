@@ -14,6 +14,7 @@ from controllers.register_controller import register_blueprint
 from controllers.relationship_controller import relationship_blueprint
 from controllers.settings_controller import settings_blueprint
 from controllers.upload_controller import upload_blueprint
+from controllers.search_controller import search_blueprint
 from views.api_view import api_blueprint
 from views.docs_view import docs_blueprint
 from views.index_view import index_view_blueprint
@@ -27,6 +28,7 @@ from . import flask_app
 
 flask_app.config["SECRET_KEY"] = SESSION_KEY
 flask_app.config["SESSION_TYPE"] = "SameSite"
+flask_app.config["CORD_HEADERS"] = "Content-Type"
 flask_app.config["SESSION_COOKIE_PATH"] = "/"
 flask_app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(weeks=52)
 flask_app.config["BABEL_DEFAULT_LOCALE"] = "en"
@@ -43,6 +45,7 @@ flask_app.register_blueprint(deploy_blueprint)
 flask_app.register_blueprint(js_redirect_blueprint)
 flask_app.register_blueprint(login_blueprint)
 flask_app.register_blueprint(logout_blueprint)
+flask_app.register_blueprint(search_blueprint)
 flask_app.register_blueprint(qr_blueprint)
 flask_app.register_blueprint(register_blueprint)
 flask_app.register_blueprint(upload_blueprint)

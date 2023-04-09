@@ -23,6 +23,10 @@ class Vote:
         def is_clear(self) -> bool:
             return self.value == Vote.Value.CLEAR
 
+        @classmethod
+        def values(cls) -> set[str]:
+            return set(map(lambda e: e.value, cls))
+
     @staticmethod
     def from_db(row: tuple) -> Vote:
         return Vote(id_=row[0], parent_id=row[1], author_id=row[2], value=row[3])

@@ -133,8 +133,7 @@ def log_endpoint(func: Callable[..., Response]) -> Callable[..., Response]:
             return make_response(
                 jsonify({"error": ex.args[0]}), status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        else:
-            logger.debug(f"{request.full_path} - {result.status}")
+        logger.debug(f"{request.full_path} - {result.status}")
         return result
 
     return decorator

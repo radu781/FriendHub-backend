@@ -34,7 +34,7 @@ def register() -> Response:
         Method.POST,
     )
     try:
-        values = parser.get_values()
+        values = parser.parse()
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
@@ -64,21 +64,20 @@ def register() -> Response:
         )
 
     DEFAULT_PROFILE_PICTURE = "assets/images/default_profile_picture/default_profile_picture"
-    UserDAO.register_user(
-        User(
-            id_=uuid4(),
-            first_name=values["first-name"],
-            middle_name=values["middle-name"],
-            last_name=values["last-name"],
-            join_time=datetime.now(),
-            country=values["country"],
-            city=values["city"],
-            education=values["education"],
-            extra=values["extra"],
-            profile_picture=f"{DEFAULT_PROFILE_PICTURE}_{random.randint(1, 10)}.png",
-            banner_picture="",
-            password=values["password"],
-            email=values["email"],
-        )
+    user = User(
+        id_=uuid4(),
+        first_name=values["first-name"],
+        middle_name=values["middle-name"],
+        last_name=values["last-name"],
+        join_time=datetime.now(),
+        country=values["country"],
+        city=values["city"],
+        education=values["education"],
+        extra=values["extra"],
+        profile_picture=f"{DEFAULT_PROFILE_PICTURE}_{random.randint(1, 10)}.png",
+        banner_picture=None,
+        password=values["password"],
+        email=values["email"],
     )
-    return make_response("")
+    UserDAO.register_user(user)
+    return make_response(jsonify({"user": vars(user.sanitize())}), status.HTTP_201_CREATED)

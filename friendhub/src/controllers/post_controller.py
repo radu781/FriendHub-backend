@@ -22,7 +22,7 @@ def post(*, id_: uuid.UUID, current_user: User) -> Response:
         if target_post is None:
             return make_response(jsonify({"reason": "post not found"}), status.HTTP_404_NOT_FOUND)
         target_post = VoteDAO.get_votes_for_post(target_post)
-        return make_response(jsonify(vars(target_post)))
+        return make_response(jsonify({"post": vars(target_post)}))
 
     parser = ArgumentParser(
         request,
@@ -32,11 +32,11 @@ def post(*, id_: uuid.UUID, current_user: User) -> Response:
         Method.POST,
     )
     try:
-        values = parser.get_values()
+        values = parser.parse()
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
-            status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_400_BAD_REQUEST,
         )
 
     db_vote = VoteDAO.get_vote(id_, current_user.id_)

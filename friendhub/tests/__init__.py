@@ -1,8 +1,18 @@
 from configparser import ConfigParser
 from config_keys import GH_ACTIONS
 
-LOGIN_ENDPOINT = "/api/login"
-REGISTER_ENDPOINT = "/api/register"
+__LOCAL = "http://127.0.0.1"
+
+LOGIN_ENDPOINT = __LOCAL + "/api/login"
+REGISTER_ENDPOINT = __LOCAL + "/api/register"
+LOGOUT_ENDPOINT = __LOCAL + "/api/logout"
+UPLOAD_ENDPOINT = __LOCAL + "/api/upload"
+ALL_POSTS_ENDPOINT = __LOCAL + "/api/post/all"
+POST_ENDPOINT = __LOCAL + "/api/post"
+DELETE_USER_ENDPOINT = __LOCAL + "/api/profile"
+PROFILE_ENDPOINT = __LOCAL + "/api/profile"
+RELATIONSHIP_ENDPOINT = __LOCAL + "/api/relationship"
+SEARCH_ENDPOINT = __LOCAL + "/api/search"
 
 # github action only
 USER_EMAIL = ""

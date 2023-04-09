@@ -29,7 +29,7 @@ def login() -> Response:
         Method.POST,
     )
     try:
-        values = parser.get_values()
+        values = parser.parse()
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),

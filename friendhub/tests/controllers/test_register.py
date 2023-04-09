@@ -16,16 +16,10 @@ from tests import (
     USER_MIDDLE_NAME,
     USER_PASSWORD,
 )
+from tests.conftest import create_random_user, delete_user
 
-
-@pytest.fixture(autouse=True)
-def delete_user_fixture():
-    print("setup")
-    yield
-    print("teardown")
-
-
-def test_missing_parameters():
+@pytest.mark.unit
+def test_missing_parameters(auto_logout):
     res = requests.post(
         REGISTER_ENDPOINT,
         {
@@ -36,33 +30,33 @@ def test_missing_parameters():
         timeout=3,
     )
     content = json.loads(res.content)
-    assert (
-        content["reason"] == "missing parameters"
-        and content["parameters"] == "first-name"
-        and res.status_code == status.HTTP_401_UNAUTHORIZED
-    )
+    assert res.status_code == status.HTTP_400_BAD_REQUEST
+    assert "reason" in content
+    assert content["reason"] == "missing parameters"
+    assert "parameters" in content
+    assert content["parameters"] == "first-name"
 
 
-def test_user_exists():
-    # register user
+@pytest.mark.unit
+def test_user_exists(auto_logout):
     res = requests.post(
         REGISTER_ENDPOINT,
         {
-            "email": "",
-            "password": "",
+            "email": USER_EMAIL,
+            "password": USER_PASSWORD,
             "password-confirm": "",
             "first-name": "",
         },
         timeout=3,
     )
     content = json.loads(res.content)
-    assert (
-        content["reason"] == "user already exists"
-        and res.status_code == status.HTTP_401_UNAUTHORIZED
-    )
+    assert "reason" in content
+    assert content["reason"] == "user already exists"
+    assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def test_passwords_mismatch():
+@pytest.mark.unit
+def test_passwords_mismatch(auto_logout):
     res = requests.post(
         REGISTER_ENDPOINT,
         {
@@ -74,13 +68,13 @@ def test_passwords_mismatch():
         timeout=3,
     )
     content = json.loads(res.content)
-    assert (
-        content["reason"] == "passwords mismatch"
-        and res.status_code == status.HTTP_401_UNAUTHORIZED
-    )
+    assert "reason" in content
+    assert content["reason"] == "passwords mismatch"
+    assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def test_minimal_register():
+@pytest.mark.unit
+def test_minimal_register(auto_logout):
     res = requests.post(
         REGISTER_ENDPOINT,
         {
@@ -91,14 +85,18 @@ def test_minimal_register():
         },
         timeout=3,
     )
-    assert res.status_code == status.HTTP_200_OK
+    js = json.loads(res.text)
+
+    assert res.status_code == status.HTTP_201_CREATED
+    assert "user" in js
 
 
-def test_complete_register():
+@pytest.mark.unit
+def test_complete_register(auto_logout):
     res = requests.post(
         REGISTER_ENDPOINT,
         {
-            "email": USER_EMAIL + "+" + str(randint(2000, 2999)),
+            "email": USER_EMAIL + "+" + str(randint(1000, 9999)),
             "password": USER_PASSWORD,
             "password-confirm": USER_PASSWORD,
             "first-name": USER_FIRST_NAME,
@@ -111,4 +109,7 @@ def test_complete_register():
         },
         timeout=3,
     )
-    assert res.status_code == status.HTTP_200_OK
+    js = json.loads(res.text)
+    delete_user(js["user"]["id_"])
+    assert res.status_code == status.HTTP_201_CREATED
+    assert "user" in js

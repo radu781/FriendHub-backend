@@ -7,8 +7,8 @@ from flask_api import status
 from utils.validators.decorators import Types, check_params
 from werkzeug.exceptions import NotFound
 
+import app.flask
 from app import flask_app, babel
-from app.websocket import socketio
 
 
 @babel.localeselector
@@ -49,4 +49,4 @@ if __name__ == "__main__":
         mover = Thread(target=perf.move_files)
         mover.start()
 
-    socketio.run(flask_app, port=80, debug=DEBUG_ON)
+    flask_app.run(port=80, debug=DEBUG_ON)

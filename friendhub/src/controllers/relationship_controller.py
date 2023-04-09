@@ -27,7 +27,7 @@ def relationship(*, current_user: User) -> Response:
             Method.POST,
         )
         try:
-            values = parser.get_values()
+            values = parser.parse()
         except ArgsNotFoundException as ex:
             return make_response(
                 jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
@@ -35,7 +35,7 @@ def relationship(*, current_user: User) -> Response:
             )
         if not __is_uuid_valid(values["userId"]):
             return make_response(
-                jsonify({"error": "given id is not a UUID", "id": values["userId"]}),
+                jsonify({"reason": "given id is not a UUID", "id": values["userId"]}),
                 status.HTTP_400_BAD_REQUEST,
             )
         if not UserDAO.get_user_by_id(uuid.UUID(values["userId"])):
@@ -62,6 +62,12 @@ def relationship(*, current_user: User) -> Response:
         db_rel = RelationshipDAO.get_relationship(
             created_relationship.from_, created_relationship.to_
         )
+        if db_rel == {}:
+            RelationshipDAO.upsert(created_relationship)
+            return make_response(
+                jsonify({"relationship": vars(created_relationship)}), status.HTTP_201_CREATED
+            )
+
         if db_rel["to"].type_ == Relationship.Type.REQUEST_SENT == created_relationship.type_:
             created_relationship.type_ = Relationship.Type.FRIEND
             RelationshipDAO.upsert(created_relationship)
@@ -74,7 +80,9 @@ def relationship(*, current_user: User) -> Response:
                 RelationshipDAO.upsert(db_rel["to"])
             else:
                 RelationshipDAO.upsert(created_relationship)
-        return make_response(vars(created_relationship), status.HTTP_201_CREATED)
+        return make_response(
+            jsonify({"relationship": vars(created_relationship)}), status.HTTP_201_CREATED
+        )
 
     if request.method == "GET":
         parser = ArgumentParser(
@@ -85,7 +93,7 @@ def relationship(*, current_user: User) -> Response:
             Method.GET,
         )
         try:
-            values = parser.get_values()
+            values = parser.parse()
         except ArgsNotFoundException as ex:
             return make_response(
                 jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
@@ -104,9 +112,9 @@ def relationship(*, current_user: User) -> Response:
             current_user.id_, uuid.UUID(values["userId"])
         )
         return make_response(
-            jsonify({"count": len(relationships), "data": [vars(ele) for ele in relationships]})
+            jsonify({"data": {"from": relationships["from"], "to": relationships["to"]}})
         )
-    return make_response()
+    return make_response("", status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def __is_uuid_valid(uuid_: str) -> bool:

@@ -25,7 +25,7 @@ def delete_user(*, id_: uuid.UUID) -> Response:
         Method.POST,
     )
     try:
-        values = parser.get_values()
+        values = parser.parse()
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
@@ -40,4 +40,4 @@ def delete_user(*, id_: uuid.UUID) -> Response:
 
     UserDAO.delete_user(id_)
 
-    return make_response("")
+    return make_response("", status.HTTP_200_OK)

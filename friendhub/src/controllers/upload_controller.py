@@ -33,11 +33,11 @@ def upload(*, current_user: User) -> Response:
         Method.POST,
     )
     try:
-        values = parser.get_values()
+        values = parser.parse()
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
-            status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_400_BAD_REQUEST,
         )
     if values["text"] == "":
         return make_response(jsonify({"reason": "text missing"}), status.HTTP_406_NOT_ACCEPTABLE)

@@ -1,7 +1,9 @@
+import json
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import Any
 
+import logger
 from flask.wrappers import Request
 
 
@@ -34,7 +36,7 @@ class ArgumentParser:
     args: set[Argument]
     method: Method = field(default=Method.GET)
 
-    def get_values(self) -> dict[str, str]:  # pylint: disable=too-many-branches
+    def parse(self) -> dict[str, str]:  # pylint: disable=too-many-branches
         out: dict[str, str] = {}
         not_found: list[str] = []
 
@@ -70,3 +72,13 @@ class ArgumentParser:
             raise ArgsNotFoundException(not_found)
 
         return out
+
+    def parse_body_as_text(self) -> str:
+        return self.url.data.decode()
+
+    def parse_body_as_json(self) -> dict[str, Any]:
+        if self.url.content_type != "application/json":
+            logger.warning(
+                f"Parsing request body as json, but content type is {self.url.content_type}"
+            )
+        return json.loads(self.url.data.decode())

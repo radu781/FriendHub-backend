@@ -4,17 +4,17 @@ import pytest
 import requests
 from flask_api import status
 
-from . import LOGIN_ENDPOINT, USER_EMAIL, USER_PASSWORD
+from tests import LOGIN_ENDPOINT, USER_EMAIL, USER_PASSWORD
 
 
 @pytest.mark.unit
-def test_correct_details():
+def test_correct_details(auto_logout):  # pylint: disable=unused-argument, redefined-outer-name
     res = requests.post(LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3)
     assert res.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.unit
-def test_incorrect_password():
+def test_incorrect_password(auto_logout):  # pylint: disable=unused-argument, redefined-outer-name
     res = requests.post(
         LOGIN_ENDPOINT,
         {"email": USER_EMAIL, "password": USER_PASSWORD + "123"},
@@ -36,13 +36,26 @@ def test_user_does_not_exist():
 
 
 @pytest.mark.unit
-def test_missing_parameters():
-    res = requests.post(LOGIN_ENDPOINT, timeout=3)
+def test_missing_parameters_some():
+    res = requests.post(LOGIN_ENDPOINT, {"email": "mock email"}, timeout=3)
     content = json.loads(res.content)
     assert (
         content["reason"] == "missing parameters"
-        and (
-            content["parameters"] == "password, email" or content["parameters"] == "email, password"
-        )
+        and (content["parameters"] == "password")
         and res.status_code == status.HTTP_401_UNAUTHORIZED
     )
+
+
+@pytest.mark.unit
+def test_missing_parameters_all():
+    res = requests.post(LOGIN_ENDPOINT, timeout=3)
+    content = json.loads(res.content)
+
+    assert "reason" in content
+    assert content["reason"] == "missing parameters"
+    assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    assert "parameters" in content
+    PARAMETERS = ["password", "email"]
+    stripped = [ele.strip() for ele in content["parameters"].split(",")]
+    assert sorted(PARAMETERS) == sorted(stripped)

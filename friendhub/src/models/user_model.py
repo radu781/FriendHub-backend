@@ -18,7 +18,7 @@ class User:
     city: str = field(default="")
     education: str = field(default="")
     extra: str = field(default="")
-    banner_picture: str = field(default="")
+    banner_picture: str | None = field(default=None)
     email: str = field(default="")
     password: str | None = field(default=None)
     permissions: int = field(default=0)
@@ -30,7 +30,7 @@ class User:
     @staticmethod
     def from_db(row: tuple) -> User:
         return User(
-            id_=row[0],
+            id_=uuid.UUID(row[0]),
             first_name=row[1],
             middle_name=row[2],
             last_name=row[3],
@@ -43,13 +43,13 @@ class User:
             banner_picture=row[10],
             password=row[11],
             email=row[12],
-            permissions=row[13],
+            permissions=int(row[13]),
         )
 
     @staticmethod
     def from_dict(d: dict) -> User:  # pylint: disable=invalid-name
         return User(
-            id_=d["id_"],
+            id_=uuid.UUID(d["id_"]),
             first_name=d["first_name"],
             middle_name=d["middle_name"],
             last_name=d["last_name"],
@@ -62,7 +62,7 @@ class User:
             banner_picture=d["banner_picture"],
             password=d.get("password", ""),
             email=d.get("email", ""),
-            permissions=d.get("permissions", ""),
+            permissions=int(d.get("permissions", "")),
         )
 
     @property
