@@ -3,10 +3,9 @@ import json
 import pytest
 import requests
 from flask_api import status
+from tests import POST_ENDPOINT, UPLOAD_ENDPOINT
 
-from tests import POST_ENDPOINT
 
-# TODO: fix when adding JWT
 @pytest.mark.xfail
 @pytest.mark.unit
 def test_get_not_found(auto_login_logout):  # pylint: disable=unused-argument
@@ -23,6 +22,12 @@ def test_get_not_found(auto_login_logout):  # pylint: disable=unused-argument
 @pytest.mark.xfail
 @pytest.mark.unit
 def test_get_found(auto_login_logout):  # pylint: disable=unused-argument
+    requests.post(
+        UPLOAD_ENDPOINT,
+        {"text": "testing text"},
+        headers={"Authorization": f"Bearer {auto_login_logout}"},
+        timeout=3,
+    )
     res = requests.get(POST_ENDPOINT + "/f2cccc42-df1e-4145-ad57-298b949c141a", timeout=3)
 
     assert res.status_code == status.HTTP_200_OK

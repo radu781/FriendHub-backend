@@ -18,7 +18,6 @@ def test_needs_login():
     assert js["error"] == "not logged in"
 
 
-# TODO: fix when adding JWT
 @pytest.mark.xfail
 @pytest.mark.unit
 def test_needs_logout():

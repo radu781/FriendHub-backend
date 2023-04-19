@@ -10,8 +10,8 @@ all_post_blueprint = Blueprint("all_post_blueprint", __name__)
 
 
 @all_post_blueprint.route("/api/post/all", methods=["GET"])
-@needs_login
-def all_posts(*, current_user: User) -> Response:
+# @needs_login
+def all_posts() -> Response:
     parser = ArgumentParser(
         request,
         {Argument("from", ArgType.OPTIONAL, 0), Argument("to", ArgType.OPTIONAL, 20)},
@@ -26,7 +26,7 @@ def all_posts(*, current_user: User) -> Response:
         )
     values["from"] = max(0, int(values["from"]))  # type: ignore
     values["to"] = max(0, int(values["to"]))  # type: ignore
-    posts = PostDAO.get_visible_posts(current_user, int(values["from"]), int(values["to"]))
+    posts = PostDAO.get_visible_posts(User(), int(values["from"]), int(values["to"]))
     pretty_posts = [
         {"post": pw.post, "author": pw.user.sanitize(), "vote": pw.vote} for pw in posts
     ]

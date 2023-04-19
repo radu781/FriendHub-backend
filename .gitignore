@@ -11,3 +11,6 @@ friendhub/static/uploads/
 *.po
 friendhub/performance/
 friendhub/logs/
+
+.coverage
+htmlcov/

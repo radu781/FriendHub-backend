@@ -68,6 +68,9 @@ def relationship(*, current_user: User) -> Response:
                 jsonify({"relationship": vars(created_relationship)}), status.HTTP_201_CREATED
             )
 
+        if "from" not in db_rel or "to" not in db_rel:
+            return make_response("", status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         if db_rel["to"].type_ == Relationship.Type.REQUEST_SENT == created_relationship.type_:
             created_relationship.type_ = Relationship.Type.FRIEND
             RelationshipDAO.upsert(created_relationship)

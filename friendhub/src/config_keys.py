@@ -31,6 +31,9 @@ else:
     DB_PASSWORD = ini_file.get("database", "password")
     DB_PORT = ini_file.get("database", "port")
 
+    JWT_KEY = ini_file.get("jwt", "key")
+    JWT_ALGORITHM = ini_file.get("jwt", "algorithm")
+
     DELETE_PROFILE_KEY = ini_file.get("admin", "delete_profile")
     SAFE_IPS = ini_file.get("admin", "safe_ips").split(",")
 

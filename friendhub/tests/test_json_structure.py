@@ -3,15 +3,17 @@ import json
 import pytest
 import requests
 import utils.validators.other as validators
-from tests.conftest import create_random_user, delete_user
 from models.relationship_model import Relationship
+from tests.conftest import create_random_user, delete_user
+
 from . import (
     LOGIN_ENDPOINT,
     POST_ENDPOINT,
     PROFILE_ENDPOINT,
+    RELATIONSHIP_ENDPOINT,
+    UPLOAD_ENDPOINT,
     USER_EMAIL,
     USER_PASSWORD,
-    RELATIONSHIP_ENDPOINT,
 )
 
 
@@ -20,9 +22,8 @@ def test_token_structure(auto_logout):  # pylint: disable=unused-argument, redef
     res = requests.post(LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3)
     content = json.loads(res.content)
 
-    KEYS = ["id_", "value", "owner_id", "date_created", "valid_until", "purpose", "force_invalid"]
     assert "token" in content
-    assert sorted(KEYS) == sorted(content["token"])
+    assert content["token"].count(".") == 2
 
 
 @pytest.mark.unit
@@ -57,11 +58,20 @@ def test_user_structure(auto_login_logout):  # pylint: disable=unused-argument
     assert js["profile_picture"] is None or validators.is_image_path(js["profile_picture"])
 
 
-# TODO: rewrite when JWT
-@pytest.mark.xfail
 @pytest.mark.unit
 def test_post_structure(auto_login_logout):  # pylint: disable=unused-argument
-    res = requests.get(POST_ENDPOINT + "/f2cccc42-df1e-4145-ad57-298b949c141a", timeout=3)
+    res = requests.post(
+        UPLOAD_ENDPOINT,
+        {"text": "testing text"},
+        headers={"Authorization": f"Bearer {auto_login_logout}"},
+        timeout=3,
+    )
+    id_ = json.loads(res.text)["post"]["id_"]
+    res = requests.get(
+        POST_ENDPOINT + f"/{id_}",
+        headers={"Authorization": f"Bearer {auto_login_logout}"},
+        timeout=3,
+    )
     js = json.loads(res.text)["post"]
 
     assert "audio" in js
@@ -76,19 +86,18 @@ def test_post_structure(auto_login_logout):  # pylint: disable=unused-argument
 
     assert js["audio"] is None or validators.is_audio_path(js["audio"])
     assert validators.is_datetime(js["create_time"])
-    assert isinstance(int, js["dislikes"]) and js["dislikes"] >= 0
+    assert isinstance(js["dislikes"], int) and js["dislikes"] >= 0
     assert validators.is_uuid(js["id_"])
     assert js["image"] is None or validators.is_image_path(js["image"])
-    assert isinstance(int, js["likes"]) and js["likes"] >= 0
+    assert isinstance(js["likes"], int) and js["likes"] >= 0
     assert validators.is_uuid(js["owner_id"])
-    assert isinstance(str, js["text"])
+    assert isinstance(js["text"], str)
     assert js["video"] is None or validators.is_video_path(js[["video"]])
 
 
-@pytest.mark.xfail
 @pytest.mark.unit
 def test_vote_structure(auto_login_logout):  # pylint: disable=unused-argument
-    res = requests.get("???", timeout=3)
+    res = requests.get(POST_ENDPOINT, timeout=3)
     js = json.loads(res.text)["vote"]
 
     assert "author_id" in js
@@ -104,7 +113,6 @@ def test_vote_structure(auto_login_logout):  # pylint: disable=unused-argument
     assert isinstance(str, js["value"])
 
 
-@pytest.mark.xfail
 @pytest.mark.unit
 def test_relationship_structure(auto_login_logout):  # pylint: disable=unused-argument
     id_ = create_random_user()

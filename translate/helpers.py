@@ -1,11 +1,10 @@
-from datetime import datetime
+import multiprocessing
 import os
 import threading
+from datetime import datetime
 
-import multiprocessing
 import translators as ts
-
-from config import *
+from config import AUTHOR, EMAIL, ORGANIZATION, PROJECT, VERSION
 
 failed_translations: set[tuple[str, Exception]] = set()
 WAIT_TIME_SEC = 10
@@ -18,7 +17,7 @@ def setup() -> None:
         pass
     os.system("pybabel extract -F friendhub/babel.cfg -o friendhub/translations/messages.pot .")
     file_lines: list[str] = []
-    with open("friendhub/translations/messages.pot") as messages:
+    with open("friendhub/translations/messages.pot", encoding="utf-8") as messages:
         file_lines = messages.readlines()
 
     new_file_lines: list[str] = []
@@ -46,7 +45,7 @@ def setup() -> None:
 
 def translate_and_replace(language: str, file_path: str) -> None:
     file_lines: list[str] = []
-    with open(file_path) as file:
+    with open(file_path, encoding="utf-8") as file:
         file_lines = file.readlines()
 
     return_file: list[str] = []

@@ -27,8 +27,8 @@ class User:
         if self.password is not None:
             self.password = hashlib.sha256(bytes(self.password, "utf-8")).digest().hex()
 
-    @staticmethod
-    def from_db(row: tuple) -> User:
+    @classmethod
+    def from_db(cls, row: tuple) -> User:
         return User(
             id_=uuid.UUID(row[0]),
             first_name=row[1],
@@ -46,8 +46,8 @@ class User:
             permissions=int(row[13]),
         )
 
-    @staticmethod
-    def from_dict(d: dict) -> User:  # pylint: disable=invalid-name
+    @classmethod
+    def from_dict(cls, d: dict) -> User:  # pylint: disable=invalid-name
         return User(
             id_=uuid.UUID(d["id_"]),
             first_name=d["first_name"],

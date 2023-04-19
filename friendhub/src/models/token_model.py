@@ -1,50 +1,58 @@
 from __future__ import annotations
 
-import base64
 import random
+import string
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 
-
-def random_b64() -> str:
-    return base64.b64encode(str(random.getrandbits(160)).encode("utf-8")).decode()[:-2]
+import jwt
+from config_keys import JWT_ALGORITHM, JWT_KEY
+from database.token_dao import TokenDAO
 
 
 @dataclass(kw_only=True)
-class Token:
-    id_: uuid.UUID = field(default_factory=uuid.uuid4)
-    value: str = field(default_factory=random_b64)
+class JwtToken:
+    @staticmethod
+    def __random_data() -> str:
+        return "".join(random.choices(string.ascii_letters + string.digits, k=5))
+
     owner_id: uuid.UUID
     date_created: datetime = field(default_factory=datetime.now)
     valid_until: datetime
     purpose: Purpose
-    force_invalid: bool
+    rnd: str = field(init=False, default_factory=__random_data)
 
     class Purpose(str, Enum):
         DELETE_PROFILE = "delete_profile"
         USER_LOGIN = "user_login"
 
-    @staticmethod
-    def from_db(row: tuple) -> Token:
-        return Token(
-            id_=row[0],
-            owner_id=row[1],
-            valid_until=row[2],
-            value=row[3],
-            purpose=row[4],
-            date_created=row[5],
-            force_invalid=row[6],
+    def build(self) -> str:
+        return jwt.encode(
+            {
+                "sub": str(self.owner_id),
+                "iat": int(self.date_created.timestamp()),
+                "exp": int(self.valid_until.timestamp()),
+                "purpose": self.purpose.value,
+                "entropy": self.rnd,
+            },
+            JWT_KEY,
+            JWT_ALGORITHM,
+        )
+
+    @classmethod
+    def from_str(cls, string_: str) -> JwtToken:
+        result = jwt.decode(string_, JWT_KEY, [JWT_ALGORITHM])
+        return JwtToken(
+            owner_id=uuid.UUID(result["sub"]),
+            date_created=datetime.fromtimestamp(result["iat"]),
+            valid_until=datetime.fromtimestamp(result["exp"]),
+            purpose=JwtToken.Purpose(result["purpose"]),
         )
 
     @property
     def is_valid(self) -> bool:
-        return (
-            datetime.now().replace(tzinfo=None) < self.valid_until.replace(tzinfo=None)
-            and not self.force_invalid
-        )
-
-    @property
-    def is_delete_profile(self) -> bool:
-        return self.purpose == Token.Purpose.DELETE_PROFILE
+        return datetime.now().replace(tzinfo=None) < self.valid_until.replace(
+            tzinfo=None
+        ) and TokenDAO.is_valid(self.build())

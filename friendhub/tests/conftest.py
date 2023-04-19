@@ -1,6 +1,7 @@
+import json
 import uuid
 from random import randint
-import json
+
 import pytest
 import requests
 from database.user_dao import UserDAO
@@ -17,8 +18,8 @@ from . import (
 
 @pytest.fixture(scope="function")
 def auto_login_logout(request):
-    login()
-    yield request
+    jwt = login()
+    yield jwt
     logout()
 
 
@@ -37,8 +38,11 @@ def logout() -> None:
     requests.post(LOGOUT_ENDPOINT, timeout=3)
 
 
-def login() -> None:
-    requests.post(LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3)
+def login() -> str:
+    data = requests.post(
+        LOGIN_ENDPOINT, {"email": USER_EMAIL, "password": USER_PASSWORD}, timeout=3
+    )
+    return json.loads(data.text)["token"]
 
 
 def create_random_user() -> uuid.UUID:

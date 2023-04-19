@@ -1,30 +1,30 @@
 from database.dbmanager import DBManager
-from models.token_model import Token
 
 
 class TokenDAO:
     @staticmethod
-    def add(token: Token) -> None:
+    def insert(jwt: str) -> None:
         DBManager.execute(
-            """INSERT INTO tokens(id, owner, valid_until, value, purpose, date_created)
-             VALUES(%s, %s, %s, %s, %s, %s)""",
-            (
-                str(token.id_),
-                str(token.owner_id),
-                token.valid_until,
-                token.value,
-                token.purpose.value,
-                token.date_created,
-            ),
+            """
+            INSERT INTO tokens(value) VALUES(%s)""",
+            (jwt,),
         )
 
     @staticmethod
-    def invalidate(token: Token) -> None:
-        DBManager.execute("UPDATE tokens SET force_invalid=true WHERE id=%s", (str(token.id_),))
+    def is_valid(jwt: str) -> bool:
+        result = DBManager.execute(
+            """
+            SELECT inactive FROM tokens WHERE value=%s""",
+            (jwt,),
+        )
+        if result == []:
+            return False
+        return bool(result[0])
 
     @staticmethod
-    def get_token_by_value(value: str) -> Token | None:
-        result = DBManager.execute("SELECT * FROM tokens where value=%s", (value,))
-        if not result:
-            return None
-        return Token.from_db(result[0])
+    def invalidate(jwt: str) -> None:
+        DBManager.execute(
+            """
+            UPDATE tokens SET inactive=true WHERE value=%s""",
+            (jwt,),
+        )

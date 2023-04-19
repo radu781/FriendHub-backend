@@ -4,10 +4,11 @@ from enum import Enum, auto
 from typing import Any, Callable
 
 import logger
+from database.user_dao import UserDAO
 from flask import jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
-from utils.session import get_user_in_request, get_user_in_session
+from models.token_model import JwtToken
 
 
 class Types(Enum):
@@ -69,28 +70,13 @@ def check_params(names: dict[str, Types]) -> Callable:
 
 def needs_login(func: Callable[..., Response]) -> Callable[..., Response]:
     def decorator(*args, **kwargs) -> Response:
-        session_user = get_user_in_session()
-        request_user = get_user_in_request()
-        if session_user is None and request_user is None:
+        request_user = __get_user_in_request()
+        if request_user is None:
             return make_response(
                 jsonify({"error": "not logged in"}),
                 status.HTTP_401_UNAUTHORIZED,
             )
-        if session_user and request_user and session_user != request_user:
-            return make_response(
-                jsonify(
-                    {
-                        "error": "different user IDs in session and bearer token",
-                        "session": session_user.id_,
-                        "token": request_user.id_,
-                        "action": "clear cookies",
-                    },
-                    status.HTTP_401_UNAUTHORIZED,
-                )
-            )
-        if session_user is None:
-            session_user = request_user
-        kwargs["current_user"] = session_user
+        kwargs["current_user"] = UserDAO.get_user_by_id(request_user)
         return func(*args, **kwargs)
 
     return decorator
@@ -98,26 +84,11 @@ def needs_login(func: Callable[..., Response]) -> Callable[..., Response]:
 
 def needs_logout(func: Callable[..., Response]) -> Callable[..., Response]:
     def decorator(*args, **kwargs) -> Response:
-        session_user = get_user_in_session()
-        request_user = get_user_in_request()
-        if session_user and request_user:
+        request_user = __get_user_in_request()
+        if request_user:
             return make_response(
                 jsonify({"error": "not logged out"}),
                 status.HTTP_401_UNAUTHORIZED,
-            )
-        if session_user or request_user:
-            if session_user:
-                return make_response(
-                    jsonify(
-                        {"error": "not logged out", "action": "clear session cookies"},
-                        status.HTTP_401_UNAUTHORIZED,
-                    )
-                )
-            return make_response(
-                jsonify(
-                    {"error": "not logged out", "action": "clear bearer token or cookies"},
-                    status.HTTP_401_UNAUTHORIZED,
-                )
             )
         return func(*args, **kwargs)
 
@@ -137,3 +108,13 @@ def log_endpoint(func: Callable[..., Response]) -> Callable[..., Response]:
         return result
 
     return decorator
+
+
+def __get_user_in_request() -> uuid.UUID | None:
+    if "Authorization" not in request.headers:
+        return None
+
+    token = JwtToken.from_str(request.headers["Authorization"].removeprefix("Bearer "))
+    if not token.is_valid:
+        return None
+    return token.owner_id

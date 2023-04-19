@@ -36,7 +36,7 @@ class PostDAO:
         out: list[PostWrapper] = []
         for row in value:
             current_post = Post.from_db(row)
-            current_post = VoteDAO.get_votes_for_post(current_post)
+            current_post = VoteDAO.update_votes_for_post(current_post)
             author = UserDAO.get_user_by_id(current_post.owner_id)
             if not author:
                 continue

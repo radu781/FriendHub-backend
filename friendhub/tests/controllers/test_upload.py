@@ -2,9 +2,10 @@ import json
 
 import pytest
 import requests
+import utils.validators.other as validators
 from flask_api import status
-
 from tests import UPLOAD_ENDPOINT
+
 
 # TODO: fix when adding JWT
 @pytest.mark.xfail
@@ -40,3 +41,5 @@ def test_text_only_ok(auto_login_logout):  # pylint: disable=unused-argument
     js = json.loads(res.text)
 
     assert res.status_code == status.HTTP_201_CREATED
+    assert "id" in js
+    assert validators.is_uuid(js["id"])

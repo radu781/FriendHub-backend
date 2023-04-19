@@ -6,10 +6,10 @@ from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
-from models.token_model import Token
+from models.token_model import JwtToken
 from models.user_model import User
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
-from utils.session import set_session_token, setup_session
+from utils.session import setup_session
 from utils.validators.decorators import log_endpoint, needs_logout
 
 login_blueprint = Blueprint("login_blueprint", __name__)
@@ -60,12 +60,10 @@ def login() -> Response:
     if not current_user:
         return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    current_token = Token(
+    current_token = JwtToken(
         owner_id=current_user.id_,
         valid_until=datetime.now() + timedelta(14),
-        purpose=Token.Purpose.USER_LOGIN,
-        force_invalid=False,
-    )
-    TokenDAO.add(current_token)
-    set_session_token(current_token, Token.Purpose.USER_LOGIN)
-    return make_response(jsonify({"token": vars(current_token)}))
+        purpose=JwtToken.Purpose.USER_LOGIN,
+    ).build()
+    TokenDAO.insert(current_token)
+    return make_response(jsonify({"token": current_token}))

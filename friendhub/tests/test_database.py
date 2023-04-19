@@ -97,7 +97,7 @@ def test_structure_relationships():
 @pytest.mark.unit
 @pytest.mark.db
 def test_structure_tokens():
-    EXPECTED = ["id", "owner", "valid_until", "value", "purpose", "date_created", "force_invalid"]
+    EXPECTED = ["id", "value", "inactive"]
     for expect, line in zip(EXPECTED, DBManager.execute("DESC tokens", ())):
         assert expect == line[0], "Table format changed"
 

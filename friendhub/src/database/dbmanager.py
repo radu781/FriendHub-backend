@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 import threading
 from configparser import ConfigParser
@@ -22,6 +24,11 @@ class __DBManager:
         values: tuple
         id_: int
         count: int
+
+        def __lt__(self, other) -> bool:
+            if not isinstance(other, __DBManager__QueueItem):
+                raise ValueError
+            return False
 
     DBType = int | float | str | datetime | None
 
@@ -86,7 +93,7 @@ class __DBManager:
     def __execute(
         self, statement: str, values: tuple[int | str | datetime | None, ...]
     ) -> list[tuple]:
-        statement = statement.replace("\n", " ").replace("\t", " ").replace("  ", " ")
+        statement = statement.replace("\n", " ").replace("\t", " ").replace("  ", " ").strip()
         try:
             self.cursor.execute(statement, values)
             if statement.split(" ")[0].upper() not in self.NO_COMMIT_OPERATIONS:

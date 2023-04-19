@@ -8,20 +8,23 @@ from flask_api import status
 from models.user_model import User
 from models.vote_model import Vote
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
-from utils.validators.decorators import Types, check_params, needs_login
+from utils.session import setup_session
+from utils.validators.decorators import Types, check_params, log_endpoint, needs_login
 
 post_blueprint = Blueprint("post_blueprint", __name__)
 
 
 @post_blueprint.route("/api/post/<string:id_>", methods=["GET", "PUT"])
 @check_params({"id_": Types.UUID})
+@log_endpoint
+@setup_session
 @needs_login
 def post(*, id_: uuid.UUID, current_user: User) -> Response:
     if request.method == "GET":
         target_post = PostDAO.get_post_by_id(id_)
         if target_post is None:
             return make_response(jsonify({"reason": "post not found"}), status.HTTP_404_NOT_FOUND)
-        target_post = VoteDAO.get_votes_for_post(target_post)
+        target_post = VoteDAO.update_votes_for_post(target_post)
         return make_response(jsonify({"post": vars(target_post)}))
 
     parser = ArgumentParser(
@@ -59,5 +62,5 @@ def post(*, id_: uuid.UUID, current_user: User) -> Response:
     if db_vote is not None and db_vote.value != user_intent:
         VoteDAO.delete(db_vote.id_)
         VoteDAO.add(Vote(parent_id=id_, author_id=current_user.id_, value=user_intent))
-        return make_response("", status.HTTP_201_CREATED)
+        return make_response(jsonify({"vote": vars(db_vote)}), status.HTTP_201_CREATED)
     return make_response("unexpected error", status.HTTP_500_INTERNAL_SERVER_ERROR)

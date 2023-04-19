@@ -46,7 +46,7 @@ def upload(*, current_user: User) -> Response:
     post_got.text = values["text"]
     PostDAO.create_post(post_got)
 
-    return make_response("", status.HTTP_201_CREATED)
+    return make_response(jsonify({"post": vars(post_got)}), status.HTTP_201_CREATED)
 
 
 def __treat_file_upload(req: Request, user_id: uuid.UUID) -> Post:
