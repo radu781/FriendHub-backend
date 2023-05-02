@@ -17,11 +17,11 @@ class Post:
     video: str | None
     audio: str | None
 
-    @staticmethod
-    def from_db(row: tuple) -> Post:
+    @classmethod
+    def from_db(cls, row: tuple) -> Post:
         return Post(
-            id_=row[0],
-            owner_id=row[1],
+            id_=uuid.UUID(row[0]),
+            owner_id=uuid.UUID(row[1]),
             create_time=row[2],
             text=row[5],
             image=row[6],

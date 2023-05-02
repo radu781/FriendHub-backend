@@ -17,7 +17,7 @@ post_blueprint = Blueprint("post_blueprint", __name__)
 @post_blueprint.route("/api/post/<string:id_>", methods=["GET", "PUT"])
 @check_params({"id_": Types.UUID})
 @log_endpoint
-@setup_session
+# @setup_session
 @needs_login
 def post(*, id_: uuid.UUID, current_user: User) -> Response:
     if request.method == "GET":

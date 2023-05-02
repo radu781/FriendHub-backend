@@ -13,8 +13,8 @@ class Page:
     profile_picture: str = field(default="")
     banner_picture: str = field(default="")
 
-    @staticmethod
-    def from_db(row: tuple) -> Page:
+    @classmethod
+    def from_db(cls, row: tuple) -> Page:
         return Page(
             id_=uuid.UUID(row[0]),
             name=row[1],

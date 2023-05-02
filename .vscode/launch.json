@@ -8,8 +8,12 @@
 			"console": "integratedTerminal",
 			"justMyCode": false,
 			"cwd": "${workspaceFolder}",
-			"env": { "PYTHONPATH": "friendhub/src;." },
-			"args": ["-Xfrozen_modules=off"]
+			"env": {
+				"PYTHONPATH": "friendhub/src;."
+			},
+			"args": [
+				"-Xfrozen_modules=off"
+			]
 		},
 		{
 			"name": "Make translations",
@@ -27,8 +31,16 @@
 			"console": "integratedTerminal",
 			"cwd": "${workspaceFolder}",
 			"module": "pytest",
-			"args": ["friendhub/tests/", "-m db"],
-			"env": { "PYTHONPATH": "friendhub/src" }
+			"args": [
+				"-v",
+				"friendhub/tests",
+				// "-m db",
+				"-m unit"
+			],
+			"env": {
+				"PYTHONPATH": "friendhub/src"
+			},
+			"justMyCode": false
 		},
 		{
 			"name": "Profile",
@@ -38,7 +50,10 @@
 			"console": "integratedTerminal",
 			"justMyCode": true,
 			"cwd": "${workspaceFolder}",
-			"env": { "PYTHONPATH": "friendhub/src;.", "PROFILE": "" }
+			"env": {
+				"PYTHONPATH": "friendhub/src;.",
+				"PROFILE": ""
+			}
 		}
 	]
 }

@@ -1,14 +1,13 @@
 import os
 import uuid
 
+import app.flask
+from app import babel, flask_app
 from config_keys import DEBUG_ON
 from flask import jsonify, make_response, render_template, request, send_from_directory
 from flask_api import status
 from utils.validators.decorators import Types, check_params
 from werkzeug.exceptions import NotFound
-
-import app.flask
-from app import flask_app, babel
 
 
 @babel.localeselector
@@ -36,6 +35,22 @@ def chat():
 def multimedia(*, id_: uuid.UUID, name: str):
     try:
         return send_from_directory("../../static", f"uploads/{id_}/{name}")
+    except NotFound as ex:
+        return make_response(jsonify({"error": ex.description}), status.HTTP_404_NOT_FOUND)
+
+
+@flask_app.route("/assets/<string:dir_>/<string:name>")
+def default_multimedia2(*, dir_: str, name: str):
+    try:
+        return send_from_directory("../../static/assets", f"{dir_}/{name}")
+    except NotFound as ex:
+        return make_response(jsonify({"error": ex.description}), status.HTTP_404_NOT_FOUND)
+
+
+@flask_app.route("/assets/<string:dir1>/<string:dir2>/<string:name>")
+def default_multimedia3(*, dir1: str, dir2: str, name: str):
+    try:
+        return send_from_directory("../../static/assets", f"{dir1}/{dir2}/{name}")
     except NotFound as ex:
         return make_response(jsonify({"error": ex.description}), status.HTTP_404_NOT_FOUND)
 

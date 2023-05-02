@@ -17,10 +17,10 @@ class Script:
     def encrypt(self) -> None:
         self.code = Script.fernet.encrypt(self.code.encode("utf-8")).decode("utf-8")
 
-    @staticmethod
-    def from_db(row: tuple) -> Script:
+    @classmethod
+    def from_db(cls, row: tuple) -> Script:
         return Script(
-            id_=row[0],
-            author_id=row[1],
+            id_=uuid.UUID(row[0]),
+            author_id=uuid.UUID(row[1]),
             code=Script.fernet.decrypt(row[2]).decode("utf-8"),
         )

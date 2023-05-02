@@ -31,16 +31,14 @@ class PostDAO:
     @staticmethod
     def get_visible_posts(user: User | None, start: int, end: int) -> list[PostWrapper]:
         value = DBManager.execute(
-            f"SELECT * FROM posts ORDER BY create_time DESC LIMIT {end-start} OFFSET {start}", ()
+            "SELECT * FROM posts ORDER BY create_time DESC LIMIT %s OFFSET %s", (end - start, start)
         )
         out: list[PostWrapper] = []
         for row in value:
             current_post = Post.from_db(row)
             current_post = VoteDAO.update_votes_for_post(current_post)
             author = UserDAO.get_user_by_id(current_post.owner_id)
-            if not author:
-                continue
-            if not user:
+            if not author or not user:
                 continue
             current_vote = VoteDAO.get_vote(current_post.id_, user.id_)
             out.append(PostWrapper(current_post, author, current_vote))

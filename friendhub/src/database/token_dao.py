@@ -18,7 +18,7 @@ class TokenDAO:
             (jwt,),
         )
         if result == []:
-            return False
+            return True
         return bool(result[0])
 
     @staticmethod

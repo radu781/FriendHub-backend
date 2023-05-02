@@ -27,6 +27,12 @@ class Vote:
         def values(cls) -> set[str]:
             return set(map(lambda e: e.value, cls))
 
-    @staticmethod
-    def from_db(row: tuple) -> Vote:
-        return Vote(id_=row[0], parent_id=row[1], author_id=row[2], value=row[3])
+    @classmethod
+    def from_db(cls, row: tuple) -> Vote:
+        return Vote(
+            id_=uuid.UUID(row[0]),
+            parent_id=uuid.UUID(row[1]),
+            author_id=uuid.UUID(row[2]),
+            value=Vote.Value(row[3]),
+            # create_time=row[4]
+        )

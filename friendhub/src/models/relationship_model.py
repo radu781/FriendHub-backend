@@ -26,6 +26,12 @@ class Relationship:
         def values(cls) -> set[str]:
             return set(map(lambda e: e.value, cls))
 
-    @staticmethod
-    def from_db(row: tuple) -> Relationship:
-        return Relationship(id_=row[0], from_=row[1], to_=row[2], type_=row[3], change_time=row[4])
+    @classmethod
+    def from_db(cls, row: tuple) -> Relationship:
+        return Relationship(
+            id_=uuid.UUID(row[0]),
+            from_=uuid.UUID(row[1]),
+            to_=uuid.UUID(row[2]),
+            type_=Relationship.Type(row[3]),
+            change_time=row[4],
+        )
