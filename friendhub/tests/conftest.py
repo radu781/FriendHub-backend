@@ -24,6 +24,12 @@ def auto_login_logout(request):
 
 
 @pytest.fixture(scope="function")
+def auto_login(request):
+    jwt = login()
+    yield jwt
+
+
+@pytest.fixture(scope="function")
 def auto_logout(request):
     logout()
     yield request

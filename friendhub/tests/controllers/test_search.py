@@ -65,8 +65,6 @@ def test_type_unknown():
     assert "unknown" in content
 
 
-# TODO: investigate json creation
-@pytest.mark.xfail
 @pytest.mark.unit
 def test_search_ok():
     TYPES = ["user", "page"]
@@ -74,29 +72,29 @@ def test_search_ok():
         res = requests.get(
             SEARCH_ENDPOINT,
             {"query": "test", "max": 5},
-            data={"type": type_},
+            data=json.dumps({"type": type_}),
             timeout=3,
         )
         content = json.loads(res.text)
 
         assert res.status_code == status.HTTP_200_OK
-        assert type_ in content
+        assert type_ + "s" in content
         assert "count" in content[f"{type_}s"]
-        assert isinstance(int, content[f"{type_}s"]["count"])
+        assert isinstance(content[f"{type_}s"]["count"], int)
         assert content[f"{type_}s"]["count"] <= 5
         assert "data" in content[f"{type_}s"]
         assert content[f"{type_}s"]["count"] == len(content[f"{type_}s"]["data"])
 
     res = requests.get(
-        SEARCH_ENDPOINT, {"query": "test", "max": 5}, data={"type": TYPES}, timeout=3
+        SEARCH_ENDPOINT, {"query": "test", "max": 5}, data=json.dumps({"type": TYPES}), timeout=3
     )
     content = json.loads(res.text)
 
     assert res.status_code == status.HTTP_200_OK
     for type_ in TYPES:
-        assert type_ in content
+        assert type_ + "s" in content
         assert "count" in content[f"{type_}s"]
-        assert isinstance(int, content[f"{type_}s"]["count"])
+        assert isinstance(content[f"{type_}s"]["count"], int)
         assert content[f"{type_}s"]["count"] <= 5
         assert "data" in content[f"{type_}s"]
         assert content[f"{type_}s"]["count"] == len(content[f"{type_}s"]["data"])

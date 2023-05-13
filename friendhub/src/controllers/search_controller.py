@@ -38,13 +38,15 @@ def search() -> Response:
             jsonify({"reason": "expected 'type' in request body"}),
             status.HTTP_400_BAD_REQUEST,
         )
-    if not isinstance(body["type"], list) or len(body["type"]) == 0:
+    if not isinstance(body["type"], list) and len(body["type"]) == 0:
         return make_response(
             jsonify({"reason": "'type' is either not an array or has length 0"}),
             status.HTTP_400_BAD_REQUEST,
         )
 
     unknown_types: list[str] = []
+    if isinstance(body["type"], str):
+        body["type"] = [body["type"]]
     for type_ in body["type"]:
         if type_ not in __allowed_filters:
             unknown_types.append(type_)

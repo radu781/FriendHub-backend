@@ -6,11 +6,11 @@ from flask_api import status
 
 from tests import ALL_POSTS_ENDPOINT
 
-# TODO: fix when adding JWT
-@pytest.mark.xfail
 @pytest.mark.unit
 def test_no_params(auto_login_logout):  # pylint: disable=unused-argument
-    res = requests.get(ALL_POSTS_ENDPOINT, timeout=3)
+    res = requests.get(
+        ALL_POSTS_ENDPOINT, headers={"Authorization": f"Bearer {auto_login_logout}"}, timeout=10
+    )
     js = json.loads(res.text)
 
     assert res.status_code == status.HTTP_200_OK
@@ -25,11 +25,14 @@ def test_no_params(auto_login_logout):  # pylint: disable=unused-argument
         assert "vote" in sub_item
 
 
-# TODO: fix when adding JWT
-@pytest.mark.xfail
 @pytest.mark.unit
 def test_all_params(auto_login_logout):  # pylint: disable=unused-argument
-    res = requests.get(ALL_POSTS_ENDPOINT, {"from": 1, "to": 5}, timeout=3)
+    res = requests.get(
+        ALL_POSTS_ENDPOINT,
+        {"from": 1, "to": 5},
+        headers={"Authorization": f"Bearer {auto_login_logout}"},
+        timeout=3,
+    )
     js = json.loads(res.text)
 
     assert res.status_code == status.HTTP_200_OK

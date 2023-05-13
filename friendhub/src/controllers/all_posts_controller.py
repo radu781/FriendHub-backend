@@ -10,8 +10,8 @@ all_post_blueprint = Blueprint("all_post_blueprint", __name__)
 
 
 @all_post_blueprint.route("/api/post/all", methods=["GET"])
-# @needs_login
-def all_posts() -> Response:
+@needs_login
+def all_posts(*, current_user: User) -> Response:
     parser = ArgumentParser(
         request,
         {Argument("from", ArgType.OPTIONAL, 0), Argument("to", ArgType.OPTIONAL, 20)},

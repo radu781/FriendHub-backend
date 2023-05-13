@@ -26,7 +26,7 @@ class __DBManager:
         count: int
 
         def __lt__(self, other) -> bool:
-            if not isinstance(other, __DBManager__QueueItem):
+            if not isinstance(other, __DBManager.QueueItem):
                 raise ValueError
             return False
 

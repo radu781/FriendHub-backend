@@ -8,6 +8,7 @@ from flask_api import status
 from models.user_model import User
 from models.vote_model import Vote
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
+from database.user_dao import UserDAO
 from utils.session import setup_session
 from utils.validators.decorators import Types, check_params, log_endpoint, needs_login
 
@@ -25,7 +26,20 @@ def post(*, id_: uuid.UUID, current_user: User) -> Response:
         if target_post is None:
             return make_response(jsonify({"reason": "post not found"}), status.HTTP_404_NOT_FOUND)
         target_post = VoteDAO.update_votes_for_post(target_post)
-        return make_response(jsonify({"post": vars(target_post)}))
+        own_vote = VoteDAO.get_vote(target_post.id_, current_user.id_)
+        post_author = UserDAO.get_user_by_id(target_post.owner_id)
+        return make_response(
+            jsonify(
+                {
+                    "data": {
+                        "post": target_post,
+                        "vote": own_vote,
+                        "author": post_author,
+                    },
+                }
+            ),
+            status.HTTP_200_OK,
+        )
 
     parser = ArgumentParser(
         request,

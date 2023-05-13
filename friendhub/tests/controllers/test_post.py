@@ -17,7 +17,6 @@ def test_get_not_found(auto_login_logout):  # pylint: disable=unused-argument
     assert js["reason"] == "post not found"
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -29,11 +28,15 @@ def test_get_found(auto_login_logout):  # pylint: disable=unused-argument
         timeout=3,
     )
     res = requests.get(POST_ENDPOINT + "/f2cccc42-df1e-4145-ad57-298b949c141a", timeout=3)
+    js = json.loads(res.text)
 
     assert res.status_code == status.HTTP_200_OK
+    assert "data" in js
+    assert "author" in js["data"]
+    assert "post" in js["data"]
+    assert "vote" in js["data"]
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -48,7 +51,6 @@ def test_put_missing_parameters(auto_login_logout):  # pylint: disable=unused-ar
     assert js["parameters"] == "vote"
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -60,7 +62,6 @@ def test_put_no_db_clear_intent(auto_login_logout):  # pylint: disable=unused-ar
     assert res.status_code == status.HTTP_202_ACCEPTED
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -72,7 +73,6 @@ def test_put_no_db_no_clear_intent(auto_login_logout):  # pylint: disable=unused
     assert res.status_code == status.HTTP_201_CREATED
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -84,7 +84,6 @@ def test_put_db_clear_intent(auto_login_logout):  # pylint: disable=unused-argum
     assert res.status_code == status.HTTP_205_RESET_CONTENT
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -96,7 +95,6 @@ def test_put_db_same_intent(auto_login_logout):  # pylint: disable=unused-argume
     assert res.status_code == status.HTTP_202_ACCEPTED
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
@@ -108,7 +106,6 @@ def test_put_db_diff_intent(auto_login_logout):  # pylint: disable=unused-argume
     assert res.status_code == status.HTTP_201_CREATED
 
 
-# TODO: fix when adding JWT
 # TODO: create random post and delete after
 @pytest.mark.xfail
 @pytest.mark.unit
