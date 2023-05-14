@@ -1,4 +1,4 @@
-name: pylint
+name: ruff
 
 on: [push]
 
@@ -18,11 +18,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install black
-        pip install pylint
-        pip install -r friendhub/config/requirements.txt
+        pip install ruff
+        pip install -r friendhub/backend/config/requirements.txt
     - name: Running black
       run: |
-        PYTHONPATH="friendhub/src" black friendhub/src/
-    - name: Analyzing the code with pylint
+        PYTHONPATH="friendhub/src" black friendhub/backend/src/
+    - name: Analyzing the code with ruff
       run: |
-        PYTHONPATH="friendhub/src:." pylint friendhub/src/
+        PYTHONPATH="friendhub/src:." ruff friendhub/backend/src/

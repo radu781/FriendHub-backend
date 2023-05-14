@@ -4,12 +4,12 @@
 			"name": "Run project",
 			"type": "python",
 			"request": "launch",
-			"program": "friendhub/src/main.py",
+			"program": "friendhub/backend/src/main.py",
 			"console": "integratedTerminal",
 			"justMyCode": false,
 			"cwd": "${workspaceFolder}",
 			"env": {
-				"PYTHONPATH": "friendhub/src;."
+				"PYTHONPATH": "friendhub/backend/src;."
 			},
 			"args": [
 				"-Xfrozen_modules=off"
@@ -33,12 +33,12 @@
 			"module": "pytest",
 			"args": [
 				"-v",
-				"friendhub/tests",
+				"friendhub/backend/tests",
 				// "-m db",
 				"-m unit"
 			],
 			"env": {
-				"PYTHONPATH": "friendhub/src"
+				"PYTHONPATH": "friendhub/backend/src"
 			},
 			"justMyCode": false
 		},
@@ -46,12 +46,12 @@
 			"name": "Profile",
 			"type": "python",
 			"request": "launch",
-			"program": "friendhub/src/main.py",
+			"program": "friendhub/backend/src/main.py",
 			"console": "integratedTerminal",
 			"justMyCode": true,
 			"cwd": "${workspaceFolder}",
 			"env": {
-				"PYTHONPATH": "friendhub/src;.",
+				"PYTHONPATH": "friendhub/backend/src;.",
 				"PROFILE": ""
 			}
 		}

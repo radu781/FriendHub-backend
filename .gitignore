@@ -9,8 +9,8 @@
 deploy.log
 friendhub/static/uploads/
 *.po
-friendhub/performance/
-friendhub/logs/
+friendhub/backend/performance/
+friendhub/backend/logs/
 
 .coverage
 htmlcov/
