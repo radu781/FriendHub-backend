@@ -22,7 +22,7 @@ jobs:
         pip install -r friendhub/backend/config/requirements.txt
     - name: Running black
       run: |
-        PYTHONPATH="friendhub/src" black friendhub/backend/src/
+        PYTHONPATH="friendhub/backend/src" black friendhub/backend/src/
     - name: Analyzing the code with ruff
       run: |
         PYTHONPATH="friendhub/src:." ruff friendhub/backend/src/
