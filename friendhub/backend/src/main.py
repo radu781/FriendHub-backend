@@ -39,8 +39,16 @@ def multimedia(*, id_: uuid.UUID, name: str):
         return make_response(jsonify({"error": ex.description}), status.HTTP_404_NOT_FOUND)
 
 
+@flask_app.route("/assets/<string:name>")
+def default_multimedia2(*, name: str):
+    try:
+        return send_from_directory("../../../static/assets", name)
+    except NotFound as ex:
+        return make_response(jsonify({"error": ex.description}), status.HTTP_404_NOT_FOUND)
+
+
 @flask_app.route("/assets/<string:dir_>/<string:name>")
-def default_multimedia2(*, dir_: str, name: str):
+def default_multimedia3(*, dir_: str, name: str):
     try:
         return send_from_directory("../../../static/assets", f"{dir_}/{name}")
     except NotFound as ex:
@@ -48,7 +56,7 @@ def default_multimedia2(*, dir_: str, name: str):
 
 
 @flask_app.route("/assets/<string:dir1>/<string:dir2>/<string:name>")
-def default_multimedia3(*, dir1: str, dir2: str, name: str):
+def default_multimedia4(*, dir1: str, dir2: str, name: str):
     try:
         return send_from_directory("../../../static/assets", f"{dir1}/{dir2}/{name}")
     except NotFound as ex:

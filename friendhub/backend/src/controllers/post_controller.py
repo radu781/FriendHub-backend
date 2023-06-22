@@ -64,10 +64,12 @@ def post(*, id_: uuid.UUID, current_user: User) -> Response:
 
     if db_vote is None and not user_intent.is_clear:
         VoteDAO.add(Vote(parent_id=id_, author_id=current_user.id_, value=user_intent))
+        PostDAO.add_vote(id_, user_intent)
         return make_response("", status.HTTP_201_CREATED)
 
     if db_vote is not None and user_intent.is_clear:
         VoteDAO.delete(db_vote.id_)
+        PostDAO.remove_vote(id_, user_intent)
         return make_response("", status.HTTP_205_RESET_CONTENT)
 
     if db_vote is not None and db_vote.value == user_intent:
@@ -75,6 +77,8 @@ def post(*, id_: uuid.UUID, current_user: User) -> Response:
 
     if db_vote is not None and db_vote.value != user_intent:
         VoteDAO.delete(db_vote.id_)
+        PostDAO.remove_vote(id_, user_intent)
         VoteDAO.add(Vote(parent_id=id_, author_id=current_user.id_, value=user_intent))
+        PostDAO.add_vote(id_, user_intent)
         return make_response(jsonify({"vote": vars(db_vote)}), status.HTTP_201_CREATED)
     return make_response("unexpected error", status.HTTP_500_INTERNAL_SERVER_ERROR)

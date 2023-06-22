@@ -27,6 +27,16 @@ class Vote:
         def values(cls) -> set[str]:
             return set(map(lambda e: e.value, cls))
 
+        @property
+        def db_name(self) -> str:
+            match self.value:
+                case Vote.Value.UPVOTE:
+                    return "likes"
+                case Vote.Value.DOWNVOTE:
+                    return "dislikes"
+                case _:
+                    return "???"
+
     @classmethod
     def from_db(cls, row: tuple) -> Vote:
         return Vote(
