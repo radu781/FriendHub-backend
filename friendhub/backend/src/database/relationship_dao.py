@@ -46,3 +46,11 @@ class RelationshipDAO:
             return out
         out["to"] = Relationship.from_db(value[0])
         return out
+
+    @staticmethod
+    def get_relationship_count(user_id: UUID, type: Relationship.Type) -> int:
+        value = DBManager.execute(
+            'SELECT COUNT(*) FROM relationships WHERE "from"=%s AND "type"=%s',
+            (str(user_id), type.value),
+        )
+        return value[0][0]

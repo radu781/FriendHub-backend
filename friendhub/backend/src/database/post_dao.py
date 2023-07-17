@@ -67,3 +67,18 @@ class PostDAO:
             f"UPDATE posts SET {vote.db_name} = {vote.db_name} - 1 WHERE id = %s",
             (str(post_id),),
         )
+
+    @staticmethod
+    def get_post_count_by_user(user_id: UUID) -> int:
+        value = DBManager.execute("SELECT COUNT(*) FROM posts WHERE owner_id = %s", (str(user_id),))
+        if value == []:
+            return 0
+        return int(value[0][0])
+
+    @staticmethod
+    def get_score_by_user(user_id: UUID) -> int:
+        value = DBManager.execute(
+            "SELECT SUM(likes)-SUM(dislikes) FROM posts WHERE owner_id = %s", (str(user_id),)
+        )
+        # return list(PostWrapper(Post.from_db(v[0]), User(), Vote()) for v in value)
+        return value[0][0]

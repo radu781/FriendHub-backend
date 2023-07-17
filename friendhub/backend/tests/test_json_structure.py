@@ -4,7 +4,7 @@ import pytest
 import requests
 import utils.validators.other as validators
 from models.relationship_model import Relationship
-from tests.conftest import create_random_user, delete_user
+from tests.conftest import create_random_user, delete_user, STATS_ENDPOINT
 
 from . import (
     LOGIN_ENDPOINT,
@@ -143,3 +143,21 @@ def test_relationship_structure(auto_login_logout):
     assert validators.is_uuid(content["id_"])
     assert validators.is_uuid(content["to_"])
     assert content["type_"] in Relationship.Type.values()
+
+
+@pytest.mark.unit
+def test_stats_structure(auto_login_logout):
+    res = requests.get(
+        f"{STATS_ENDPOINT}/b0648b6c-f3a7-4789-bf57-3b44e15029d9",
+        timeout=3,
+    )
+    content = json.loads(res.content)
+    assert "postCount" in content
+    assert "score" in content
+    assert "friendCount" in content
+    assert "joinTime" in content
+
+    assert isinstance(content["postCount"], int) and content["postCount"] >= 0
+    assert isinstance(content["score"], int) and content["postCount"] >= 0
+    assert isinstance(content["friendCount"], int) and content["postCount"] >= 0
+    assert validators.is_datetime(content["joinTime"])

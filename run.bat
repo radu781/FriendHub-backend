@@ -23,7 +23,7 @@ start "" /B py friendhub/backend/src/main.py
 
 echo Starting frontend
 cd ..\FriendHub-frontend
-start "" /B trunk serve
+start "" /B trunk serve --features for_web
 start "" "http://127.0.0.1:8080"
 
 endlocal

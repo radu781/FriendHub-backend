@@ -33,7 +33,7 @@ def login() -> Response:
     except ArgsNotFoundException as ex:
         return make_response(
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
-            status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_400_BAD_REQUEST,
         )
 
     current_user = User(
@@ -66,4 +66,4 @@ def login() -> Response:
         purpose=JwtToken.Purpose.USER_LOGIN,
     ).build()
     TokenDAO.insert(current_token)
-    return make_response(jsonify({"token": current_token}))
+    return make_response(jsonify({"token": current_token}), status.HTTP_200_OK)

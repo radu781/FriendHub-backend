@@ -16,6 +16,7 @@ from controllers.search_controller import search_blueprint
 from controllers.settings_controller import settings_blueprint
 from controllers.upload_controller import upload_blueprint
 from views.js_runner import js_redirect_blueprint
+from controllers.user_stats import user_stats_blueprint
 
 from . import flask_app
 
@@ -30,6 +31,7 @@ flask_app.config["UPLOAD_FOLDER"] = "../static/uploads"
 
 
 flask_app.register_blueprint(deploy_blueprint)
+flask_app.register_blueprint(user_stats_blueprint)
 flask_app.register_blueprint(js_redirect_blueprint)
 flask_app.register_blueprint(login_blueprint)
 flask_app.register_blueprint(logout_blueprint)

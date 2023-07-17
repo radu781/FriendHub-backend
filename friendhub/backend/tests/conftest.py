@@ -13,6 +13,7 @@ from . import (
     USER_EMAIL,
     USER_FIRST_NAME,
     USER_PASSWORD,
+    STATS_ENDPOINT
 )
 
 

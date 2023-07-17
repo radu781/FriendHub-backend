@@ -13,6 +13,7 @@ DELETE_USER_ENDPOINT = __LOCAL + "/api/profile"
 PROFILE_ENDPOINT = __LOCAL + "/api/profile"
 RELATIONSHIP_ENDPOINT = __LOCAL + "/api/relationship"
 SEARCH_ENDPOINT = __LOCAL + "/api/search"
+STATS_ENDPOINT = __LOCAL + "/api/stats"
 
 # github action only
 USER_EMAIL = ""
