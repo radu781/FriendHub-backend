@@ -44,5 +44,5 @@ class Vote:
             parent_id=uuid.UUID(row[1]),
             author_id=uuid.UUID(row[2]),
             value=Vote.Value(row[3]),
-            # create_time=row[4]
+            create_time=row[4]
         )

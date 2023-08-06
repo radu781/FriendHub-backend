@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 
 from config_keys import SESSION_KEY
+from controllers.activity_controller import activity_blueprint
 from controllers.all_posts_controller import all_post_blueprint
 from controllers.delete_user_controller import delete_user_blueprint
 from controllers.deploy import deploy_blueprint
@@ -30,6 +31,7 @@ flask_app.config["BABEL_TRANSLATION_DIRECTORIES"] = "../translations"
 flask_app.config["UPLOAD_FOLDER"] = "../static/uploads"
 
 
+flask_app.register_blueprint(activity_blueprint)
 flask_app.register_blueprint(deploy_blueprint)
 flask_app.register_blueprint(user_stats_blueprint)
 flask_app.register_blueprint(js_redirect_blueprint)

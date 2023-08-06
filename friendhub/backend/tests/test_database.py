@@ -136,3 +136,11 @@ def test_structure_users():
     ]
     for expect, line in zip(EXPECTED, DBManager.execute("DESC users", ())):
         assert expect == line[0], "Table format changed"
+
+
+@pytest.mark.unit
+@pytest.mark.db
+def test_structure_votes():
+    EXPECTED = ["id", "parent_id", "author_id", "value", "time"]
+    for expect, line in zip(EXPECTED, DBManager.execute("DESC votes", ())):
+        assert expect == line[0]
