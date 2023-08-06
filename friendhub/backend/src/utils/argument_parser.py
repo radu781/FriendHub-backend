@@ -10,6 +10,7 @@ from flask.wrappers import Request
 class Method(Enum):
     GET = auto()
     POST = auto()
+    PUT = auto()
 
 
 class ArgType(Enum):
@@ -41,7 +42,7 @@ class ArgumentParser:
         not_found: list[str] = []
 
         match self.method:
-            case Method.POST:
+            case Method.POST | Method.PUT:
                 for arg in self.args:
                     if arg.type == ArgType.MANDATORY and not (
                         arg.key in self.url.form or arg.key in self.url.args

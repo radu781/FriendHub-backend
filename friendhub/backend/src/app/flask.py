@@ -16,8 +16,9 @@ from controllers.relationship_controller import relationship_blueprint
 from controllers.search_controller import search_blueprint
 from controllers.settings_controller import settings_blueprint
 from controllers.upload_controller import upload_blueprint
-from views.js_runner import js_redirect_blueprint
 from controllers.user_stats import user_stats_blueprint
+from views.js_runner import js_redirect_blueprint
+from controllers.online_activity_controller import online_activity_blueprint
 
 from . import flask_app
 
@@ -32,21 +33,22 @@ flask_app.config["UPLOAD_FOLDER"] = "../static/uploads"
 
 
 flask_app.register_blueprint(activity_blueprint)
+flask_app.register_blueprint(all_post_blueprint)
+flask_app.register_blueprint(delete_user_blueprint)
 flask_app.register_blueprint(deploy_blueprint)
-flask_app.register_blueprint(user_stats_blueprint)
 flask_app.register_blueprint(js_redirect_blueprint)
 flask_app.register_blueprint(login_blueprint)
 flask_app.register_blueprint(logout_blueprint)
-flask_app.register_blueprint(search_blueprint)
+flask_app.register_blueprint(post_blueprint)
+flask_app.register_blueprint(profile_blueprint)
 flask_app.register_blueprint(qr_blueprint)
 flask_app.register_blueprint(register_blueprint)
-flask_app.register_blueprint(upload_blueprint)
-flask_app.register_blueprint(settings_blueprint)
-flask_app.register_blueprint(profile_blueprint)
-flask_app.register_blueprint(delete_user_blueprint)
-flask_app.register_blueprint(all_post_blueprint)
-flask_app.register_blueprint(post_blueprint)
 flask_app.register_blueprint(relationship_blueprint)
+flask_app.register_blueprint(search_blueprint)
+flask_app.register_blueprint(settings_blueprint)
+flask_app.register_blueprint(upload_blueprint)
+flask_app.register_blueprint(user_stats_blueprint)
+flask_app.register_blueprint(online_activity_blueprint)
 
 
 if "PROFILE" in os.environ:
