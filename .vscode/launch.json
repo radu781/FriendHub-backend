@@ -34,8 +34,8 @@
 			"args": [
 				"-v",
 				"friendhub/backend/tests",
-				// "-m db",
-				"-m unit"
+				"-m db",
+				// "-m unit"
 			],
 			"env": {
 				"PYTHONPATH": "friendhub/backend/src"

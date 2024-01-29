@@ -29,8 +29,8 @@ class UsersActivityDAO:
     @staticmethod
     def update(user_id: UUID, status: UsersActivity.Activity, user_agent: str, ip: str) -> None:
         DBManager.execute(
-            """UPDATE users_activity SET activity_status=%s, change_time=%s, user_agent=%s, device_ip=%s
-            WHERE user_id=%s""",
+            """UPDATE users_activity SET activity_status=%s, change_time=%s, user_agent=%s,
+            device_ip=%s WHERE user_id=%s""",
             (
                 status.value,
                 datetime.now(),

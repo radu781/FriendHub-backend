@@ -7,3 +7,4 @@ psycopg2==2.9.5
 pyjwt==2.6.0
 qrcode==7.3.1
 requests==2.31.0
+maturin==1.2.3

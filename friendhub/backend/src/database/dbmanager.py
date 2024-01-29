@@ -12,6 +12,7 @@ import config_keys
 import psycopg2
 import psycopg2.extensions
 import logger
+from utils.validators.decorators import raises
 
 
 @dataclass
@@ -120,6 +121,7 @@ class __DBManager:
                 self.execute(statement, values)
             return []
 
+    @raises(1)
     def __random_id(self) -> int:
         while value := random.randrange(0, 1_000_000):
             if value not in self.results:

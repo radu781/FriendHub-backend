@@ -19,7 +19,6 @@ def get_locale() -> str:
 def access_forbidden(err):
     return make_response("Access forbidden" + str(err), status.HTTP_403_FORBIDDEN)
 
-
 @flask_app.errorhandler(404)
 def page_not_found(err):
     return make_response("Page not found" + str(err), status.HTTP_404_NOT_FOUND)

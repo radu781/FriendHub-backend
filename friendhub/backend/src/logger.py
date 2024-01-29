@@ -7,7 +7,6 @@ from flask import request, session
 
 __logger: logging.Logger | None = None
 
-
 def create() -> logging.Logger:
     try:
         os.mkdir("friendhub/backend/logs")

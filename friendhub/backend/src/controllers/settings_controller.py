@@ -13,4 +13,4 @@ def settings(*, current_user: User) -> Response:
     if request.method == "GET":
         return make_response({"userPreferences": None})
 
-    return make_response(request.json)
+    return make_response(request.json())

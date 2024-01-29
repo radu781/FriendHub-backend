@@ -95,6 +95,25 @@ def needs_logout(func: Callable[..., Response]) -> Callable[..., Response]:
     return decorator
 
 
+def raises(func: Callable) -> Any:
+    def decorator(*exceptions: Exception) -> Any:
+        def wrapper(*args, **kwargs) -> Any | None:
+            try:
+                result = func(*args, **kwargs)
+                return result
+            except Exception as ex:
+                if ex in exceptions:
+                    logger.debug("Uncaught exception in function that might throw exception")
+                else:
+                    logger.debug(f"Uncaught unexpected exception type {ex}")
+
+            return None
+
+        return wrapper
+
+    return decorator
+
+
 def log_endpoint(func: Callable[..., Response]) -> Callable[..., Response]:
     def decorator(*args, **kwargs) -> Response:
         try:
