@@ -1,11 +1,15 @@
 import datetime
+import enum
 import logging
 import os
 import time
 
-from flask import request, session
+from flask import has_request_context, request, session
+
+from config_keys import DEBUG_ON
 
 __logger: logging.Logger | None = None
+
 
 def create() -> logging.Logger:
     try:
@@ -30,6 +34,15 @@ def create() -> logging.Logger:
     return logger
 
 
+class LogCategory(str, enum.Enum):
+    DEFAULT = ""
+    DB = "DB"
+    EMAIL = "EMAIL"
+
+    def __str__(self) -> str:
+        return f"[{self.value}] " if self != LogCategory.DEFAULT else ""
+
+
 if __logger is None:
     __logger = create()
 
@@ -38,27 +51,44 @@ if __logger is None:
             os.remove(f"friendhub/backend/logs/{file}")
 
 
-def debug(msg: str) -> None:
-    __logger.debug(__log_extra() + msg)
+def debug(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = __log_extra() + category + msg
+    if DEBUG_ON:
+        print("[D]" + msg)
+    __logger.debug(msg)
 
 
-def info(msg: str) -> None:
-    __logger.info(__log_extra() + msg)
+def info(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = __log_extra() + category + msg
+    if DEBUG_ON:
+        print("[I]" + msg)
+    __logger.info(msg)
 
 
-def warning(msg: str) -> None:
-    __logger.warning(__log_extra() + msg)
+def warning(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = __log_extra() + category + msg
+    if DEBUG_ON:
+        print("[W]" + msg)
+    __logger.warning(msg)
 
 
-def error(msg: str) -> None:
-    __logger.error(__log_extra() + msg)
+def error(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = __log_extra() + category + msg
+    if DEBUG_ON:
+        print("[E]" + msg)
+    __logger.error(msg)
 
 
-def critical(msg: str) -> None:
-    __logger.critical(__log_extra() + msg)
+def critical(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = __log_extra() + category + msg
+    if DEBUG_ON:
+        print("[C]" + msg)
+    __logger.critical(msg)
 
 
 def __log_extra() -> str:
+    if not has_request_context():
+        return ""
     ip = "unknown"
     if request and request.remote_addr:
         ip = request.remote_addr

@@ -41,8 +41,8 @@ class User:
             extra=row[8],
             profile_picture=row[9],
             banner_picture=row[10],
-            password=row[11],
-            email=row[12],
+            email=row[11],
+            password=row[12],
             permissions=int(row[13]),
         )
 

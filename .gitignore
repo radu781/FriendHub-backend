@@ -14,3 +14,5 @@ friendhub/backend/logs/
 
 .coverage
 htmlcov/
+
+bin/

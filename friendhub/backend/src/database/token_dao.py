@@ -1,4 +1,5 @@
 from database.dbmanager import DBManager
+import logger
 
 
 class TokenDAO:
@@ -23,6 +24,7 @@ class TokenDAO:
 
     @staticmethod
     def invalidate(jwt: str) -> None:
+        logger.debug("Invalidating token " + jwt.split(".")[1][:8])
         DBManager.execute(
             """
             UPDATE tokens SET inactive=true WHERE value=%s""",

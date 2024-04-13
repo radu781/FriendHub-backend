@@ -12,7 +12,6 @@ import config_keys
 import psycopg2
 import psycopg2.extensions
 import logger
-from utils.validators.decorators import raises
 
 
 @dataclass
@@ -110,18 +109,17 @@ class __DBManager:
                 return []
             return self.cursor.fetchall()
         except psycopg2.Error as ex:
-            print(
+            logger.error(
                 f"PostgreSQL error: {ex}, statement: {statement.replace('  ', ' ')}, "
                 f"args: {[str(val).strip() for val in values]}"
             )
             if isinstance(ex, psycopg2.OperationalError):
-                print("Restarting PostgreSQL connection")
+                logger.warning("Restarting PostgreSQL connection")
                 self.__restart_connection()
-                print("Resending values")
+                logger.warning("Resending values")
                 self.execute(statement, values)
             return []
 
-    @raises(1)
     def __random_id(self) -> int:
         while value := random.randrange(0, 1_000_000):
             if value not in self.results:
@@ -132,14 +130,16 @@ class __DBManager:
 
     def die(self) -> None:
         self.running = False
-        logger.info(f"Got Ctrl-C, closing DBManager thread in < {self.TIMEOUT}s")
+        logger.info(f"DB: Closing DBManager thread in < {self.TIMEOUT}s")
         self.thread.join()
 
 
 DBManager = __DBManager()
+logger.debug("DB: DBManager instance created")
 
 
 def handle_ctrl_c(_signal, _frame):
+    logger.debug("DB: Got SIGINT(Ctrl-c)")
     DBManager.die()
     sys.exit(0)
 

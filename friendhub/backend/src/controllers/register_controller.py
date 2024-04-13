@@ -2,6 +2,7 @@ import random
 from datetime import datetime
 from uuid import uuid4
 
+from invoke.email import Email
 import utils.validators.other as validators
 from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request
@@ -80,4 +81,5 @@ def register() -> Response:
         email=values["email"],
     )
     UserDAO.register_user(user)
+    Email.welcome(user.email, user.id_, user.first_name)
     return make_response(jsonify({"user": vars(user.sanitize())}), status.HTTP_201_CREATED)

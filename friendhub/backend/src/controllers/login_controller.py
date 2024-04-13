@@ -1,16 +1,20 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
+import requests
+
 from database.token_dao import TokenDAO
 from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
+from invoke.email import Email, Location
 from models.token_model import JwtToken
 from models.user_model import User
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 from utils.session import setup_session
 from utils.validators.decorators import log_endpoint, needs_logout
+import logger
 
 login_blueprint = Blueprint("login_blueprint", __name__)
 
@@ -35,7 +39,6 @@ def login() -> Response:
             jsonify({"reason": "missing parameters", "parameters": ", ".join(ex.args[0])}),
             status.HTTP_400_BAD_REQUEST,
         )
-
     current_user = User(
         id_=uuid4(),
         email=values["email"],
@@ -56,6 +59,7 @@ def login() -> Response:
             jsonify({"reason": "incorrect password"}), status.HTTP_401_UNAUTHORIZED
         )
     current_user = UserDAO.get_user_by_email(values["email"])
+    logger.debug(str(vars(current_user)))
 
     if not current_user:
         return make_response(status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -66,4 +70,19 @@ def login() -> Response:
         purpose=JwtToken.Purpose.USER_LOGIN,
     ).build()
     TokenDAO.insert(current_token)
+    Email.new_login(
+        current_user.email, current_user.first_name, __get_location_from_ip(request.remote_addr)
+    )
     return make_response(jsonify({"token": current_token}), status.HTTP_200_OK)
+
+
+def __get_location_from_ip(ip: str | None) -> Location:
+    if ip is None:
+        return Location("???", "???", "???", "???")
+
+    res = requests.get(f"http://ip-api.com/json/{ip}?fields=61439")
+    js = res.json()
+    if not res.ok or ("status" in js and js["status"] == "fail"):
+        return Location("???", "???", "???", "???")
+
+    return Location(js["country"], js["city"], js["regionName"], js["isp"])
