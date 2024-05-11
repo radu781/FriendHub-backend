@@ -42,6 +42,9 @@ class LogCategory(str, enum.Enum):
     def __str__(self) -> str:
         return f"[{self.value}] " if self != LogCategory.DEFAULT else ""
 
+    def __repr__(self) -> str:
+        return str(self)
+
 
 if __logger is None:
     __logger = create()

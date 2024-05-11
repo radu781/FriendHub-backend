@@ -78,6 +78,14 @@ class User:
     def is_admin(self) -> bool:
         return self.permissions & 0b1 == 1
 
+    @property
+    def is_demo(self) -> bool:
+        return self.permissions & 0b10 == 1
+
+    @property
+    def is_test(self) -> bool:
+        return self.permissions & 0b100 == 1
+
     def sanitize(self) -> User:
         self.password = self.email = self.permissions = None  # type: ignore
         return self

@@ -17,4 +17,3 @@ class MediaHistory:
     class Type(str, Enum):
         PROFILE = "profile"
         BANNER = "banner"
-

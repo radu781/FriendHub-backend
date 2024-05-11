@@ -2,19 +2,19 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 import requests
-
-from database.token_dao import TokenDAO
-from database.user_dao import UserDAO
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
+
+import logger
+from database.token_dao import TokenDAO
+from database.user_dao import UserDAO
 from invoke.email import Email, Location
 from models.token_model import JwtToken
 from models.user_model import User
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 from utils.session import setup_session
 from utils.validators.decorators import log_endpoint, needs_logout
-import logger
 
 login_blueprint = Blueprint("login_blueprint", __name__)
 
