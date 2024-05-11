@@ -1,6 +1,7 @@
 import subprocess
 from dataclasses import dataclass
 from uuid import UUID
+
 import logger
 
 
@@ -17,7 +18,9 @@ class Email:
     @staticmethod
     def __handle_output(output: subprocess.CompletedProcess[bytes], to: str) -> None:
         if output.returncode != 0:
-            logger.warning("Send error: " + str(output.stderr, encoding="utf-8"), logger.LogCategory.EMAIL)
+            logger.warning(
+                "Send error: " + str(output.stderr, encoding="utf-8"), logger.LogCategory.EMAIL
+            )
         else:
             logger.debug(f"Sent successfully for {to}", logger.LogCategory.EMAIL)
 
@@ -26,26 +29,14 @@ class Email:
         output = subprocess.run(
             f"./bin/email/email welcome --to {to} --full-name {name} --id {id_}"
         )
-        Email.__handle_output(output, to) 
+        Email.__handle_output(output, to)
 
     @staticmethod
     def password_reset(to: str, id_: UUID, name: str, token: str):
-        exit_code, output = subprocess.getstatusoutput(
-            [
-                "./bin/email",
-                "password-reset",
-                "--to",
-                to,
-                "--full-name",
-                name,
-                "--id",
-                str(id_),
-                "--token",
-                token,
-            ]
+        output = subprocess.run(
+            f"./bin/email/email password-reset --to {to} --full-name {name} --id {id_} --token {token}"
         )
-        if exit_code != 0:
-            logger.warning(output, logger.LogCategory.EMAIL)
+        Email.__handle_output(output, to)
 
     @staticmethod
     def new_login(to: str, name: str, location: Location):
@@ -55,17 +46,7 @@ class Email:
 
     @staticmethod
     def birthday(to: str, id_: UUID, name: str):
-        exit_code, output = subprocess.getstatusoutput(
-            [
-                "./bin/email",
-                "birthday",
-                "--to",
-                to,
-                "--full-name",
-                name,
-                "--id",
-                str(id_),
-            ]
+        output = subprocess.run(
+            f"./bin/email/email birthday --to {to} --full-name {name} --id {id_}"
         )
-        if exit_code != 0:
-            logger.warning(output, logger.LogCategory.EMAIL)
+        Email.__handle_output(output, to)
