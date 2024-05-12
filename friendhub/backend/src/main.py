@@ -71,4 +71,4 @@ if __name__ == "__main__":
         mover = Thread(target=perf.move_files)
         mover.start()
 
-    flask_app.run(port=80, debug=DEBUG_ON)
+    flask_app.run(host="0.0.0.0", port=80, debug=DEBUG_ON)

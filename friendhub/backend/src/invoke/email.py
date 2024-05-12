@@ -7,14 +7,7 @@ from typing import Never
 from uuid import UUID
 
 import logger
-
-
-@dataclass
-class Location:
-    country: str
-    city: str
-    region: str
-    isp: str
+from models.location import Location
 
 
 @dataclass

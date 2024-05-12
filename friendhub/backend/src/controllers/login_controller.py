@@ -6,6 +6,7 @@ from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
 
+from database.dao.login_location_dao import LoginLocationDAO
 import logger
 from database.token_dao import TokenDAO
 from database.user_dao import UserDAO
@@ -70,19 +71,8 @@ def login() -> Response:
         purpose=JwtToken.Purpose.USER_LOGIN,
     ).build()
     TokenDAO.insert(current_token)
-    Email.new_login(
-        current_user.email, current_user.first_name, __get_location_from_ip(request.remote_addr)
-    )
+
+    if not LoginLocationDAO.known_ip(request.remote_addr):
+        Location(request.remote_addr).new(current_user)
+
     return make_response(jsonify({"token": current_token}), status.HTTP_200_OK)
-
-
-def __get_location_from_ip(ip: str | None) -> Location:
-    if ip is None:
-        return Location("???", "???", "???", "???")
-
-    res = requests.get(f"http://ip-api.com/json/{ip}?fields=61439")
-    js = res.json()
-    if not res.ok or ("status" in js and js["status"] == "fail"):
-        return Location("???", "???", "???", "???")
-
-    return Location(js["country"], js["city"], js["regionName"], js["isp"])

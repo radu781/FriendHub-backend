@@ -1,14 +1,16 @@
 import uuid
 
-from database.post_dao import PostDAO, UserDAO
-from database.relationship_dao import RelationshipDAO
-from models.relationship_model import Relationship
 from flask import Blueprint, jsonify, make_response
 from flask.wrappers import Response
 from flask_api import status
+
+from database.post_dao import PostDAO, UserDAO
+from database.relationship_dao import RelationshipDAO
+from models.relationship_model import Relationship
 from utils.validators.decorators import Types, check_params
 
 user_stats_blueprint = Blueprint("user_stats_blueprint", __name__)
+
 
 # TODO: add activity tracker
 @user_stats_blueprint.route("/api/stats/<string:id_>", methods=["GET"])

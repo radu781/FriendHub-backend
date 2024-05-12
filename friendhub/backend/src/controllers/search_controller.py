@@ -1,5 +1,4 @@
 import datetime
-from json.decoder import JSONDecodeError
 from typing import Any
 
 from flask import Blueprint, jsonify, make_response, request
@@ -8,7 +7,8 @@ from flask_api import status
 
 import logger
 from database.search_dao import SearchDAO
-from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
+from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
+                                   ArgumentParser, Method)
 
 search_blueprint = Blueprint("search_blueprint", __name__)
 
@@ -155,8 +155,8 @@ def __handle_post_find(
     posts_found = SearchDAO.search_posts(
         query_values["query"],
         limit,
-        query_values["created-after"],
-        query_values["created-before"],
+        query_values["created-after"], # type: ignore
+        query_values["created-before"], # type: ignore
         False,
         False,
         False,
