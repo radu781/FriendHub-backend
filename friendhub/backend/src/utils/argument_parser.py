@@ -3,8 +3,9 @@ from dataclasses import dataclass, field
 from enum import Enum, auto
 from typing import Any, Callable
 
-import logger
 from flask.wrappers import Request
+
+import logger
 
 
 class Method(Enum):
@@ -59,7 +60,9 @@ class ArgumentParser:
                     else:
                         value = self.url.form.get(arg.key, arg.default_value, type=str)
                         if value == arg.default_value:
-                            out[arg.key] = arg.convert_func(self.url.args.get(arg.key, arg.default_value, type=str))
+                            out[arg.key] = arg.convert_func(
+                                self.url.args.get(arg.key, arg.default_value, type=str)
+                            )
                         else:
                             out[arg.key] = arg.convert_func(value)
             case Method.GET:
@@ -67,9 +70,17 @@ class ArgumentParser:
                     if arg.type == ArgType.MANDATORY and arg.key not in self.url.args:
                         not_found.append(arg.key)
                     else:
-                        logger.debug("argument here: " + str(self.url.args.get(arg.key, arg.default_value, type=str)))
-                        logger.debug("type is: " + str(type(self.url.args.get(arg.key, arg.default_value, type=str))))
-                        out[arg.key] = arg.convert_func(self.url.args.get(arg.key, arg.default_value, type=str))
+                        logger.debug(
+                            "argument here: "
+                            + str(self.url.args.get(arg.key, arg.default_value, type=str))
+                        )
+                        logger.debug(
+                            "type is: "
+                            + str(type(self.url.args.get(arg.key, arg.default_value, type=str)))
+                        )
+                        out[arg.key] = arg.convert_func(
+                            self.url.args.get(arg.key, arg.default_value, type=str)
+                        )
                         if out[arg.key] == "":
                             out[arg.key] = arg.convert_func(arg.default_value)
         if not_found != []:
@@ -84,4 +95,6 @@ class ArgumentParser:
             logger.warning(
                 f"Parsing request body as json, but content type is {self.url.content_type}"
             )
+        if self.url.data == b"":
+            return {}
         return json.loads(self.url.data.decode())

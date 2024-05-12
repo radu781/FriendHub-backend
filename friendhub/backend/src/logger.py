@@ -3,6 +3,7 @@ import enum
 import logging
 import os
 import time
+from typing import Any
 
 from flask import has_request_context, request, session
 
@@ -54,36 +55,36 @@ if __logger is None:
             os.remove(f"friendhub/backend/logs/{file}")
 
 
-def debug(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
-    msg = __log_extra() + category + msg
+def debug(msg: Any, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = f"{__log_extra()}{category} {msg}"
     if DEBUG_ON:
         print("[D]" + msg)
     __logger.debug(msg)
 
 
-def info(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
-    msg = __log_extra() + category + msg
+def info(msg: Any, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = f"{__log_extra()}{category} {msg}"
     if DEBUG_ON:
         print("[I]" + msg)
     __logger.info(msg)
 
 
-def warning(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
-    msg = __log_extra() + category + msg
+def warning(msg: Any, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = f"{__log_extra()}{category} {msg}"
     if DEBUG_ON:
         print("[W]" + msg)
     __logger.warning(msg)
 
 
-def error(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
-    msg = __log_extra() + category + msg
+def error(msg: Any, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = f"{__log_extra()}{category} {msg}"
     if DEBUG_ON:
         print("[E]" + msg)
     __logger.error(msg)
 
 
-def critical(msg: str, category: LogCategory = LogCategory.DEFAULT) -> None:
-    msg = __log_extra() + category + msg
+def critical(msg: Any, category: LogCategory = LogCategory.DEFAULT) -> None:
+    msg = f"{__log_extra()}{category} {msg}"
     if DEBUG_ON:
         print("[C]" + msg)
     __logger.critical(msg)
