@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import requests
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
@@ -73,6 +72,8 @@ def login() -> Response:
     TokenDAO.insert(current_token)
 
     if not LoginLocationDAO.known_ip(request.remote_addr):
-        Location(request.remote_addr).new(current_user)
+        loc = Location(request.remote_addr)
+        loc.new(current_user)
+        Email.new_login(current_user.email, current_user.first_name, loc)
 
     return make_response(jsonify({"token": current_token}), status.HTTP_200_OK)

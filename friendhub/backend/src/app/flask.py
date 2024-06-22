@@ -19,6 +19,7 @@ from controllers.upload_controller import upload_blueprint
 from controllers.user_stats import user_stats_blueprint
 from views.js_runner import js_redirect_blueprint
 from controllers.online_activity_controller import online_activity_blueprint
+from controllers.friends_controller import friends_blueprint
 
 from . import flask_app
 
@@ -49,9 +50,10 @@ flask_app.register_blueprint(settings_blueprint)
 flask_app.register_blueprint(upload_blueprint)
 flask_app.register_blueprint(user_stats_blueprint)
 flask_app.register_blueprint(online_activity_blueprint)
+flask_app.register_blueprint(friends_blueprint)
 
 
-if "PROFILE" in os.environ:
-    import perf
+# if "PROFILE" in os.environ:
+import perf
 
-    perf.profile(flask_app)
+perf.profile(flask_app)

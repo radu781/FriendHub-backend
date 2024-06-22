@@ -1,12 +1,18 @@
-from database.post_dao import PostDAO
+from uuid import UUID
+
 from flask import Blueprint, jsonify, make_response, request
 from flask.wrappers import Response
 from flask_api import status
+
+from database.post_dao import PostDAO
 from models.user_model import User
-from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
+from utils.argument_parser import (ArgsNotFoundException, ArgType, Argument,
+                                   ArgumentParser, Method)
 from utils.validators.decorators import needs_login
+from utils.validators.other import is_uuid
 
 all_post_blueprint = Blueprint("all_post_blueprint", __name__)
+
 
 
 @all_post_blueprint.route("/api/post/all", methods=["GET"])
@@ -14,7 +20,11 @@ all_post_blueprint = Blueprint("all_post_blueprint", __name__)
 def all_posts(*, current_user: User) -> Response:
     parser = ArgumentParser(
         request,
-        {Argument("from", ArgType.OPTIONAL, 0), Argument("to", ArgType.OPTIONAL, 20)},
+        {
+            Argument("from", ArgType.OPTIONAL, 0),
+            Argument("to", ArgType.OPTIONAL, 20),
+            Argument("author", ArgType.OPTIONAL, ""),
+        },
         Method.GET,
     )
     try:
@@ -26,7 +36,17 @@ def all_posts(*, current_user: User) -> Response:
         )
     values["from"] = max(0, int(values["from"]))  # type: ignore
     values["to"] = max(0, int(values["to"]))  # type: ignore
-    posts = PostDAO.get_visible_posts(current_user, int(values["from"]), int(values["to"]))
+    if values["author"] == "":
+        posts = PostDAO.get_visible_posts(current_user.id_, int(values["from"]), int(values["to"]))
+    elif not is_uuid(values["author"]):
+        return make_response(
+            jsonify({"reason": "badly formatted UUID"}),
+            status.HTTP_400_BAD_REQUEST,
+        )
+    else:
+        posts = PostDAO.get_posts_by_user(
+            UUID(values["author"]), int(values["from"]), int(values["to"])
+        )
     pretty_posts = [
         {"post": pw.post, "author": pw.user.sanitize(), "vote": pw.vote} for pw in posts
     ]

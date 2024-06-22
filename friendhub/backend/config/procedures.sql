@@ -1,5 +1,4 @@
-CREATE
-OR REPLACE FUNCTION public.levenshtein_distance (str1 text, str2 text) RETURNS integer LANGUAGE plpgsql AS $function$
+CREATE OR REPLACE FUNCTION public.levenshtein_distance (str1 text, str2 text) RETURNS integer LANGUAGE plpgsql AS $function$
 DECLARE
     m integer := length(str1);
     n integer := length(str2);

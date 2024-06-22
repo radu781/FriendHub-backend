@@ -63,12 +63,12 @@ def default_multimedia4(*, dir1: str, dir2: str, name: str):
 
 
 if __name__ == "__main__":
-    if "PROFILE" in os.environ:
-        from threading import Thread
+    # if "PROFILE" in os.environ:
+    from threading import Thread
 
-        import perf
+    import perf
 
-        mover = Thread(target=perf.move_files)
-        mover.start()
+    mover = Thread(target=perf.move_files)
+    mover.start()
 
     flask_app.run(host="0.0.0.0", port=80, debug=DEBUG_ON)

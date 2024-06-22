@@ -1,6 +1,8 @@
 from uuid import UUID
 from models.relationship_model import Relationship
 from database.dbmanager import DBManager
+from models.user_model import User
+from database.user_dao import UserDAO
 
 
 class RelationshipDAO:
@@ -54,3 +56,17 @@ class RelationshipDAO:
             (str(user_id), type.value),
         )
         return value[0][0]
+
+    @staticmethod
+    def get_friends(user_id: UUID) -> list[User]:
+        value = DBManager.execute(
+            """SELECT * FROM relationships WHERE "from"=%s AND "type"=%s""",
+            (str(user_id), Relationship.Type.FRIEND.value),
+        )
+        print(f"{value=}")
+        out = []
+        for v in value:
+            user = UserDAO.get_user_by_id(v[2])
+            if user is not None:
+                out.append(user.sanitize())
+        return out

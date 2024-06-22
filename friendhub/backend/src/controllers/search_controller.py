@@ -152,14 +152,18 @@ def __handle_groups_find(
 def __handle_post_find(
     result_in_out: dict[str, Any], query_values: dict[str, str], limit: int
 ) -> None:
+    has_image = "has" in query_values and "image" in query_values["has"]
+    has_video = "has" in query_values and "video" in query_values["has"]
+    has_audio = "has" in query_values and "audio" in query_values["has"]
+
     posts_found = SearchDAO.search_posts(
         query_values["query"],
         limit,
-        query_values["created-after"], # type: ignore
-        query_values["created-before"], # type: ignore
-        False,
-        False,
-        False,
+        query_values["created-after"],  # type: ignore
+        query_values["created-before"],  # type: ignore
+        has_image,
+        has_video,
+        has_audio,
     )
     result_in_out["posts"] = {}
     result_in_out["posts"]["count"] = len(posts_found)

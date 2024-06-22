@@ -1,3 +1,5 @@
+import logger
+from typing import Any
 from uuid import UUID
 
 from database.dbmanager import DBManager
@@ -5,7 +7,6 @@ from database.user_dao import UserDAO
 from database.vote_dao import VoteDAO
 from models.post_model import Post
 from models.post_wrapper import PostWrapper
-from models.user_model import User
 from models.vote_model import Vote
 
 
@@ -30,12 +31,26 @@ class PostDAO:
         )
 
     @staticmethod
-    def get_visible_posts(user: User | None, start: int, end: int) -> list[PostWrapper]:
-        if not user:
+    def get_visible_posts(user_id: UUID | None, start: int, end: int) -> list[PostWrapper]:
+        if not user_id:
             return []
         value = DBManager.execute(
             "SELECT * FROM posts ORDER BY create_time DESC LIMIT %s OFFSET %s", (end - start, start)
         )
+        return PostDAO.__add_details_to_posts(value, user_id)
+
+    @staticmethod
+    def get_posts_by_user(user_id: UUID, start: int, end: int) -> list[PostWrapper]:
+        if not user_id:
+            return []
+        value = DBManager.execute(
+            "SELECT * FROM posts WHERE owner_id = %s ORDER BY create_time DESC LIMIT %s OFFSET %s",
+            (str(user_id), end - start, start),
+        )
+        return PostDAO.__add_details_to_posts(value, user_id)
+
+    @staticmethod
+    def __add_details_to_posts(value: list[tuple[Any]], user_id: UUID) -> list[PostWrapper]:
         out: list[PostWrapper] = []
         for row in value:
             current_post = Post.from_db(row)
@@ -43,7 +58,7 @@ class PostDAO:
             author = UserDAO.get_user_by_id(current_post.owner_id)
             if not author:
                 continue
-            current_vote = VoteDAO.get_vote(current_post.id_, user.id_)
+            current_vote = VoteDAO.get_vote(current_post.id_, user_id)
             out.append(PostWrapper(current_post, author, current_vote))
         return out
 

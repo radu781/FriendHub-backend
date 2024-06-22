@@ -4,7 +4,6 @@ import requests
 
 from database.dao.login_location_dao import LoginLocationDAO
 from database.objects.login_locations import LoginLocation
-from invoke.email import Email
 from models.user_model import User
 
 
@@ -45,4 +44,3 @@ class Location:
                 ip_address=self.ip,
             )
         )
-        Email.new_login(user.email, user.first_name, self)

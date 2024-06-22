@@ -84,3 +84,4 @@ class __EmailScheduler:
 
 
 EmailScheduler = __EmailScheduler()
+logger.debug("EmailScheduler instance created", logger.LogCategory.EMAIL)

@@ -6,8 +6,8 @@ class LoginLocationDAO:
     @staticmethod
     def create(location: LoginLocation) -> None:
         DBManager.execute(
-            """INSERT INTO login_location(id, user_id, country, city, region, isp, allowed, timestamp)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s)""",
+            """INSERT INTO login_locations(id, user_id, country, city, region, isp, allowed, timestamp, ip_address)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 str(location.id_),
                 str(location.user_id),
@@ -17,6 +17,7 @@ class LoginLocationDAO:
                 location.isp,
                 location.allowed,
                 location.timestamp,
+                location.ip_address,
             ),
         )
 
