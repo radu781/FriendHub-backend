@@ -71,9 +71,9 @@ def login() -> Response:
     ).build()
     TokenDAO.insert(current_token)
 
-    if not LoginLocationDAO.known_ip(request.remote_addr):
-        loc = Location(request.remote_addr)
-        loc.new(current_user)
-        Email.new_login(current_user.email, current_user.first_name, loc)
+    # if not LoginLocationDAO.known_ip(request.remote_addr):
+    loc = Location(request.remote_addr)
+    loc.new(current_user)
+    Email.new_login(current_user.email, current_user.first_name, loc)
 
     return make_response(jsonify({"token": current_token}), status.HTTP_200_OK)

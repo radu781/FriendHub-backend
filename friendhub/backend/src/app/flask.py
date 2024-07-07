@@ -53,7 +53,7 @@ flask_app.register_blueprint(online_activity_blueprint)
 flask_app.register_blueprint(friends_blueprint)
 
 
-# if "PROFILE" in os.environ:
-import perf
+if "PROFILE" in os.environ:
+    import perf
 
-perf.profile(flask_app)
+    perf.profile(flask_app)

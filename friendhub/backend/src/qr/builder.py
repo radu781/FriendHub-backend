@@ -16,7 +16,7 @@ class QRCodeBuilder:
     LOGO_WIDTH = 50
 
     def __post_init__(self) -> None:
-        self.logo = Image.open("friendhub/static/logo.png")
+        self.logo = Image.open("friendhub/static/assets/logo.png")
 
     def make(self, fill_color: str | None = None, back_color: str | None = None) -> None:
         if not fill_color or not back_color:
@@ -38,7 +38,7 @@ class QRCodeBuilder:
         self.qr_img.paste(logo, pos)
 
     def save(self, author_id: uuid.UUID) -> None:
-        dir_name = f"friendhub/backend/static/uploads/{author_id}"
+        dir_name = f"friendhub/static/uploads/{author_id}"
         try:
             os.mkdir(dir_name)
         except FileExistsError:

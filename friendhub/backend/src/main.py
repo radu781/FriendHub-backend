@@ -17,11 +17,11 @@ def get_locale() -> str:
 
 @flask_app.errorhandler(403)
 def access_forbidden(err):
-    return make_response("Access forbidden" + str(err), status.HTTP_403_FORBIDDEN)
+    return make_response("Access forbidden\n" + str(err), status.HTTP_403_FORBIDDEN)
 
 @flask_app.errorhandler(404)
 def page_not_found(err):
-    return make_response("Page not found" + str(err), status.HTTP_404_NOT_FOUND)
+    return make_response("Page not found\n" + str(err), status.HTTP_404_NOT_FOUND)
 
 
 @flask_app.route("/chat")
@@ -63,12 +63,12 @@ def default_multimedia4(*, dir1: str, dir2: str, name: str):
 
 
 if __name__ == "__main__":
-    # if "PROFILE" in os.environ:
-    from threading import Thread
+    if "PROFILE" in os.environ:
+        from threading import Thread
 
-    import perf
+        import perf
 
-    mover = Thread(target=perf.move_files)
-    mover.start()
+        mover = Thread(target=perf.move_files)
+        mover.start()
 
     flask_app.run(host="0.0.0.0", port=80, debug=DEBUG_ON)

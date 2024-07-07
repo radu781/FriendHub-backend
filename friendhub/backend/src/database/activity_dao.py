@@ -1,11 +1,12 @@
 import uuid
+from datetime import date
 
 from database.dbmanager import DBManager
 from database.objects.activity import Activity
-from datetime import date
 
 
 class ActivityDAO:
+
     @staticmethod
     def create_activity(post: Activity) -> None:
         DBManager.execute(
@@ -15,6 +16,9 @@ class ActivityDAO:
 
     @staticmethod
     def get_activities(user_id: uuid.UUID, from_: date, to: date) -> list[Activity]:
-        value = DBManager.execute("SELECT * FROM activities WHERE user_id=%s", (str(user_id),))
+        value = DBManager.execute(
+            "SELECT * FROM activities WHERE user_id=%s AND date BETWEEN %s AND %s",
+            (str(user_id), str(from_), str(to)),
+        )
         activities = list(Activity.from_db(row) for row in value)
         return activities

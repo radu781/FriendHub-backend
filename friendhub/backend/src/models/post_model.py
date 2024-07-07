@@ -16,6 +16,7 @@ class Post:
     image: str | None
     video: str | None
     audio: str | None
+    timeout: int | None = field(default=0)
 
     @classmethod
     def from_db(cls, row: tuple) -> Post:
@@ -27,6 +28,7 @@ class Post:
             image=row[6],
             video=row[7],
             audio=row[8],
-            likes=0,
-            dislikes=0,
+            timeout=int(row[8]) if row[8] is not None else 0,
+            likes=int(row[3]),
+            dislikes=int(row[4]),
         )

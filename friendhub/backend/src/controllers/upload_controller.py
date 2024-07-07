@@ -10,6 +10,7 @@ from models.user_model import User
 from utils.argument_parser import ArgsNotFoundException, ArgType, Argument, ArgumentParser, Method
 from utils.validators.decorators import needs_login
 from werkzeug.utils import secure_filename
+from database.user_dao import UserDAO
 
 upload_blueprint = Blueprint("upload_blueprint", __name__)
 UPLOAD_PATH = "friendhub/static/uploads"
@@ -20,8 +21,8 @@ except FileExistsError:
 
 
 @upload_blueprint.route("/api/upload", methods=["POST"])
-@needs_login
-def upload(*, current_user: User) -> Response:
+# @needs_login
+def upload() -> Response:
     parser = ArgumentParser(
         request,
         {
@@ -29,6 +30,8 @@ def upload(*, current_user: User) -> Response:
             Argument("image-upload", ArgType.OPTIONAL, None),
             Argument("video-upload", ArgType.OPTIONAL, None),
             Argument("audio-upload", ArgType.OPTIONAL, None),
+            Argument("story", ArgType.OPTIONAL, False),
+            Argument("story-timeout", ArgType.OPTIONAL, 24),
         },
         Method.POST,
     )
@@ -42,6 +45,7 @@ def upload(*, current_user: User) -> Response:
     if values["text"] == "":
         return make_response(jsonify({"reason": "text missing"}), status.HTTP_406_NOT_ACCEPTABLE)
 
+    current_user = UserDAO.get_user_by_id(uuid.UUID("7d839775-5ca5-435e-a5c9-84c80f304d87"))
     post_got = __treat_file_upload(request, current_user.id_)
     post_got.text = values["text"]
     PostDAO.create_post(post_got)
